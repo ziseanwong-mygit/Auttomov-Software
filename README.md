@@ -1,4 +1,4 @@
-# APUASC-GroupAT
+# OODJ-GroupAT
 Repository for working OODJ Group AT APU-ASC program; name of program: Auttomov Software
 
 # GitHub Practices and Guideline
