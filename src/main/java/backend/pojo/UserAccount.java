@@ -2,6 +2,7 @@ package main.java.backend.pojo;
 
 import main.java.enums.Role;
 import main.java.enums.AccountStatus;
+import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -16,13 +17,15 @@ public class UserAccount {
     private String lastName;
     private String emailAddress;
     private String phoneNumber;
-    private String passwordHash;
+    private PasswordHash passwordHash;
     private AccountStatus accountStatus;
 
-    public UserAccount(String userID, Role userRole, String firstName, String lastName, String emailAddress,
-                       String phoneNumber, String passwordHash) {
-        this.accountID = UUID.randomUUID().toString();
-        this.accountCreationDate = LocalDate.now();
+    public UserAccount(String accountID, LocalDate accountCreationDate, String userID, Role userRole, String firstName,
+                       String lastName, String emailAddress, String phoneNumber, PasswordHash passwordHash,
+                       AccountStatus accountStatus) {
+
+        this.accountID = accountID;
+        this.accountCreationDate = accountCreationDate;
         this.userID = userID;
         this.userRole = userRole;
         this.firstName = firstName;
@@ -30,25 +33,53 @@ public class UserAccount {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.passwordHash = passwordHash;
-        this.accountStatus = AccountStatus.ACTIVE;
+        this.accountStatus = accountStatus;
     }
 
-    /**
-     * Use this specifically for your file writing logic.
-     * It's better than an array because the format is explicit.
-     */
-    public String toTextFileFormat() {
-        return String.join(",",
-                accountID,
-                accountCreationDate.toString(),
+    public UserAccount(String userID, Role userRole, String firstName, String lastName, String emailAddress,
+                       String phoneNumber, PasswordHash passwordHash) {
+
+        // Chained to the constructor above
+        this(
+                UUID.randomUUID().toString(),
+                LocalDate.now(),
                 userID,
-                userRole.toString(),
+                userRole,
                 firstName,
                 lastName,
                 emailAddress,
                 phoneNumber,
                 passwordHash,
-                accountStatus.toString()
+                AccountStatus.ACTIVE
+        );
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    /**
+     * Gather all data into one single line, with each value separated by commas
+     * To ease the process of writing new record into the file
+     */
+    @Override
+    public String toString() {
+
+        return String.join(", ",
+                accountID,
+                accountCreationDate.toString(),
+                userID,
+                userRole.getUserRole(),
+                firstName,
+                lastName,
+                emailAddress,
+                phoneNumber,
+                passwordHash.toString(),
+                accountStatus.getAccStatus()
         );
     }
 }

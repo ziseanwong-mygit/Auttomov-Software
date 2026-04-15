@@ -14,4 +14,15 @@ public enum JobPosition {
     public String getJobPosition() {
         return jobPosition;
     }
+
+    public static JobPosition getJobPosByValue(String value) {
+        for (JobPosition jp : JobPosition.values()) {
+            if (jp.jobPosition.equalsIgnoreCase(value)) {
+                return jp;
+            }
+        }
+
+        // If not found, return null
+        return null;
+    }
 }
