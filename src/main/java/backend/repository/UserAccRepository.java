@@ -16,8 +16,9 @@ import java.util.Map;
 public class UserAccRepository {
 
     // Map key: field value, map value: UserAccount object
-    private final Map<String, UserAccount> userIdCache = new HashMap<>();
-    private final Map<String, UserAccount> emailCache = new HashMap<>();
+    private final Map<String, UserAccount> accountByUserId = new HashMap<>();
+    private final Map<String, UserAccount> accountByEmail = new HashMap<>();
+    private final Map<String, UserAccount> accountByPasswordHash = new HashMap<>();
     private final TextFilePath filePath;
 
     // Constructor to get the file path and start reading the file
@@ -32,8 +33,8 @@ public class UserAccRepository {
 
             bufferWrite.write(customerAcc.toString());
 
-            userIdCache.put(customerAcc.getUserID(), customerAcc);
-            emailCache.put(customerAcc.getEmailAddress(), customerAcc);
+            accountByUserId.put(customerAcc.getUserID(), customerAcc);
+            accountByEmail.put(customerAcc.getEmailAddress(), customerAcc);
 
         } catch (IOException e) {
             // TODO: Need to adapt to Swing/AWT interface
@@ -51,8 +52,8 @@ public class UserAccRepository {
 
             bufferWrite.write(staffAcc.toString());
 
-            userIdCache.put(staffAcc.getUserID(), staffAcc);
-            emailCache.put(staffAcc.getEmailAddress(), staffAcc);
+            accountByUserId.put(staffAcc.getUserID(), staffAcc);
+            accountByEmail.put(staffAcc.getEmailAddress(), staffAcc);
 
         } catch (IOException e) {
             // TODO: Need to adapt to Swing/AWT interface
@@ -67,7 +68,6 @@ public class UserAccRepository {
 
     /**
      * Read all records from the text file and populates all records into a map.
-     * This is run once when the object is instantiated.
      */
     private void readAndStoreAccountByField() {
         try (BufferedReader bufferRead = new BufferedReader(new FileReader(filePath.getTextFilePath()))) {
@@ -93,8 +93,9 @@ public class UserAccRepository {
 
                 // Add UserAccount object into the map by its userID and email
                 // Used for instant lookup on matching data
-                userIdCache.put(userAcc.getUserID(), userAcc);
-                emailCache.put(userAcc.getEmailAddress(), userAcc);
+                accountByUserId.put(userAcc.getUserID(), userAcc);
+                accountByEmail.put(userAcc.getEmailAddress(), userAcc);
+                accountByPasswordHash.put(userAcc.getPasswordHash().pswdHash(), userAcc);
             }
 
         } catch (IOException e) {
@@ -104,14 +105,14 @@ public class UserAccRepository {
     }
 
     /**
-     * Match the UserAccount object by its userID or email address.
+     * Get the UserAccount object by the input data.
      * Return null if the account is not found.
      */
     public UserAccount getUserAccByUserID(String userID) {
-        return userIdCache.get(userID);
+        return accountByUserId.get(userID);
     }
 
     public UserAccount getUserAccByEmail(String email) {
-        return emailCache.get(email);
+        return accountByEmail.get(email);
     }
 }

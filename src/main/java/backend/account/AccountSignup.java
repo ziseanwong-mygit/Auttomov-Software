@@ -1,7 +1,7 @@
 package main.java.backend.account;
 
 import main.java.backend.account.service.PswdEncryption;
-import main.java.backend.general.service.UserDataValidation;
+import main.java.backend.general.service.UserAccValidation;
 import main.java.backend.pojo.StaffAccount;
 import main.java.backend.repository.UserAccRepository;
 import main.java.backend.pojo.UserAccount;
@@ -12,7 +12,7 @@ import main.java.enums.TextFilePath;
 import main.java.records.PasswordHash;
 import main.java.records.OperationResult;
 
-public class AccountSignUp {
+public class AccountSignup {
 
     private String userID;
     private Role userRole;
@@ -30,12 +30,13 @@ public class AccountSignUp {
     // A flag to prevent account creation if data is not validated
     private boolean isDataValidated = false;
 
+    // Validate new customer account data
     public OperationResult validateUserData(String userID, Role userRole, String firstName, String lastName,
                                             String emailAddress, String phoneNumber, String password,
                                             String confirmPassword) {
 
-        OperationResult validationResult = UserDataValidation.validateAllDetails(
-                userID, emailAddress, phoneNumber, password, confirmPassword);
+        OperationResult validationResult = UserAccValidation.validateSignupData(
+                userID, userRole, emailAddress, phoneNumber, password, confirmPassword);
 
         if (validationResult.isValid()) {
             this.userID = userID;
@@ -51,13 +52,14 @@ public class AccountSignUp {
         return validationResult;
     }
 
+    // Validate new technician, counter-staff and manager account data
     public OperationResult validateUserData(String userID, Role userRole, String firstName, String lastName,
                                             String emailAddress, String phoneNumber, String password,
                                             String confirmPassword, JobPosition jobPosition,
                                             EmploymentStatus employmentStatus, String specialization) {
 
-        OperationResult validationResult = UserDataValidation.validateAllDetails(
-                userID, emailAddress, phoneNumber, password, confirmPassword);
+        OperationResult validationResult = UserAccValidation.validateSignupData(
+                userID, userRole, emailAddress, phoneNumber, password, confirmPassword);
 
         if (validationResult.isValid()) {
 
@@ -77,7 +79,7 @@ public class AccountSignUp {
         return validationResult;
     }
 
-    // Create accounts for customer, technician, counter staff and manager
+    // Create accounts for customer, technician, counter-staff and manager
     public OperationResult registerNewAccount() {
 
         if (!isDataValidated) {

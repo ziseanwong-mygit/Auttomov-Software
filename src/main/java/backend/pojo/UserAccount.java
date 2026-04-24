@@ -62,13 +62,20 @@ public class UserAccount {
         return emailAddress;
     }
 
+    public PasswordHash getPasswordHash() {
+        return passwordHash;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
     /**
      * Gather all data into one single line, with each value separated by commas
      * To ease the process of writing new record into the file
      */
     @Override
     public String toString() {
-
         return String.join(", ",
                 accountID,
                 accountCreationDate.toString(),

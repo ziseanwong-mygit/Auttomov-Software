@@ -4,7 +4,6 @@ import main.java.records.PasswordHash;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -18,11 +17,10 @@ public class PswdEncryption {
     }
 
     // Generate a hash for the new password with its unique salt
-    // For signing up new accounts, or changing password
+    // For signing up new accounts or changing password
     public static PasswordHash hashNewPassword(String newPassword) {
         byte[] saltBytes = generateSalt();
         String newSalt = Base64.getEncoder().encodeToString(saltBytes);
-        //byte[] test = newSalt.getBytes(StandardCharsets.UTF_8);
 
         String newHash = computeHash(newPassword, saltBytes);
 

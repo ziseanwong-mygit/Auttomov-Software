@@ -1,6 +1,7 @@
 package main.java;
 
-import main.java.backend.account.AccountSignUp;
+import main.java.backend.account.AccountLogin;
+import main.java.backend.account.AccountSignup;
 import main.java.enums.EmploymentStatus;
 import main.java.enums.JobPosition;
 import main.java.enums.Role;
@@ -9,7 +10,27 @@ import main.java.records.OperationResult;
 public class MainClass {
 
     public static void main(String[] args) {
-/*        AccountSignUp accountSignUp = new AccountSignUp();
+
+        AccountLogin accountLogin = new AccountLogin(
+                Role.CUSTOMER, "wongzisean444@gmail.com", "seanWong888&");
+        OperationResult loginResult = accountLogin.validateLoginInputs();
+
+        if (loginResult.isValid()) {
+            System.out.println("Login successful!");
+        } else {
+            if (loginResult.fieldErrors().containsKey("email")) {
+                System.out.println(loginResult.fieldErrors().get("email"));
+            } else {
+                System.out.println(loginResult.generalMessage());
+            }
+        }
+    }
+}
+
+
+
+
+/*        AccountSignup accountSignUp = new AccountSignup();
         OperationResult validationResult = accountSignUp.validateUserData(
                 "010404145678", Role.CUSTOMER, "Wong", "Zi Sean",
                 "wongzisean444@gmail.com", "012345678", "seanWong888&",
@@ -21,7 +42,7 @@ public class MainClass {
             System.out.println(validationResult.generalMessage() + "\n" + validationResult.fieldErrors());
         }*/
 
-        AccountSignUp accountSignUp = new AccountSignUp();
+/*        AccountSignup accountSignUp = new AccountSignup();
         OperationResult validationResult = accountSignUp.validateUserData(
                 "990216143714", Role.STAFF, "Sean", "Wong",
                 "seanwong777@gmail.com", "012345678", "ZiSean4545#",
@@ -31,6 +52,4 @@ public class MainClass {
             System.out.println(registrationResult.isValid() + "\n" + registrationResult.generalMessage());
         } else {
             System.out.println(validationResult.generalMessage() + "\n" + validationResult.fieldErrors());
-        }
-    }
-}
+        }*/
