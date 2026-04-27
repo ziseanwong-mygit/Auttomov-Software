@@ -1,0 +1,2 @@
+ec1a48f7-9ed8-43c4-85d7-ada0c8ad49dd, Normal Service, All normal services are performed in 1 hour or more, which is optimal for quick checking and maintenance such as tire change and pressurization, engine oil and filter changes, battery replacement, etc., 50.00, 1
+37bd1eb9-c8de-4df2-bf89-889a6e5dc140, Major Service, All major services are performed in 3 hours or more, which is optimal for time-consuming and complex services such as engine overhauls, transmission repair, tire rotation, alignment and balancing, etc., 100.00, 3
