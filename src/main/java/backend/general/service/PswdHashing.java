@@ -1,5 +1,6 @@
-package main.java.backend.account.service;
+package main.java.backend.general.service;
 
+import main.java.backend.dto.UserAccount;
 import main.java.records.PasswordHash;
 
 import javax.crypto.SecretKeyFactory;
@@ -10,10 +11,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class PswdEncryption {
+public class PswdHashing {
 
-    private PswdEncryption() {
-        throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
+    // Private constructor to prevent instantiation
+    private PswdHashing() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
     // Generate a hash for the new password with its unique salt
@@ -27,9 +29,33 @@ public class PswdEncryption {
         return new PasswordHash(newHash, newSalt);
     }
 
+    // Generate a new salt for password hashing; a non-secret data that uniquely hashes password
+    // Without salt, two matching passwords would have same hash
+    private static byte[] generateSalt()  {
+        SecureRandom sr = new SecureRandom();
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
+    }
+
+    // Verify the input password against the existing hash during login
+    public static boolean verifyPassword(String password, UserAccount account) {
+
+        // Get the existing hash and salt from the account
+        String pswdSalt = account.getPasswordHash().hashSalt();
+        String pswdHash = account.getPasswordHash().pswdHash();
+
+        // Compute hashing for password input
+        byte[] saltBytes = Base64.getDecoder().decode(pswdSalt);
+        String hashedPswdInput = PswdHashing.computeHash(password, saltBytes);
+
+        // If the input hash matches the existing hash, returns true
+        return hashedPswdInput.equals(pswdHash);
+    }
+
     // Perform hashing on the given password and salt
     // Used for generating new hash or comparing passwords for authentication
-    public static String computeHash(String password, byte[] salt) {
+    private static String computeHash(String password, byte[] salt) {
 
         try {
             KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
@@ -44,14 +70,5 @@ public class PswdEncryption {
             throw new RuntimeException("Incorrect key specification provided");
         }
 
-    }
-
-    // Generate a new salt for password hashing; a non-secret data that uniquely hashes password
-    // Without salt, two matching passwords would have same hash
-    private static byte[] generateSalt()  {
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return salt;
     }
 }

@@ -22,7 +22,7 @@ public enum JobPosition {
             }
         }
 
-        // If not found, return null
-        return null;
+        // If not found, throw an exception
+        throw new IllegalArgumentException("Invalid job position: " + value);
     }
 }

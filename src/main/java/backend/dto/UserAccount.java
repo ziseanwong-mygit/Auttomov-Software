@@ -1,4 +1,4 @@
-package main.java.backend.pojo;
+package main.java.backend.dto;
 
 import main.java.enums.Role;
 import main.java.enums.AccountStatus;
@@ -36,30 +36,28 @@ public class UserAccount {
         this.accountStatus = accountStatus;
     }
 
-    public UserAccount(String userID, Role userRole, String firstName, String lastName, String emailAddress,
-                       String phoneNumber, PasswordHash passwordHash) {
-
-        // Chained to the constructor above
-        this(
-                UUID.randomUUID().toString(),
-                LocalDate.now(),
-                userID,
-                userRole,
-                firstName,
-                lastName,
-                emailAddress,
-                phoneNumber,
-                passwordHash,
-                AccountStatus.ACTIVE
-        );
+    public String getAccountID() {
+        return accountID;
     }
 
     public String getUserID() {
         return userID;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public String getEmailAddress() {
         return emailAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public PasswordHash getPasswordHash() {
@@ -68,6 +66,34 @@ public class UserAccount {
 
     public AccountStatus getAccountStatus() {
         return accountStatus;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPasswordHash(PasswordHash passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
     /**

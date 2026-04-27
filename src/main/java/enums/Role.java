@@ -21,7 +21,7 @@ public enum Role {
             }
         }
 
-        // If not found, return null
-        return null;
+        // If not found, throw an exception
+        throw new IllegalArgumentException("Invalid user role: " + value);
     }
 }

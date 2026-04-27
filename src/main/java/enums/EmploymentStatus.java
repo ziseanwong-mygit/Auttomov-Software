@@ -25,6 +25,6 @@ public enum EmploymentStatus {
         }
 
         // If not found, return null
-        return null;
+        throw new IllegalArgumentException("Invalid employment status: " + value);
     }
 }

@@ -1,63 +1,24 @@
 package main.java.backend.general.service;
 
-import main.java.backend.repository.UserAccRepository;
+import main.java.backend.repository.StaffAccountRepository;
+import main.java.backend.repository.UserAccountRepository;
 import main.java.enums.RegexPattern;
 import main.java.enums.Role;
-import main.java.enums.TextFilePath;
 import main.java.records.OperationResult;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserAccValidation {
+public class UserAccountValidation {
 
     // Private constructor to prevent instantiation
-    private UserAccValidation() {
-        throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
+    private UserAccountValidation() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
-    // Create a repository instance to collect all user accounts
+    // Create repository instances to retrieve user account record
     // Used to match the existing data with user's input to avoid duplicated data
-    private static final UserAccRepository customerAccRepository =
-            new UserAccRepository(TextFilePath.CUSTOMER_ACCOUNT_FILE_PATH);
-    private static final UserAccRepository staffAccRepository =
-            new UserAccRepository(TextFilePath.STAFF_ACCOUNT_FILE_PATH);
+    private static final UserAccountRepository customerAccRepository = UserAccountRepository.getInstance();
+    private static final StaffAccountRepository staffAccRepository = StaffAccountRepository.getInstance();
 
-    /**
-     * For signing up new user accounts
-     * If all validations are successful, a true value and success message are returned.
-     * Otherwise, a false value and a list of error messages are returned
-     */
-    public static OperationResult validateSignupData(String userId, Role userRole, String emailAddress,
-                                                     String phoneNumber, String password, String confirmPassword) {
-
-        // Create a shared map to collect all error messages
-        Map<String, String> allErrors = new HashMap<>();
-
-        // Validate the user detail first, then if there are errors, collect them into the shared list
-        collectErrors(allErrors, validateUserId(userRole, userId));
-        collectErrors(allErrors, validateEmailAddress(emailAddress));
-        collectErrors(allErrors, checkEmailAlreadyTaken(userRole, emailAddress));
-        collectErrors(allErrors, validatePhoneNumber(phoneNumber));
-        collectErrors(allErrors, validatePassword(password, confirmPassword));
-
-        // If all validations are successful, return the success message
-        // Otherwise, return the map of error messages
-        return allErrors.isEmpty()
-                ? OperationResult.success("Field validation is successful. Proceed to account creation.")
-                : OperationResult.failed("Field validation is unsuccessful. Please try again.", allErrors);
-    }
-
-    // For each validation, if there are errors, collect the field name and error message into the shared map
-    private static void collectErrors(Map<String, String> allErrors, OperationResult result) {
-        if (!result.isValid()) {
-            allErrors.putAll(result.fieldErrors());
-        }
-    }
-
-    // Validate user ID, email address, phone number, and password
-    // Returns OperationResult record with result message
-    private static OperationResult validateUserId(Role userRole, String userId) {
+    public static OperationResult validateUserId(Role userRole, String userId) {
 
         if (userId == null || userId.isBlank()) {
             return OperationResult.failed("userID",
@@ -71,12 +32,12 @@ public class UserAccValidation {
         }
 
         if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getUserAccByUserID(userId) != null) {
+            if (customerAccRepository.getCustomerAccByUserId(userId) != null) {
                 return OperationResult.failed("userID",
                         "User ID already exists in the records");
             }
         } else {
-            if (staffAccRepository.getUserAccByUserID(userId) != null) {
+            if (staffAccRepository.getStaffAccByUserId(userId) != null) {
                 return OperationResult.failed("userID",
                         "User ID already exists in the records");
             }
@@ -100,15 +61,15 @@ public class UserAccValidation {
         return OperationResult.success();
     }
 
-    private static OperationResult checkEmailAlreadyTaken(Role userRole, String emailAddress) {
+    public static OperationResult checkEmailAlreadyTaken(Role userRole, String emailAddress) {
 
         if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getUserAccByEmail(emailAddress) != null) {
+            if (customerAccRepository.getCustomerAccByEmail(emailAddress) != null) {
                 return OperationResult.failed("email",
                         "Email address already exists in the system");
             }
         } else {
-            if (staffAccRepository.getUserAccByEmail(emailAddress) != null) {
+            if (staffAccRepository.getStaffAccByEmail(emailAddress) != null) {
                 return OperationResult.failed("email",
                         "Email address already exists in the system");
             }
@@ -117,7 +78,7 @@ public class UserAccValidation {
         return OperationResult.success();
     }
 
-    private static OperationResult validatePhoneNumber(String phoneNumber) {
+    public static OperationResult validatePhoneNumber(String phoneNumber) {
 
         if (phoneNumber == null || phoneNumber.isBlank()) {
             return OperationResult.failed("phoneNum",

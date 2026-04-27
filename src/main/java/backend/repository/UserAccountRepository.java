@@ -1,0 +1,285 @@
+package main.java.backend.repository;
+
+import main.java.backend.dto.UserAccount;
+import main.java.enums.*;
+import main.java.records.OperationResult;
+import main.java.records.PasswordHash;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.Function;
+
+/**
+ * This repository class follows the singleton pattern to declare a single instance when the application starts.
+ * Instance is usually created in the Main class.
+ */
+public class UserAccountRepository {
+
+    private static UserAccountRepository instance;
+    private final String filePath = TextFilePath.CUSTOMER_ACCOUNT_FILE_PATH.getTextFilePath();
+
+    // Map key: field value, map value: UserAccount object
+    private final Map<String, UserAccount> accountByAccId = new HashMap<>();
+    private final Map<String, UserAccount> accountByUserId = new HashMap<>();
+    private final Map<String, UserAccount> accountByEmail = new HashMap<>();
+
+    // Private constructor to prevent instantiations from outside
+    // Pre-populate the account records into maps when the instance is created
+    private UserAccountRepository() {
+        retrieveAccounts();
+    }
+
+    // Global access point by creating instance for once only
+    // So all classes can access the same instance for reading and writing files
+    public static UserAccountRepository getInstance() {
+        if (instance == null) {
+            instance = new UserAccountRepository();
+        }
+        return instance;
+    }
+
+    /**
+     * Read all records from the text file and populates all records into a map.
+     */
+    private void retrieveAccounts() {
+
+        try (BufferedReader bufferRead = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = bufferRead.readLine()) != null) {
+
+                String[] column = line.split(",\\s*");
+
+                // Convert array to a new UserAccount object
+                UserAccount userAcc = new UserAccount(
+                        column[0],
+                        LocalDate.parse(column[1]),
+                        column[2],
+                        Role.getRoleByValue(column[3]),
+                        column[4],
+                        column[5],
+                        column[6],
+                        column[7],
+                        PasswordHash.toRecord(column[8]),
+                        AccountStatus.getAccStatusByValue(column[9])
+                );
+
+                // Add UserAccount object into the map by its userID and email
+                // Used for instant lookup on matching data
+                accountByAccId.put(userAcc.getAccountID(), userAcc);
+                accountByUserId.put(userAcc.getUserID(), userAcc);
+                accountByEmail.put(userAcc.getEmailAddress(), userAcc);
+            }
+
+        } catch (IOException e) {
+            // This is printed in the console, since this method is called when the application starts
+            System.out.println("Oops! There was an error reading customer account records in the file. " +
+                    "Please try again!");
+        }
+    }
+
+    public OperationResult createAccount(UserAccount customerAcc) {
+
+        try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, true))) {
+
+            bufferWrite.write(customerAcc.toString());
+            bufferWrite.newLine();
+
+            // Add the new account record into the maps to apply the latest changes
+            accountByAccId.put(customerAcc.getAccountID(), customerAcc);
+            accountByUserId.put(customerAcc.getUserID(), customerAcc);
+            accountByEmail.put(customerAcc.getEmailAddress(), customerAcc);
+
+        } catch (IOException e) {
+            // TODO: Need to adapt to Swing/AWT interface
+            return OperationResult.failed(
+                    "Oops! There was an error writing new customer account record in the file. " +
+                            "Please try again.");
+        }
+
+        return OperationResult.success(
+                "Your account has been created successfully. You may now log in your user account.");
+    }
+
+    /**
+     * Rewrite the entire file to update or delete the target record.
+     * Use key-value pairs to identify (accountID) and modify the target record (Function<>) in one or more accounts
+     * Optional.of(newLine) - to replace the matched line (update)
+     * Optional.empty() - to skip the matched line (delete)
+     */
+    private OperationResult rewriteFile(Map<String, Function<String, Optional<String>>> recordModifier) {
+
+        List<String> updatedLines = new ArrayList<>();
+        Set<String> accountsFound = new HashSet<>();
+
+        try (BufferedReader bufferRead = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = bufferRead.readLine()) != null) {
+                String[] column = line.split(",\\s*");
+                String targetID = column[0];
+
+                // If accountID matches, add the ID into a set and start the functional interface
+                // Retrieve the current record, and check if the optional value is present or not
+                // If present, add the updated line into the list to update, otherwise skip the line to delete
+                if (recordModifier.containsKey(targetID)) {
+                    accountsFound.add(targetID);
+                    recordModifier.get(targetID).apply(line).ifPresent(updatedLines::add);
+                } else {
+                    updatedLines.add(line); // keep unaffected lines
+                }
+            }
+
+        } catch (IOException e) {
+            return OperationResult.failed("Oops! There was an error reading customer account records" +
+                    "in the file. Please try again!");
+        }
+
+        // Determine if all target accounts are found or not
+        Set<String> accountsNotFound = new HashSet<>(recordModifier.keySet());
+        accountsNotFound.removeAll(accountsFound);
+        if (!accountsNotFound.isEmpty()) {
+            return OperationResult.failed("Oops! The following accounts are not found in the system: " +
+                    accountsNotFound);
+        }
+
+        // Write all the remaining/updated lines back to the file
+        try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, false))) {
+            for (int i = 0; i < updatedLines.size(); i++) {
+                bufferWrite.write(updatedLines.get(i));
+                if (i < updatedLines.size() - 1) {
+                    bufferWrite.newLine();
+                }
+            }
+
+        } catch (IOException e) {
+            return OperationResult.failed("Oops! There was an error writing records into the file. " +
+                    "Please try again.");
+        }
+
+        return OperationResult.success();
+    }
+
+    /**
+     * For updating one single account only
+     */
+    public OperationResult updateAccount(UserAccount accToUpdate) {
+
+        String accountID = accToUpdate.getAccountID();
+
+        // Map the target account object by its accountID
+        Map<String, Function<String, Optional<String>>> recordModifier = Map.of(
+                accountID, line -> Optional.of(accToUpdate.toString())
+        );
+
+        // Rewrite the file to update the target record
+        OperationResult result = rewriteFile(recordModifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Update the maps with the updated record to apply the latest changes
+        accountByAccId.put(accountID, accToUpdate);
+        accountByUserId.put(accToUpdate.getUserID(), accToUpdate);
+        accountByEmail.put(accToUpdate.getEmailAddress(), accToUpdate);
+
+        return OperationResult.success("The customer account with ID: " + accountID + " is updated " +
+                "successfully. Please check the details to ensure the changes are applied.");
+    }
+
+    /**
+     * For updating multiple accounts
+     */
+    public OperationResult updateAccount(List<UserAccount> accToUpdateList) {
+
+        // For each account, map the target account object by its accountID
+        Map<String, Function<String, Optional<String>>> recordModifier = new HashMap<>();
+        for (UserAccount acc : accToUpdateList) {
+            recordModifier.put(acc.getAccountID(), line -> Optional.of(acc.toString()));
+        }
+
+        // Rewrite the file to update the target records
+        OperationResult result = rewriteFile(recordModifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Update all maps with the updated records to apply the latest changes
+        for (UserAccount acc : accToUpdateList) {
+            accountByAccId.put(acc.getAccountID(), acc);
+            accountByUserId.put(acc.getUserID(), acc);
+            accountByEmail.put(acc.getEmailAddress(), acc);
+        }
+
+        return OperationResult.success(accToUpdateList.size() + " customer accounts are updated " +
+                "successfully. Please check all the accounts' details to ensure the changes are applied.");
+    }
+
+    /**
+     * For deleting one single account
+     */
+    public OperationResult deleteAccount(UserAccount accToDelete) {
+
+        String accountID = accToDelete.getAccountID();
+
+        // Map the target account object by its accountID
+        Map<String, Function<String, Optional<String>>> recordModifier = Map.of(
+                accToDelete.getAccountID(), line -> Optional.empty()
+        );
+
+        // Rewrite the file to delete the target record
+        OperationResult result = rewriteFile(recordModifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Remove the deleted record from the maps to apply the latest changes
+        accountByAccId.remove(accountID);
+        accountByUserId.remove(accToDelete.getUserID());
+        accountByEmail.remove(accToDelete.getEmailAddress());
+
+        return OperationResult.success("The customer account with ID " + accountID +
+                " is deleted successfully. Please check the account records to confirm the deletion.");
+    }
+
+    /**
+     * For deleting multiple accounts
+     */
+    public OperationResult deleteAccount(List<UserAccount> accToDeleteList) {
+
+        // For each account, map the target account object by its accountID
+        Map<String, Function<String, Optional<String>>> recordModifier = new HashMap<>();
+        for (UserAccount acc : accToDeleteList) {
+            recordModifier.put(acc.getAccountID(), line -> Optional.empty());
+        }
+
+        // Rewrite the file to delete the target record
+        OperationResult result = rewriteFile(recordModifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Remove all deleted records from the maps to apply the latest changes
+        for (UserAccount acc : accToDeleteList) {
+            accountByAccId.remove(acc.getAccountID());
+            accountByUserId.remove(acc.getUserID());
+            accountByEmail.remove(acc.getEmailAddress());
+        }
+
+        return OperationResult.success(accToDeleteList.size() + " customer accounts are deleted " +
+                "successfully. Please check the account records to confirm the deletion.");
+    }
+
+    public UserAccount getCustomerAccByAccId(String accId) {
+        return accountByAccId.get(accId);
+    }
+
+    public UserAccount getCustomerAccByUserId(String userID) {
+        return accountByUserId.get(userID);
+    }
+
+    public UserAccount getCustomerAccByEmail(String email) {
+        return accountByEmail.get(email);
+    }
+}

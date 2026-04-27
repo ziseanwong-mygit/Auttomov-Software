@@ -16,6 +16,10 @@ public record OperationResult(boolean isValid, String generalMessage, Map<String
         return new OperationResult(true, successMessage, Map.of());
     }
 
+    public static OperationResult failed() {
+        return new OperationResult(false, null, Map.of());
+    }
+
     public static OperationResult failed(String generalMessage) {
         return new OperationResult(false, generalMessage, Map.of());
     }

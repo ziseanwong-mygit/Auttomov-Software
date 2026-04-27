@@ -1,4 +1,4 @@
-package main.java.backend.pojo;
+package main.java.backend.dto;
 
 import main.java.enums.AccountStatus;
 import main.java.enums.EmploymentStatus;
@@ -30,27 +30,36 @@ public class StaffAccount extends UserAccount {
         this.specialization = specialization;
     }
 
-    public StaffAccount(String userID, Role userRole, String firstName, String lastName, String emailAddress,
-                        String phoneNumber, PasswordHash passwordHash, JobPosition jobPosition,
-                        EmploymentStatus employmentStatus, String specialization) {
+    public JobPosition getJobPosition() {
+        return jobPosition;
+    }
 
-        // Chained to the constructor above, including super()
-        this(
-                UUID.randomUUID().toString(),
-                LocalDate.now(),
-                userID,
-                userRole,
-                firstName,
-                lastName,
-                emailAddress,
-                phoneNumber,
-                passwordHash,
-                AccountStatus.PENDING,
-                jobPosition,
-                LocalDate.now(),
-                employmentStatus,
-                specialization
-        );
+    public LocalDate getEmploymentDate() {
+        return employmentDate;
+    }
+
+    public EmploymentStatus getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setJobPosition(JobPosition jobPosition) {
+        this.jobPosition = jobPosition;
+    }
+
+    public void setEmploymentDate(LocalDate employmentDate) {
+        this.employmentDate = employmentDate;
+    }
+
+    public void setEmploymentStatus(EmploymentStatus employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 
     /**
