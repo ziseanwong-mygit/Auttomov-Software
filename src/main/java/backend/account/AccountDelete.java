@@ -1,4 +1,4 @@
-package main.java.backend.general;
+package main.java.backend.account;
 
 import main.java.backend.dto.StaffAccount;
 import main.java.backend.dto.UserAccount;

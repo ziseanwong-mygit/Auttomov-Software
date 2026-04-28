@@ -1,4 +1,4 @@
-package main.java.backend.general.service;
+package main.java.backend.account.service;
 
 import main.java.backend.repository.StaffAccountRepository;
 import main.java.backend.repository.UserAccountRepository;
@@ -6,10 +6,10 @@ import main.java.enums.RegexPattern;
 import main.java.enums.Role;
 import main.java.records.OperationResult;
 
-public class UserAccountValidation {
+public class AccountValidation {
 
     // Private constructor to prevent instantiation
-    private UserAccountValidation() {
+    private AccountValidation() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 

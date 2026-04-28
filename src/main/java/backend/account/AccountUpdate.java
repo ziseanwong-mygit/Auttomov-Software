@@ -1,8 +1,8 @@
-package main.java.backend.general;
+package main.java.backend.account;
 
 import main.java.backend.dto.StaffAccount;
 import main.java.backend.dto.UserAccount;
-import main.java.backend.general.service.UserAccountValidation;
+import main.java.backend.account.service.AccountValidation;
 import main.java.backend.repository.StaffAccountRepository;
 import main.java.backend.repository.UserAccountRepository;
 import main.java.enums.EmploymentStatus;
@@ -76,17 +76,17 @@ public class AccountUpdate {
         List<FieldComparison> accountFields = new ArrayList<>();
 
         accountFields.add(new FieldComparison("userID", existingAcc.getUserID(),
-                userID, List.of(id -> UserAccountValidation.validateUserId(userRole, id))));
+                userID, List.of(id -> AccountValidation.validateUserId(userRole, id))));
         accountFields.add(new FieldComparison("firstName", existingAcc.getFirstName(),
                 firstName, null));
         accountFields.add(new FieldComparison("lastName", existingAcc.getLastName(),
                 lastName, null));
         accountFields.add(new FieldComparison("emailAddress", existingAcc.getEmailAddress(),
-                emailAddress, List.of(UserAccountValidation::validateEmailAddress,
-                email -> UserAccountValidation.checkEmailAlreadyTaken(userRole, email)
+                emailAddress, List.of(AccountValidation::validateEmailAddress,
+                email -> AccountValidation.checkEmailAlreadyTaken(userRole, email)
         )));
         accountFields.add(new FieldComparison("phoneNumber", existingAcc.getPhoneNumber(),
-                phoneNumber, List.of(UserAccountValidation::validatePhoneNumber)));
+                phoneNumber, List.of(AccountValidation::validatePhoneNumber)));
 
         if (existingAcc instanceof StaffAccount staffAcc) {
             accountFields.add(new FieldComparison("jobPosition", staffAcc.getJobPosition().toString(),

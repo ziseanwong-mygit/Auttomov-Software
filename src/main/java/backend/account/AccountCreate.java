@@ -1,7 +1,7 @@
-package main.java.backend.general;
+package main.java.backend.account;
 
-import main.java.backend.general.service.PswdHashing;
-import main.java.backend.general.service.UserAccountValidation;
+import main.java.backend.account.service.PswdHashing;
+import main.java.backend.account.service.AccountValidation;
 import main.java.backend.dto.StaffAccount;
 import main.java.backend.repository.StaffAccountRepository;
 import main.java.backend.repository.UserAccountRepository;
@@ -98,11 +98,11 @@ public class AccountCreate {
         Map<String, String> allErrors = new HashMap<>();
 
         // Validate the user detail first, then if there are errors, collect them into the shared list
-        collectErrors(allErrors, UserAccountValidation.validateUserId(userRole, userId));
-        collectErrors(allErrors, UserAccountValidation.validateEmailAddress(emailAddress));
-        collectErrors(allErrors, UserAccountValidation.checkEmailAlreadyTaken(userRole, emailAddress));
-        collectErrors(allErrors, UserAccountValidation.validatePhoneNumber(phoneNumber));
-        collectErrors(allErrors, UserAccountValidation.validatePassword(password, confirmPassword));
+        collectErrors(allErrors, AccountValidation.validateUserId(userRole, userId));
+        collectErrors(allErrors, AccountValidation.validateEmailAddress(emailAddress));
+        collectErrors(allErrors, AccountValidation.checkEmailAlreadyTaken(userRole, emailAddress));
+        collectErrors(allErrors, AccountValidation.validatePhoneNumber(phoneNumber));
+        collectErrors(allErrors, AccountValidation.validatePassword(password, confirmPassword));
 
         // If all validations are successful, return the success message
         // Otherwise, return the map of error messages

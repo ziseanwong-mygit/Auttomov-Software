@@ -1,4 +1,4 @@
-package main.java.backend.general.service;
+package main.java.backend.account.service;
 
 import main.java.backend.dto.UserAccount;
 import main.java.records.PasswordHash;

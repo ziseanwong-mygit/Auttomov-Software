@@ -1,7 +1,7 @@
-package main.java.backend.general;
+package main.java.backend.account;
 
-import main.java.backend.general.service.PswdHashing;
-import main.java.backend.general.service.UserAccountValidation;
+import main.java.backend.account.service.PswdHashing;
+import main.java.backend.account.service.AccountValidation;
 import main.java.backend.dto.UserAccount;
 import main.java.backend.repository.StaffAccountRepository;
 import main.java.backend.repository.UserAccountRepository;
@@ -21,14 +21,14 @@ public class AccountLogin {
      * Check email first to verify if the account exists
      * Then verify the password and account status before enabling access to the system
      */
-    public OperationResult executeProcess(Role userRole, String emailAddress, String password) {
+    public static OperationResult executeProcess(Role userRole, String emailAddress, String password) {
 
         UserAccountRepository customerAccRepository = UserAccountRepository.getInstance();
         StaffAccountRepository staffAccRepository = StaffAccountRepository.getInstance();
 
         // Check email address format
         // If email address format is invalid, return error message
-        OperationResult emailFormatValidation = UserAccountValidation.validateEmailAddress(emailAddress);
+        OperationResult emailFormatValidation = AccountValidation.validateEmailAddress(emailAddress);
         if (!emailFormatValidation.isValid()) {
             return emailFormatValidation;
         }

@@ -1,28 +1,14 @@
 package main.java;
 
-import main.java.backend.general.AccountDelete;
-import main.java.backend.general.AccountUpdate;
-import main.java.enums.EmploymentStatus;
-import main.java.enums.JobPosition;
+import main.java.backend.account.AccountDelete;
+import main.java.backend.account.AccountLogin;
 import main.java.enums.Role;
 import main.java.records.OperationResult;
-
-import java.time.LocalDate;
 
 public class MainClass {
 
     public static void main(String[] args) {
-/*        AccountUpdate accountUpdate = new AccountUpdate(
-                "92cc1f5e-d3df-4682-a5da-411c196ecff7", "990216143719", Role.STAFF,
-                "Sean", "Wong", "seanwong778@gmail.com", "0123446725",
-                JobPosition.MANAGER, LocalDate.now(), EmploymentStatus.FULL_TIME, null);
-        OperationResult result = accountUpdate.executeProcess();
-        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
 
-        AccountDelete accountDelete = new AccountDelete(
-                "b3af5b58-337a-4756-bcb4-82c19c4b0453", Role.CUSTOMER);
-        OperationResult result = accountDelete.executeProcess();
-        System.out.println(result.isValid() + "\n" + result.generalMessage());
     }
 }
 
@@ -55,9 +41,8 @@ public class MainClass {
             System.out.println(validationResult.generalMessage() + "\n" + validationResult.fieldErrors());
         }*/
 
-/*        AccountLogin accountLogin = new AccountLogin(
-                Role.CUSTOMER, "wongzisean444@gmail.com", "seanWong888&");
-        OperationResult loginResult = accountLogin.verifyLoginInputs();
+/*        OperationResult loginResult = AccountLogin.executeProcess(Role.CUSTOMER,
+                "wongzisean444@gmail.com", "seanWong888&");
 
         if (loginResult.isValid()) {
             System.out.println("Login successful!");
@@ -72,6 +57,13 @@ public class MainClass {
 /*        AccountUpdate accountUpdate = new AccountUpdate(
                 "c26b455e-178a-46f4-932e-af9c8061e730", "010404145678", Role.CUSTOMER,
                 "Wong", "Zi Sean", "wongzisean444@gmail.com", "0123446464");
+        OperationResult result = accountUpdate.executeProcess();
+        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
+
+/*        AccountUpdate accountUpdate = new AccountUpdate(
+                "92cc1f5e-d3df-4682-a5da-411c196ecff7", "990216143719", Role.STAFF,
+                "Sean", "Wong", "seanwong778@gmail.com", "0123446725",
+                JobPosition.MANAGER, LocalDate.now(), EmploymentStatus.FULL_TIME, null);
         OperationResult result = accountUpdate.executeProcess();
         System.out.println(result.isValid() + "\n" + result.generalMessage());*/
 
