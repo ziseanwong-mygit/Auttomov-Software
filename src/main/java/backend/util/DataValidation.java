@@ -1,22 +1,16 @@
-package main.java.backend.account.service;
+package main.java.backend.util;
 
-import main.java.backend.repository.StaffAccountRepository;
-import main.java.backend.repository.UserAccountRepository;
+import main.java.backend.service.account.AccountDataVerification;
 import main.java.enums.RegexPattern;
 import main.java.enums.Role;
 import main.java.records.OperationResult;
 
-public class AccountValidation {
+public class DataValidation {
 
     // Private constructor to prevent instantiation
-    private AccountValidation() {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    private DataValidation() {
+        throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
-
-    // Create repository instances to retrieve user account record
-    // Used to match the existing data with user's input to avoid duplicated data
-    private static final UserAccountRepository customerAccRepository = UserAccountRepository.getInstance();
-    private static final StaffAccountRepository staffAccRepository = StaffAccountRepository.getInstance();
 
     public static OperationResult validateUserId(Role userRole, String userId) {
 
@@ -29,18 +23,6 @@ public class AccountValidation {
             return OperationResult.failed("userID",
                     "User ID must be a valid Malaysian IC (e.g. 010101145678) " +
                             "or passport number (e.g. A123456789)");
-        }
-
-        if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getCustomerAccByUserId(userId) != null) {
-                return OperationResult.failed("userID",
-                        "User ID already exists in the records");
-            }
-        } else {
-            if (staffAccRepository.getStaffAccByUserId(userId) != null) {
-                return OperationResult.failed("userID",
-                        "User ID already exists in the records");
-            }
         }
 
         return OperationResult.success();
@@ -56,23 +38,6 @@ public class AccountValidation {
         if (!RegexPattern.EMAIL_PATTERN.matches(emailAddress)) {
             return OperationResult.failed("email",
                     "Email address must be in a valid format (e.g. example123@email.com)");
-        }
-
-        return OperationResult.success();
-    }
-
-    public static OperationResult checkEmailAlreadyTaken(Role userRole, String emailAddress) {
-
-        if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getCustomerAccByEmail(emailAddress) != null) {
-                return OperationResult.failed("email",
-                        "Email address already exists in the system");
-            }
-        } else {
-            if (staffAccRepository.getStaffAccByEmail(emailAddress) != null) {
-                return OperationResult.failed("email",
-                        "Email address already exists in the system");
-            }
         }
 
         return OperationResult.success();
@@ -132,4 +97,5 @@ public class AccountValidation {
 
         return OperationResult.success();
     }
+
 }

@@ -1,13 +1,24 @@
 package main.java;
 
-import main.java.backend.account.AccountDelete;
-import main.java.backend.account.AccountLogin;
+import main.java.backend.model.StaffAccount;
+import main.java.backend.model.UserAccount;
+import main.java.backend.repository.AccountRepository;
+import main.java.backend.repository.CustomerAccountRepository;
+import main.java.backend.repository.StaffAccountRepository;
+import main.java.backend.service.account.AccountCreation;
+import main.java.backend.service.account.AccountDeletion;
+import main.java.backend.service.account.AccountUpdate;
+import main.java.enums.EmploymentStatus;
+import main.java.enums.JobPosition;
 import main.java.enums.Role;
 import main.java.records.OperationResult;
+
+import java.time.LocalDate;
 
 public class MainClass {
 
     public static void main(String[] args) {
+
 
     }
 }
@@ -15,30 +26,15 @@ public class MainClass {
 
 
 
-/*        AccountCreate accountSignUp = new AccountCreate();
-        OperationResult validationResult = accountSignUp.validateUserData(
-                "980506148294", Role.CUSTOMER, "Jeffrey", "Kingston",
-                "jeffrey77@gmail.com", "0123848593", "Jeffrey7!7!",
-                "Jeffrey7!7!");
-        if (validationResult.isValid()) {
-            OperationResult registrationResult = accountSignUp.registerNewAccount();
-            System.out.println(registrationResult.isValid() + "\n" + registrationResult.generalMessage());
-        } else {
-            System.out.println(validationResult.generalMessage() + "\n" + validationResult.fieldErrors());
-        }*/
-
-/*        // Initialize the repositories for reading and writing files
-        UserAccountRepository.getInstance();
-        StaffAccountRepository.getInstance();
-
-        OperationResult validationResult = AccountCreate.accountCreationProcess(
-                "950417149172", Role.STAFF, "Henry", "Chong Weng",
-                "henryCW88@gmail.com", "0128287342", "hEnryChong58%",
+/*        AccountCreation test = new AccountCreation(
+                "950417549172", Role.STAFF, "Henry", "Chong Weng",
+                "henryCW38@gmail.com", "0128287342", "hEnryChong58%",
                 "hEnryChong58%", JobPosition.COUNTER_STAFF, EmploymentStatus.FULL_TIME, null);
-        if (validationResult.isValid()) {
-            System.out.println(validationResult.generalMessage());
+        OperationResult result = test.executeProcess();
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
         } else {
-            System.out.println(validationResult.generalMessage() + "\n" + validationResult.fieldErrors());
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
 
 /*        OperationResult loginResult = AccountLogin.executeProcess(Role.CUSTOMER,
@@ -56,7 +52,16 @@ public class MainClass {
 
 /*        AccountUpdate accountUpdate = new AccountUpdate(
                 "c26b455e-178a-46f4-932e-af9c8061e730", "010404145678", Role.CUSTOMER,
-                "Wong", "Zi Sean", "wongzisean444@gmail.com", "0123446464");
+                "Wong", "Zi Sean", "wongzisean444@gmail.com", "0123446464",
+                CustomerAccountRepository.getInstance());
+        OperationResult result = accountUpdate.executeProcess();
+        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
+
+/*        AccountUpdate accountUpdate = new AccountUpdate(
+                "92cc1f5e-d3df-4682-a5da-411c196ecff7", "990216143719", Role.STAFF,
+                "Sean", "Wong", "seanwong778@gmail.com", "0123446725",
+                JobPosition.MANAGER, LocalDate.now(), EmploymentStatus.FULL_TIME, null,
+                StaffAccountRepository.getInstance());
         OperationResult result = accountUpdate.executeProcess();
         System.out.println(result.isValid() + "\n" + result.generalMessage());*/
 
@@ -67,8 +72,8 @@ public class MainClass {
         OperationResult result = accountUpdate.executeProcess();
         System.out.println(result.isValid() + "\n" + result.generalMessage());*/
 
-/*        AccountDelete accountDelete = new AccountDelete(
-                "b3af5b58-337a-4756-bcb4-82c19c4b0453", Role.CUSTOMER);
+/*        AccountDeletion accountDelete = new AccountDeletion(CustomerAccountRepository.getInstance(),
+                "b3af5b58-337a-4766-bcb5-82c19c4b0453");
         OperationResult result = accountDelete.executeProcess();
         System.out.println(result.isValid() + "\n" + result.generalMessage());*/
 

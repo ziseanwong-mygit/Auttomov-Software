@@ -1,10 +1,9 @@
-package main.java.backend.account;
+package main.java.backend.service.account;
 
-import main.java.backend.dto.StaffAccount;
-import main.java.backend.dto.UserAccount;
-import main.java.backend.account.service.AccountValidation;
-import main.java.backend.repository.StaffAccountRepository;
-import main.java.backend.repository.UserAccountRepository;
+import main.java.backend.model.StaffAccount;
+import main.java.backend.model.UserAccount;
+import main.java.backend.repository.AccountRepository;
+import main.java.backend.util.DataValidation;
 import main.java.enums.EmploymentStatus;
 import main.java.enums.JobPosition;
 import main.java.enums.Role;
@@ -17,10 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountUpdate {
+public class AccountUpdate<T extends UserAccount> {
+
+    // Generics is used so can accept either UserAccount or StaffAccount in this variable
+    // The repository instance is stored in AccountRepository interface, to eliminate the need of checking type
+    private final AccountRepository<T> accountRepo;
 
     // Existing customer, technician, counter-staff, or manager account
-    private final UserAccount existingAcc;
+    private final T existingAcc;
 
     private final String accountID;
     private final String userID;
@@ -37,7 +40,7 @@ public class AccountUpdate {
     private String specialization;
 
     public AccountUpdate(String accountID, String userID, Role userRole, String firstName,
-                         String lastName, String emailAddress, String phoneNumber) {
+                         String lastName, String emailAddress, String phoneNumber, AccountRepository<T> accountRepo) {
         this.accountID = accountID;
         this.userID = userID;
         this.userRole = userRole;
@@ -45,24 +48,19 @@ public class AccountUpdate {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
-        this.existingAcc = UserAccountRepository.getInstance().getCustomerAccByAccId(accountID);
+        this.accountRepo = accountRepo;
+        this.existingAcc = accountRepo.getAccountByAccId(accountID);
     }
 
     public AccountUpdate(String accountID, String userID, Role userRole, String firstName,
                          String lastName, String emailAddress, String phoneNumber, JobPosition jobPosition,
-                         LocalDate employmentDate, EmploymentStatus employmentStatus, String specialization) {
-        this.accountID = accountID;
-        this.userID = userID;
-        this.userRole = userRole;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.phoneNumber = phoneNumber;
+                         LocalDate employmentDate, EmploymentStatus employmentStatus, String specialization,
+                         AccountRepository<T> accountRepo) {
+        this(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber, accountRepo);
         this.jobPosition = jobPosition;
         this.employmentDate = employmentDate;
         this.employmentStatus = employmentStatus;
         this.specialization = specialization;
-        this.existingAcc = StaffAccountRepository.getInstance().getStaffAccByAccId(accountID);
     }
 
     public OperationResult executeProcess() {
@@ -76,17 +74,17 @@ public class AccountUpdate {
         List<FieldComparison> accountFields = new ArrayList<>();
 
         accountFields.add(new FieldComparison("userID", existingAcc.getUserID(),
-                userID, List.of(id -> AccountValidation.validateUserId(userRole, id))));
+                userID, List.of(id -> DataValidation.validateUserId(userRole, id))));
         accountFields.add(new FieldComparison("firstName", existingAcc.getFirstName(),
                 firstName, null));
         accountFields.add(new FieldComparison("lastName", existingAcc.getLastName(),
                 lastName, null));
         accountFields.add(new FieldComparison("emailAddress", existingAcc.getEmailAddress(),
-                emailAddress, List.of(AccountValidation::validateEmailAddress,
-                email -> AccountValidation.checkEmailAlreadyTaken(userRole, email)
+                emailAddress, List.of(DataValidation::validateEmailAddress,
+                email -> AccountDataVerification.verifyUniqueEmail(userRole, email)
         )));
         accountFields.add(new FieldComparison("phoneNumber", existingAcc.getPhoneNumber(),
-                phoneNumber, List.of(AccountValidation::validatePhoneNumber)));
+                phoneNumber, List.of(DataValidation::validatePhoneNumber)));
 
         if (existingAcc instanceof StaffAccount staffAcc) {
             accountFields.add(new FieldComparison("jobPosition", staffAcc.getJobPosition().toString(),
@@ -137,20 +135,17 @@ public class AccountUpdate {
                 case "lastName"         -> existingAcc.setLastName(field.newValue());
                 case "emailAddress"     -> existingAcc.setEmailAddress(field.newValue());
                 case "phoneNumber"      -> existingAcc.setPhoneNumber(field.newValue());
-                case "jobPosition"      -> ((StaffAccount) existingAcc).setJobPosition(jobPosition);
-                case "employmentStatus" -> ((StaffAccount) existingAcc).setEmploymentStatus(employmentStatus);
-                case "employmentDate"   -> ((StaffAccount) existingAcc).setEmploymentDate(employmentDate);
-                case "specialization"   -> ((StaffAccount) existingAcc).setSpecialization(field.newValue());
+            }
+            if (existingAcc instanceof StaffAccount staffAcc) {
+                switch (field.fieldName()) {
+                    case "jobPosition"      -> staffAcc.setJobPosition(jobPosition);
+                    case "employmentStatus" -> staffAcc.setEmploymentStatus(employmentStatus);
+                    case "employmentDate"   -> staffAcc.setEmploymentDate(employmentDate);
+                    case "specialization"   -> staffAcc.setSpecialization(field.newValue());
+                }
             }
         }
 
-        if (existingAcc instanceof StaffAccount staffAcc) {
-            StaffAccountRepository staffRepo = StaffAccountRepository.getInstance();
-            return staffRepo.updateAccount(staffAcc);
-        } else {
-            UserAccountRepository customerRepo = UserAccountRepository.getInstance();
-            return customerRepo.updateAccount(existingAcc);
-        }
+        return accountRepo.updateAccount(existingAcc);
     }
-
 }

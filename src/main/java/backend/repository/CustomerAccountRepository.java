@@ -1,6 +1,6 @@
 package main.java.backend.repository;
 
-import main.java.backend.dto.UserAccount;
+import main.java.backend.model.UserAccount;
 import main.java.enums.*;
 import main.java.records.OperationResult;
 import main.java.records.PasswordHash;
@@ -14,9 +14,9 @@ import java.util.function.Function;
  * This repository class follows the singleton pattern to declare a single instance when the application starts.
  * Instance is usually created in the Main class.
  */
-public class UserAccountRepository {
+public class CustomerAccountRepository implements AccountRepository<UserAccount> {
 
-    private static UserAccountRepository instance;
+    private static CustomerAccountRepository instance;
     private final String filePath = TextFilePath.CUSTOMER_ACCOUNT_FILE_PATH.getTextFilePath();
 
     // Map key: field value, map value: UserAccount object
@@ -26,15 +26,15 @@ public class UserAccountRepository {
 
     // Private constructor to prevent instantiations from outside
     // Pre-populate the account records into maps when the instance is created
-    private UserAccountRepository() {
+    private CustomerAccountRepository() {
         retrieveAccounts();
     }
 
     // Global access point by creating instance for once only
     // So all classes can access the same instance for reading and writing files
-    public static UserAccountRepository getInstance() {
+    public static CustomerAccountRepository getInstance() {
         if (instance == null) {
-            instance = new UserAccountRepository();
+            instance = new CustomerAccountRepository();
         }
         return instance;
     }
@@ -79,6 +79,7 @@ public class UserAccountRepository {
         }
     }
 
+    @Override
     public OperationResult createAccount(UserAccount customerAcc) {
 
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, true))) {
@@ -148,9 +149,7 @@ public class UserAccountRepository {
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, false))) {
             for (int i = 0; i < updatedLines.size(); i++) {
                 bufferWrite.write(updatedLines.get(i));
-                if (i < updatedLines.size() - 1) {
-                    bufferWrite.newLine();
-                }
+                bufferWrite.newLine();
             }
 
         } catch (IOException e) {
@@ -164,6 +163,7 @@ public class UserAccountRepository {
     /**
      * For updating one single account only
      */
+    @Override
     public OperationResult updateAccount(UserAccount accToUpdate) {
 
         String accountID = accToUpdate.getAccountID();
@@ -191,6 +191,7 @@ public class UserAccountRepository {
     /**
      * For updating multiple accounts
      */
+    @Override
     public OperationResult updateAccount(List<UserAccount> accToUpdateList) {
 
         // For each account, map the target account object by its accountID
@@ -219,6 +220,7 @@ public class UserAccountRepository {
     /**
      * For deleting one single account
      */
+    @Override
     public OperationResult deleteAccount(UserAccount accToDelete) {
 
         String accountID = accToDelete.getAccountID();
@@ -246,6 +248,7 @@ public class UserAccountRepository {
     /**
      * For deleting multiple accounts
      */
+    @Override
     public OperationResult deleteAccount(List<UserAccount> accToDeleteList) {
 
         // For each account, map the target account object by its accountID
@@ -271,15 +274,18 @@ public class UserAccountRepository {
                 "successfully. Please check the account records to confirm the deletion.");
     }
 
-    public UserAccount getCustomerAccByAccId(String accId) {
+    @Override
+    public UserAccount getAccountByAccId(String accId) {
         return accountByAccId.get(accId);
     }
 
-    public UserAccount getCustomerAccByUserId(String userID) {
+    @Override
+    public UserAccount getAccountByUserId(String userID) {
         return accountByUserId.get(userID);
     }
 
-    public UserAccount getCustomerAccByEmail(String email) {
+    @Override
+    public UserAccount getAccountByEmail(String email) {
         return accountByEmail.get(email);
     }
 }

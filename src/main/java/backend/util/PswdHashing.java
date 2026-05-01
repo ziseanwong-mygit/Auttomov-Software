@@ -1,6 +1,6 @@
-package main.java.backend.account.service;
+package main.java.backend.util;
 
-import main.java.backend.dto.UserAccount;
+import main.java.backend.model.UserAccount;
 import main.java.records.PasswordHash;
 
 import javax.crypto.SecretKeyFactory;
@@ -15,7 +15,7 @@ public class PswdHashing {
 
     // Private constructor to prevent instantiation
     private PswdHashing() {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
+        throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
 
     // Generate a hash for the new password with its unique salt

@@ -1,21 +1,22 @@
-package main.java.backend.dto;
+package main.java.backend.model;
 
-import main.java.enums.CarServiceType;
+import main.java.enums.VehicleServiceType;
 
 import java.util.List;
 
-public class CarService {
+public class VehicleService {
 
-    private String serviceID;
+    private final String serviceID;
     private String serviceName;
     private String serviceDescription;
-    private CarServiceType serviceType;
+    private VehicleServiceType serviceType;
     private List<String> serviceItemList;
     private double basePrice;
     private int serviceDuration;
 
-    public CarService(String serviceID, String serviceName, String serviceDescription, CarServiceType serviceType,
-                      List<String> serviceItemList, double basePrice, int serviceDuration) {
+    public VehicleService(String serviceID, String serviceName, String serviceDescription,
+                          VehicleServiceType serviceType, List<String> serviceItemList, double basePrice,
+                          int serviceDuration) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.serviceDescription = serviceDescription;
@@ -37,7 +38,7 @@ public class CarService {
         return serviceDescription;
     }
 
-    public CarServiceType getServiceType() {
+    public VehicleServiceType getServiceType() {
         return serviceType;
     }
 
@@ -61,7 +62,7 @@ public class CarService {
         this.serviceDescription = serviceDescription;
     }
 
-    public void setServiceType(CarServiceType serviceType) {
+    public void setServiceType(VehicleServiceType serviceType) {
         this.serviceType = serviceType;
     }
 

@@ -1,4 +1,4 @@
-package main.java.backend.dto;
+package main.java.backend.model;
 
 import main.java.enums.ServiceItemType;
 

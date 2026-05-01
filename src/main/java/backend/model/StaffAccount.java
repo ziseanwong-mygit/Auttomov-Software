@@ -1,4 +1,4 @@
-package main.java.backend.dto;
+package main.java.backend.model;
 
 import main.java.enums.AccountStatus;
 import main.java.enums.EmploymentStatus;
@@ -7,7 +7,6 @@ import main.java.enums.Role;
 import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class StaffAccount extends UserAccount {
 

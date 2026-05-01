@@ -1,12 +1,12 @@
 package main.java.enums;
 
-public enum CarServiceType {
+public enum VehicleServiceType {
     NORMAL("Normal"),
     MAJOR("Major");
 
     private final String carServiceType;
 
-    CarServiceType(String carServiceType) {
+    VehicleServiceType(String carServiceType) {
         this.carServiceType = carServiceType;
     }
 
@@ -14,8 +14,8 @@ public enum CarServiceType {
         return carServiceType;
     }
 
-    public static CarServiceType getServiceTypeByValue(String value) {
-        for (CarServiceType cst : CarServiceType.values()) {
+    public static VehicleServiceType getServiceTypeByValue(String value) {
+        for (VehicleServiceType cst : VehicleServiceType.values()) {
             if (cst.carServiceType.equalsIgnoreCase(value)) {
                 return cst;
             }

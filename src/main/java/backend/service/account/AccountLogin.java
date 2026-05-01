@@ -1,19 +1,26 @@
-package main.java.backend.account;
+package main.java.backend.service.account;
 
-import main.java.backend.account.service.PswdHashing;
-import main.java.backend.account.service.AccountValidation;
-import main.java.backend.dto.UserAccount;
-import main.java.backend.repository.StaffAccountRepository;
-import main.java.backend.repository.UserAccountRepository;
+import main.java.backend.repository.AccountRepository;
+import main.java.backend.service.GeneralService;
+import main.java.backend.util.DataValidation;
+import main.java.backend.util.PswdHashing;
+import main.java.backend.model.UserAccount;
 import main.java.enums.AccountStatus;
-import main.java.enums.Role;
 import main.java.records.OperationResult;
 
-public class AccountLogin {
+public class AccountLogin<T extends UserAccount>  implements GeneralService {
 
-    // Private constructor to prevent instantiation
-    private AccountLogin() {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    // Generics is used so can accept either UserAccount or StaffAccount in this variable
+    // The repository instance is stored in AccountRepository interface, to eliminate the need of checking type
+    private final AccountRepository<T> accountRepo;
+
+    private final String emailAddress;
+    private final String password;
+
+    public AccountLogin(String emailAddress, String password, AccountRepository<T> accountRepo) {
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.accountRepo = accountRepo;
     }
 
     /**
@@ -21,26 +28,20 @@ public class AccountLogin {
      * Check email first to verify if the account exists
      * Then verify the password and account status before enabling access to the system
      */
-    public static OperationResult executeProcess(Role userRole, String emailAddress, String password) {
-
-        UserAccountRepository customerAccRepository = UserAccountRepository.getInstance();
-        StaffAccountRepository staffAccRepository = StaffAccountRepository.getInstance();
+    public OperationResult executeProcess() {
 
         // Check email address format
         // If email address format is invalid, return error message
-        OperationResult emailFormatValidation = AccountValidation.validateEmailAddress(emailAddress);
+        OperationResult emailFormatValidation = DataValidation.validateEmailAddress(emailAddress);
         if (!emailFormatValidation.isValid()) {
             return emailFormatValidation;
         }
 
-        // Check if the user account exists with the given email address
-        UserAccount existingAcc = userRole == Role.CUSTOMER
-                ? customerAccRepository.getCustomerAccByEmail(emailAddress)
-                : staffAccRepository.getStaffAccByEmail(emailAddress);
-
+        // Check if the customer/staff account exists with the given email address
+        UserAccount existingAcc = accountRepo.getAccountByEmail(emailAddress);
         if (existingAcc == null) {
             return OperationResult.failed("Sorry! We could not find your account with this " +
-                    "email address. Please sign up a new account first.");
+                    "email address: " + emailAddress + " Please sign up a new account first.");
         }
 
         // Verify input password
@@ -64,4 +65,5 @@ public class AccountLogin {
 
         return OperationResult.success();
     }
+
 }

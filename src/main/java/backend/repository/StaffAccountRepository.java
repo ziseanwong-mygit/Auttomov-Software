@@ -1,6 +1,6 @@
 package main.java.backend.repository;
 
-import main.java.backend.dto.StaffAccount;
+import main.java.backend.model.StaffAccount;
 import main.java.enums.*;
 import main.java.records.OperationResult;
 import main.java.records.PasswordHash;
@@ -14,7 +14,7 @@ import java.util.function.Function;
  * This repository class follows the singleton pattern to declare a single instance when the application starts.
  * Instance is usually created in the Main class.
  */
-public class StaffAccountRepository {
+public class StaffAccountRepository implements AccountRepository<StaffAccount> {
 
     private static StaffAccountRepository instance;
     private final String filePath = TextFilePath.STAFF_ACCOUNT_FILE_PATH.getTextFilePath();
@@ -74,6 +74,7 @@ public class StaffAccountRepository {
         }
     }
 
+    @Override
     public OperationResult createAccount(StaffAccount accToCreate) {
 
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, true))) {
@@ -143,9 +144,7 @@ public class StaffAccountRepository {
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(filePath, false))) {
             for (int i = 0; i < updatedLines.size(); i++) {
                 bufferWrite.write(updatedLines.get(i));
-                if (i < updatedLines.size() - 1) {
-                    bufferWrite.newLine();
-                }
+                bufferWrite.newLine();
             }
 
         } catch (IOException e) {
@@ -159,6 +158,7 @@ public class StaffAccountRepository {
     /**
      * For updating one single account only
      */
+    @Override
     public OperationResult updateAccount(StaffAccount accToUpdate) {
 
         String accountID = accToUpdate.getAccountID();
@@ -186,6 +186,7 @@ public class StaffAccountRepository {
     /**
      * For updating multiple accounts
      */
+    @Override
     public OperationResult updateAccount(List<StaffAccount> accToUpdateList) {
 
         // For each account, map the target account object by its accountID
@@ -214,6 +215,7 @@ public class StaffAccountRepository {
     /**
      * For deleting one single account
      */
+    @Override
     public OperationResult deleteAccount(StaffAccount accToDelete) {
 
         String accountID = accToDelete.getAccountID();
@@ -241,6 +243,7 @@ public class StaffAccountRepository {
     /**
      * For deleting multiple accounts
      */
+    @Override
     public OperationResult deleteAccount(List<StaffAccount> accToDeleteList) {
 
         // For each account, map the target account object by its accountID
@@ -266,15 +269,18 @@ public class StaffAccountRepository {
                 "successfully. Please check the account records to confirm the deletion.");
     }
 
-    public StaffAccount getStaffAccByAccId(String accId) {
+    @Override
+    public StaffAccount getAccountByAccId(String accId) {
         return accountByAccId.get(accId);
     }
 
-    public StaffAccount getStaffAccByUserId(String userId) {
+    @Override
+    public StaffAccount getAccountByUserId(String userId) {
         return accountByUserId.get(userId);
     }
 
-    public StaffAccount getStaffAccByEmail(String email) {
+    @Override
+    public StaffAccount getAccountByEmail(String email) {
         return accountByEmail.get(email);
     }
 }

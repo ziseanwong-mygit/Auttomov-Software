@@ -1,16 +1,16 @@
-package main.java.backend.dto;
+package main.java.backend.model;
 
 import main.java.enums.ServiceItemType;
 
-public class CarComponent extends ServiceItem {
+public class VehicleComponent extends ServiceItem {
 
     private String componentType;
     private String componentBrand;
     private String componentSpec;
 
-    public CarComponent(String serviceItemID, String serviceItemName, String serviceItemDescription,
-                        ServiceItemType serviceItemType, double serviceItemPrice, String componentType,
-                        String componentBrand, String componentSpec) {
+    public VehicleComponent(String serviceItemID, String serviceItemName, String serviceItemDescription,
+                            ServiceItemType serviceItemType, double serviceItemPrice, String componentType,
+                            String componentBrand, String componentSpec) {
 
         super(serviceItemID, serviceItemName, serviceItemDescription, serviceItemType, serviceItemPrice);
 
