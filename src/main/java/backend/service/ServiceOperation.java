@@ -2,7 +2,7 @@ package main.java.backend.service;
 
 import main.java.records.OperationResult;
 
-public interface GeneralService {
+public interface ServiceOperation {
 
-    public OperationResult executeProcess();
+    OperationResult executeProcess();
 }

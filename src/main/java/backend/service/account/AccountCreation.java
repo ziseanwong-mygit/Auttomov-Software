@@ -1,12 +1,10 @@
 package main.java.backend.service.account;
 
 import main.java.backend.repository.AccountRepository;
-import main.java.backend.repository.CustomerAccountRepository;
-import main.java.backend.service.GeneralService;
+import main.java.backend.service.ServiceOperation;
 import main.java.backend.util.DataValidation;
 import main.java.backend.util.PswdHashing;
 import main.java.backend.model.StaffAccount;
-import main.java.backend.repository.StaffAccountRepository;
 import main.java.backend.model.UserAccount;
 import main.java.enums.AccountStatus;
 import main.java.enums.EmploymentStatus;
@@ -20,7 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountCreation implements GeneralService {
+public class AccountCreation implements ServiceOperation {
+
+    // Wildcard is used so can accept either customer or staff repository in one variable
+    private final AccountRepository<? extends UserAccount> accountRepo;
+    private UserAccount newAccount;
 
     private final String userID;
     private final Role userRole;
@@ -47,6 +49,7 @@ public class AccountCreation implements GeneralService {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.accountRepo = AccountRepository.getInstance(userRole);
     }
 
     public AccountCreation(String userID, Role userRole, String firstName,
@@ -65,53 +68,33 @@ public class AccountCreation implements GeneralService {
      */
     public OperationResult executeProcess() {
 
-        OperationResult validationResult = validateInputValues(userID, userRole, emailAddress, phoneNumber,
-                password, confirmPassword);
+        OperationResult validationResult = validateInputValues();
 
         // If the validation fails, return the error message - method ends here
         if (!validationResult.isValid()) {
             return validationResult;
         }
 
-        // Generate prerequisite account data
-        String accountId = UUID.randomUUID().toString();
-        LocalDate creationDate = LocalDate.now();
-        AccountStatus accountStatus = AccountStatus.ACTIVE;
+        // Fetch and store the account details in an object
+        populateAccountDetails();
 
-        // Hash password to prevent storing plain text password
-        PasswordHash passwordHash = PswdHashing.hashNewPassword(password);
+        // Cast the newAccount to specific account type, then only create the record; base implementation
+        return accountRepo.createAccountBase(newAccount);
 
-        // Create new account record based on user role
-        if (userRole == Role.STAFF) {
-            LocalDate employmentDate = LocalDate.now();
-            StaffAccount newAccount = new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
-                    emailAddress, phoneNumber, passwordHash, accountStatus, jobPosition, employmentDate,
-                    employmentStatus, specialization);
-
-            AccountRepository<StaffAccount> accountRepo = StaffAccountRepository.getInstance();
-            return accountRepo.createAccount(newAccount);
-        } else {
-            UserAccount newAccount = new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
-                    emailAddress, phoneNumber, passwordHash, accountStatus);
-
-            AccountRepository<UserAccount> accountRepo = CustomerAccountRepository.getInstance();
-            return accountRepo.createAccount(newAccount);
-        }
     }
 
     /**
      * If all validations are successful, a true value and success message are returned.
      * Otherwise, a false value and a list of error messages are returned
      */
-    private static OperationResult validateInputValues(String userId, Role userRole, String emailAddress,
-                                                       String phoneNumber, String password, String confirmPassword) {
+    private OperationResult validateInputValues() {
 
         // Create a shared map to collect all error messages
         Map<String, String> allErrors = new HashMap<>();
 
         // Validate the user detail first, then if there are errors, collect them into the shared list
-        collectErrors(allErrors, DataValidation.validateUserId(userRole, userId));
-        collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(userRole, userId));
+        collectErrors(allErrors, DataValidation.validateUserId(userRole, userID));
+        collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(userRole, userID));
         collectErrors(allErrors, DataValidation.validateEmailAddress(emailAddress));
         collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(userRole, emailAddress));
         collectErrors(allErrors, DataValidation.validatePhoneNumber(phoneNumber));
@@ -129,9 +112,33 @@ public class AccountCreation implements GeneralService {
     /**
      * For each validation, if there are errors, collect the field name and error message into the shared map
      */
-    private static void collectErrors(Map<String, String> allErrors, OperationResult result) {
+    private void collectErrors(Map<String, String> allErrors, OperationResult result) {
         if (!result.isValid()) {
             allErrors.putAll(result.fieldErrors());
+        }
+    }
+
+    /**
+     * Store the account details in UserAccount/StaffAccount class for account creation
+     */
+    private void populateAccountDetails() {
+
+        // Generate prerequisite account data
+        String accountId = UUID.randomUUID().toString();
+        LocalDate creationDate = LocalDate.now();
+        AccountStatus accountStatus = AccountStatus.ACTIVE;
+
+        // Hash password to prevent storing plain text password
+        PasswordHash passwordHash = PswdHashing.hashNewPassword(password);
+
+        if (userRole == Role.STAFF) {
+            LocalDate employmentDate = LocalDate.now();
+            newAccount = new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+                    emailAddress, phoneNumber, passwordHash, accountStatus, jobPosition, employmentDate,
+                    employmentStatus, specialization);
+        } else {
+            newAccount = new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+                    emailAddress, phoneNumber, passwordHash, accountStatus);
         }
     }
 }

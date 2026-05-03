@@ -189,35 +189,6 @@ public class CustomerAccountRepository implements AccountRepository<UserAccount>
     }
 
     /**
-     * For updating multiple accounts
-     */
-    @Override
-    public OperationResult updateAccount(List<UserAccount> accToUpdateList) {
-
-        // For each account, map the target account object by its accountID
-        Map<String, Function<String, Optional<String>>> recordModifier = new HashMap<>();
-        for (UserAccount acc : accToUpdateList) {
-            recordModifier.put(acc.getAccountID(), line -> Optional.of(acc.toString()));
-        }
-
-        // Rewrite the file to update the target records
-        OperationResult result = rewriteFile(recordModifier);
-        if (!result.isValid()) {
-            return result;
-        }
-
-        // Update all maps with the updated records to apply the latest changes
-        for (UserAccount acc : accToUpdateList) {
-            accountByAccId.put(acc.getAccountID(), acc);
-            accountByUserId.put(acc.getUserID(), acc);
-            accountByEmail.put(acc.getEmailAddress(), acc);
-        }
-
-        return OperationResult.success(accToUpdateList.size() + " customer accounts are updated " +
-                "successfully. Please check all the accounts' details to ensure the changes are applied.");
-    }
-
-    /**
      * For deleting one single account
      */
     @Override
@@ -245,9 +216,57 @@ public class CustomerAccountRepository implements AccountRepository<UserAccount>
                 " is deleted successfully. Please check the account records to confirm the deletion.");
     }
 
+    @Override
+    public List<UserAccount> getAllAccounts() {
+        return new ArrayList<>(accountByAccId.values());
+    }
+
+    @Override
+    public UserAccount getAccountByAccId(String accId) {
+        return accountByAccId.get(accId);
+    }
+
+    @Override
+    public UserAccount getAccountByUserId(String userID) {
+        return accountByUserId.get(userID);
+    }
+
+    @Override
+    public UserAccount getAccountByEmail(String email) {
+        return accountByEmail.get(email);
+    }
+
+    /*
+    /**
+     * For updating multiple accounts
+    @Override
+    public OperationResult updateAccount(List<UserAccount> accToUpdateList) {
+
+        // For each account, map the target account object by its accountID
+        Map<String, Function<String, Optional<String>>> recordModifier = new HashMap<>();
+        for (UserAccount acc : accToUpdateList) {
+            recordModifier.put(acc.getAccountID(), line -> Optional.of(acc.toString()));
+        }
+
+        // Rewrite the file to update the target records
+        OperationResult result = rewriteFile(recordModifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Update all maps with the updated records to apply the latest changes
+        for (UserAccount acc : accToUpdateList) {
+            accountByAccId.put(acc.getAccountID(), acc);
+            accountByUserId.put(acc.getUserID(), acc);
+            accountByEmail.put(acc.getEmailAddress(), acc);
+        }
+
+        return OperationResult.success(accToUpdateList.size() + " customer accounts are updated " +
+                "successfully. Please check all the accounts' details to ensure the changes are applied.");
+    }
+
     /**
      * For deleting multiple accounts
-     */
     @Override
     public OperationResult deleteAccount(List<UserAccount> accToDeleteList) {
 
@@ -273,19 +292,5 @@ public class CustomerAccountRepository implements AccountRepository<UserAccount>
         return OperationResult.success(accToDeleteList.size() + " customer accounts are deleted " +
                 "successfully. Please check the account records to confirm the deletion.");
     }
-
-    @Override
-    public UserAccount getAccountByAccId(String accId) {
-        return accountByAccId.get(accId);
-    }
-
-    @Override
-    public UserAccount getAccountByUserId(String userID) {
-        return accountByUserId.get(userID);
-    }
-
-    @Override
-    public UserAccount getAccountByEmail(String email) {
-        return accountByEmail.get(email);
-    }
+    */
 }

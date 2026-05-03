@@ -3,6 +3,7 @@ package main.java.backend.service.account;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.AccountRepository;
+import main.java.backend.service.ServiceOperation;
 import main.java.backend.util.DataValidation;
 import main.java.enums.EmploymentStatus;
 import main.java.enums.JobPosition;
@@ -16,14 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountUpdate<T extends UserAccount> {
+public class AccountUpdate implements ServiceOperation {
 
-    // Generics is used so can accept either UserAccount or StaffAccount in this variable
-    // The repository instance is stored in AccountRepository interface, to eliminate the need of checking type
-    private final AccountRepository<T> accountRepo;
-
-    // Existing customer, technician, counter-staff, or manager account
-    private final T existingAcc;
+    // Wildcard is used so can accept either customer or staff repository in one variable
+    private final AccountRepository<? extends UserAccount> accountRepo;
+    private final UserAccount existingAcc;
 
     private final String accountID;
     private final String userID;
@@ -39,8 +37,8 @@ public class AccountUpdate<T extends UserAccount> {
     private EmploymentStatus employmentStatus;
     private String specialization;
 
-    public AccountUpdate(String accountID, String userID, Role userRole, String firstName,
-                         String lastName, String emailAddress, String phoneNumber, AccountRepository<T> accountRepo) {
+    public AccountUpdate(String accountID, String userID, Role userRole, String firstName, String lastName,
+                         String emailAddress, String phoneNumber) {
         this.accountID = accountID;
         this.userID = userID;
         this.userRole = userRole;
@@ -48,15 +46,15 @@ public class AccountUpdate<T extends UserAccount> {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
-        this.accountRepo = accountRepo;
-        this.existingAcc = accountRepo.getAccountByAccId(accountID);
+
+        this.accountRepo  = AccountRepository.getInstance(userRole);
+        this.existingAcc  = accountRepo.getAccountByAccId(accountID);
     }
 
     public AccountUpdate(String accountID, String userID, Role userRole, String firstName,
                          String lastName, String emailAddress, String phoneNumber, JobPosition jobPosition,
-                         LocalDate employmentDate, EmploymentStatus employmentStatus, String specialization,
-                         AccountRepository<T> accountRepo) {
-        this(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber, accountRepo);
+                         LocalDate employmentDate, EmploymentStatus employmentStatus, String specialization) {
+        this(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber);
         this.jobPosition = jobPosition;
         this.employmentDate = employmentDate;
         this.employmentStatus = employmentStatus;
@@ -70,7 +68,44 @@ public class AccountUpdate<T extends UserAccount> {
                     " does not exist in the system.");
         }
 
-        // Gather all the original and new values of each field for comparison
+        // Get the list of fields that are changed
+        List<FieldComparison> changedFields = compareChanges();
+
+        // If no fields are changed, return an error message
+        if (changedFields.isEmpty()) {
+            return OperationResult.failed(
+                    "No fields have been changed. Please update one or more fields.");
+        }
+
+        // Create a shared map to collect all error messages
+        Map<String, String> allErrors = new HashMap<>();
+
+        // For each changed field, validate the new value such as formatting, length, etc.
+        // If the validation is unsuccessful, add the error message into the shared map
+        for (FieldComparison field : changedFields) {
+            OperationResult result = field.validate();
+            if (!result.isValid())
+                allErrors.putAll(result.fieldErrors());
+        }
+
+        if (!allErrors.isEmpty()) {
+            return OperationResult.failed(
+                    "Field validation is unsuccessful. Please try again.", allErrors);
+        }
+
+        // Apply updates only to changed fields
+        setChangedValues(changedFields);
+
+        // Cast the existingAcc to specific account type, then only update the record; base implementation
+        return accountRepo.updateAccountBase(existingAcc);
+    }
+
+    /**
+     * Get the original and new values of all fields in a list
+     * Then compare the values to determine the fields that are changed
+     */
+    private List<FieldComparison> compareChanges() {
+
         List<FieldComparison> accountFields = new ArrayList<>();
 
         accountFields.add(new FieldComparison("userID", existingAcc.getUserID(),
@@ -101,33 +136,16 @@ public class AccountUpdate<T extends UserAccount> {
         }
 
         // Filter to get the changed fields
-        List<FieldComparison> changedFields = accountFields.stream()
+        return accountFields.stream()
                 .filter(FieldComparison::isChanged)
                 .toList();
+    }
 
-        // If no fields are changed, return an error message
-        if (changedFields.isEmpty()) {
-            return OperationResult.failed(
-                    "No fields have been changed. Please update one or more fields.");
-        }
-
-        // Create a shared map to collect all error messages
-        Map<String, String> allErrors = new HashMap<>();
-
-        // For each changed field, validate the new value such as formatting, length, etc.
-        // If the validation is unsuccessful, add the error message into the shared map
-        for (FieldComparison field : changedFields) {
-            OperationResult result = field.validate();
-            if (!result.isValid())
-                allErrors.putAll(result.fieldErrors());
-        }
-
-        if (!allErrors.isEmpty()) {
-            return OperationResult.failed(
-                    "Field validation is unsuccessful. Please try again.", allErrors);
-        }
-
-        // Apply updates only to changed fields
+    /**
+     * Set the new values of the changed fields in the existing account object
+     * The object will be used to update the record in the file
+     */
+    private void setChangedValues(List<FieldComparison> changedFields) {
         for (FieldComparison field : changedFields) {
             switch (field.fieldName()) {
                 case "userID"           -> existingAcc.setUserID(field.newValue());
@@ -145,7 +163,5 @@ public class AccountUpdate<T extends UserAccount> {
                 }
             }
         }
-
-        return accountRepo.updateAccount(existingAcc);
     }
 }

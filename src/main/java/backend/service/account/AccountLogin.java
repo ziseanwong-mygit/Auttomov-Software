@@ -1,26 +1,26 @@
 package main.java.backend.service.account;
 
 import main.java.backend.repository.AccountRepository;
-import main.java.backend.service.GeneralService;
+import main.java.backend.service.ServiceOperation;
 import main.java.backend.util.DataValidation;
 import main.java.backend.util.PswdHashing;
 import main.java.backend.model.UserAccount;
 import main.java.enums.AccountStatus;
+import main.java.enums.Role;
 import main.java.records.OperationResult;
 
-public class AccountLogin<T extends UserAccount>  implements GeneralService {
+public class AccountLogin implements ServiceOperation {
 
-    // Generics is used so can accept either UserAccount or StaffAccount in this variable
-    // The repository instance is stored in AccountRepository interface, to eliminate the need of checking type
-    private final AccountRepository<T> accountRepo;
+    // Wildcard is used so can accept either customer or staff repository in one variable
+    private final AccountRepository<? extends UserAccount> accountRepo;
 
     private final String emailAddress;
     private final String password;
 
-    public AccountLogin(String emailAddress, String password, AccountRepository<T> accountRepo) {
+    public AccountLogin(Role userRole, String emailAddress, String password) {
         this.emailAddress = emailAddress;
         this.password = password;
-        this.accountRepo = accountRepo;
+        this.accountRepo = AccountRepository.getInstance(userRole);
     }
 
     /**
