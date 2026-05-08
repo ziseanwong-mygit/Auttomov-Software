@@ -1,7 +1,7 @@
 package main.java.backend.model;
 
-import main.java.enums.Role;
-import main.java.enums.AccountStatus;
+import main.java.enums.data.Role;
+import main.java.enums.data.AccountStatus;
 import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
@@ -41,6 +41,10 @@ public class UserAccount {
 
     public String getUserID() {
         return userID;
+    }
+
+    public Role getUserRole() {
+        return userRole;
     }
 
     public String getFirstName() {
@@ -96,11 +100,30 @@ public class UserAccount {
     }
 
     /**
-     * Gather all data into one single line, with each value separated by commas
-     * To ease the process of writing new record into the file
+     * Return a human-readable string representation of the object.
+     * Used for debugging and logging.
      */
     @Override
     public String toString() {
+        return String.join(", ",
+                accountID,
+                accountCreationDate.toString(),
+                userID,
+                userRole.getUserRole(),
+                firstName,
+                lastName,
+                emailAddress,
+                phoneNumber,
+                "(password is not shown)",
+                accountStatus.getAccStatus()
+        );
+    }
+
+    /**
+     * Return a CSV format string representation of the object.
+     * Used for saving the object to a text file.
+     */
+    public String toTextFile() {
         return String.join(", ",
                 accountID,
                 accountCreationDate.toString(),

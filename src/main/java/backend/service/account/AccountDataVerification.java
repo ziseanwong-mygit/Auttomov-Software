@@ -1,10 +1,18 @@
 package main.java.backend.service.account;
 
-import main.java.backend.repository.CustomerAccountRepository;
-import main.java.backend.repository.StaffAccountRepository;
-import main.java.enums.Role;
+import main.java.backend.model.UserAccount;
+import main.java.backend.repository.account.CustomerAccountRepository;
+import main.java.backend.repository.account.StaffAccountRepository;
+import main.java.enums.data.Role;
 import main.java.records.OperationResult;
 
+/**
+ * Algorithm logic:
+ * 1. Check if the user ID or email address already exists in the system
+ * 2. If it does, check if the user ID or email address is the same as the original one
+ * 3. If it is the same, return a success flag
+ * 4. If it is different, return an error message
+ */
 public class AccountDataVerification {
 
     // Create repository instances to retrieve user account record
@@ -17,35 +25,41 @@ public class AccountDataVerification {
         throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
 
-    public static OperationResult verifyUniqueUserId(Role userRole, String userId) {
-        if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getAccountByUserId(userId) != null) {
-                return OperationResult.failed("userID",
-                        "User ID already exists in the system");
-            }
-        } else {
-            if (staffAccRepository.getAccountByUserId(userId) != null) {
-                return OperationResult.failed("userID",
-                        "User ID already exists in the system");
-            }
+    public static OperationResult verifyUniqueUserId(Role userRole, String userId, String originalUserId) {
+
+        UserAccount existingAcc = getAccountByUserId(userRole, userId);
+
+        if (existingAcc != null && !existingAcc.getUserID().equals(originalUserId)) {
+            return OperationResult.failed("userID",
+                    "User ID already exists in the system.");
         }
 
         return OperationResult.success();
     }
 
-    public static OperationResult verifyUniqueEmail(Role userRole, String emailAddress) {
-        if (userRole == Role.CUSTOMER) {
-            if (customerAccRepository.getAccountByEmail(emailAddress) != null) {
-                return OperationResult.failed("email",
-                        "Email address already exists in the system");
-            }
-        } else {
-            if (staffAccRepository.getAccountByEmail(emailAddress) != null) {
-                return OperationResult.failed("email",
-                        "Email address already exists in the system");
-            }
+    public static OperationResult verifyUniqueEmail(Role userRole, String emailAddress, String originalEmail) {
+
+        UserAccount existingAcc = getAccountByEmail(userRole, emailAddress);
+
+        if (existingAcc != null && !existingAcc.getEmailAddress().equals(originalEmail)) {
+            return OperationResult.failed("email",
+                    "Email address already exists in the system.");
         }
 
         return OperationResult.success();
+    }
+
+    private static UserAccount getAccountByUserId(Role userRole, String userId) {
+        if (userRole == Role.CUSTOMER) {
+            return customerAccRepository.getAccountByUserId(userId);
+        }
+        return staffAccRepository.getAccountByUserId(userId);
+    }
+
+    private static UserAccount getAccountByEmail(Role userRole, String email) {
+        if (userRole == Role.CUSTOMER) {
+            return customerAccRepository.getAccountByEmail(email);
+        }
+        return staffAccRepository.getAccountByEmail(email);
     }
 }

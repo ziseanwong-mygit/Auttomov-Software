@@ -1,116 +1,83 @@
 package main.java.backend.service.account;
 
-import main.java.backend.repository.AccountRepository;
-import main.java.backend.service.ServiceOperation;
-import main.java.backend.util.DataValidation;
-import main.java.backend.util.PswdHashing;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
-import main.java.enums.AccountStatus;
-import main.java.enums.EmploymentStatus;
-import main.java.enums.JobPosition;
-import main.java.enums.Role;
-import main.java.records.PasswordHash;
+import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.service.GeneralProcess;
+import main.java.backend.util.PswdHashing;
+import main.java.dtos.StaffAccountDTO;
+import main.java.dtos.UserAccountDTO;
+import main.java.enums.data.AccountStatus;
+import main.java.enums.data.Role;
 import main.java.records.OperationResult;
+import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountCreation implements ServiceOperation {
+public class AccountCreation implements GeneralProcess {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
-    private final AccountRepository<? extends UserAccount> accountRepo;
-    private UserAccount newAccount;
+    private final AccountRepository<? extends UserAccount> accountRepository;
+    private final UserAccountDTO userAccountDTO;
 
-    private final String userID;
-    private final Role userRole;
-    private final String firstName;
-    private final String lastName;
-    private final String emailAddress;
-    private final String phoneNumber;
-    private final String password;
-    private final String confirmPassword;
-
-    // For staff only
-    private JobPosition jobPosition;
-    private EmploymentStatus employmentStatus;
-    private String specialization;
-
-    public AccountCreation(String userID, Role userRole, String firstName,
-                           String lastName, String emailAddress, String phoneNumber, String password,
-                           String confirmPassword) {
-        this.userID = userID;
-        this.userRole = userRole;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.accountRepo = AccountRepository.getInstance(userRole);
+    public AccountCreation(AccountRepository<? extends UserAccount> accountRepository, UserAccountDTO userAccountDTO) {
+        this.accountRepository = accountRepository;
+        this.userAccountDTO = userAccountDTO;
     }
 
-    public AccountCreation(String userID, Role userRole, String firstName,
-                           String lastName, String emailAddress, String phoneNumber, String password,
-                           String confirmPassword, JobPosition jobPosition, EmploymentStatus employmentStatus,
-                           String specialization) {
-        this(userID, userRole, firstName, lastName, emailAddress, phoneNumber, password, confirmPassword);
-        this.jobPosition = jobPosition;
-        this.employmentStatus = employmentStatus;
-        this.specialization = specialization;
-    }
-
-    /**
-     * Account creation process for customer, technician, counter-staff, and manager
-     * Validate user data first before storing data and creating new account
-     */
+    @Override
     public OperationResult executeProcess() {
 
-        OperationResult validationResult = validateInputValues();
-
-        // If the validation fails, return the error message - method ends here
-        if (!validationResult.isValid()) {
-            return validationResult;
+        OperationResult verificationResult = verifyAccountDetails();
+        if (!verificationResult.isValid()) {
+            return verificationResult;
         }
 
-        // Fetch and store the account details in an object
-        populateAccountDetails();
+        try {
+            // Create a new account object based on the user role
+            UserAccount newAccount = populateAccountDetails();
+            // Cast the newAccount to specific account type, then only create the record; base implementation
+            return accountRepository.createRecordBase(newAccount);
 
-        // Cast the newAccount to specific account type, then only create the record; base implementation
-        return accountRepo.createAccountBase(newAccount);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage()); // Print exception message for debugging
+            return OperationResult.failed("An unexpected error occurred while preparing the account. " +
+                    "Please try again.");
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); // Print exception message for debugging
+            return OperationResult.failed("An unexpected error occurred while updating the account. " +
+                    "Please try again.");
+        }
     }
 
     /**
-     * If all validations are successful, a true value and success message are returned.
-     * Otherwise, a false value and a list of error messages are returned
+     * Verify user ID and email address are unique to prevent duplicate entries
      */
-    private OperationResult validateInputValues() {
+    private OperationResult verifyAccountDetails() {
 
         // Create a shared map to collect all error messages
         Map<String, String> allErrors = new HashMap<>();
 
-        // Validate the user detail first, then if there are errors, collect them into the shared list
-        collectErrors(allErrors, DataValidation.validateUserId(userRole, userID));
-        collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(userRole, userID));
-        collectErrors(allErrors, DataValidation.validateEmailAddress(emailAddress));
-        collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(userRole, emailAddress));
-        collectErrors(allErrors, DataValidation.validatePhoneNumber(phoneNumber));
-        collectErrors(allErrors, DataValidation.validatePassword(password, confirmPassword));
+        collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(
+                userAccountDTO.getUserRole(), userAccountDTO.getUserID(), null));
+        collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(userAccountDTO.getUserRole(),
+                userAccountDTO.getEmailAddress(), null));
 
         // If all validations are successful, return the success message
         // Otherwise, return the map of error messages
         return allErrors.isEmpty()
                 ? OperationResult.success(
-                        "Field validation is successful. Proceed to account creation.")
+                "Field verification is successful. Proceed to account creation.")
                 : OperationResult.failed(
-                        "Field validation is unsuccessful. Please try again.", allErrors);
+                "Field verification is unsuccessful. Please try again.", allErrors);
     }
 
     /**
-     * For each validation, if there are errors, collect the field name and error message into the shared map
+     * For each verification, if there are errors, collect the field name and error message into the shared map
      */
     private void collectErrors(Map<String, String> allErrors, OperationResult result) {
         if (!result.isValid()) {
@@ -119,25 +86,37 @@ public class AccountCreation implements ServiceOperation {
     }
 
     /**
-     * Store the account details in UserAccount/StaffAccount class for account creation
+     * Create a new UserAccount/StaffAccount object for record creation
      */
-    private void populateAccountDetails() {
+    private UserAccount populateAccountDetails() {
 
         // Generate prerequisite account data
         String accountId = UUID.randomUUID().toString();
         LocalDate creationDate = LocalDate.now();
-        AccountStatus accountStatus = AccountStatus.ACTIVE;
+        AccountStatus accountStatus;
+
+        String userID = userAccountDTO.getUserID();
+        Role userRole = userAccountDTO.getUserRole();
+        String firstName = userAccountDTO.getFirstName();
+        String lastName = userAccountDTO.getLastName();
+        String emailAddress = userAccountDTO.getEmailAddress();
+        String phoneNumber = userAccountDTO.getPhoneNumber();
+        String password = userAccountDTO.getPassword();
 
         // Hash password to prevent storing plain text password
         PasswordHash passwordHash = PswdHashing.hashNewPassword(password);
 
-        if (userRole == Role.STAFF) {
+        // If the account is a staff type, set its status for manager's approval
+        // Otherwise, automatically authorize the customer's account for immediate login
+        if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO) {
+            accountStatus = AccountStatus.PENDING;
             LocalDate employmentDate = LocalDate.now();
-            newAccount = new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
-                    emailAddress, phoneNumber, passwordHash, accountStatus, jobPosition, employmentDate,
-                    employmentStatus, specialization);
+            return new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+                    emailAddress, phoneNumber, passwordHash, accountStatus, staffAccountDTO.getJobPosition(),
+                    employmentDate, staffAccountDTO.getEmploymentStatus(), staffAccountDTO.getSpecialization());
         } else {
-            newAccount = new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+            accountStatus = AccountStatus.ACTIVE;
+            return new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
                     emailAddress, phoneNumber, passwordHash, accountStatus);
         }
     }

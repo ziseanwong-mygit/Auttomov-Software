@@ -1,8 +1,6 @@
 package main.java.backend.util;
 
-import main.java.backend.service.account.AccountDataVerification;
-import main.java.enums.RegexPattern;
-import main.java.enums.Role;
+import main.java.enums.system.RegexPattern;
 import main.java.records.OperationResult;
 
 public class DataValidation {
@@ -12,7 +10,7 @@ public class DataValidation {
         throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
 
-    public static OperationResult validateUserId(Role userRole, String userId) {
+    public static OperationResult validateUserId(String userId) {
 
         if (userId == null || userId.isBlank()) {
             return OperationResult.failed("userID",
@@ -98,4 +96,12 @@ public class DataValidation {
         return OperationResult.success();
     }
 
+    public static OperationResult validatePrice(double price) {
+
+        if (price < 0.00) {
+            return OperationResult.failed("price", "Price must be greater than or equal to 0");
+        }
+
+        return OperationResult.success();
+    }
 }

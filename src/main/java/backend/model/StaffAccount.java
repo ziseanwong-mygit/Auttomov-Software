@@ -1,9 +1,9 @@
 package main.java.backend.model;
 
-import main.java.enums.AccountStatus;
-import main.java.enums.EmploymentStatus;
-import main.java.enums.JobPosition;
-import main.java.enums.Role;
+import main.java.enums.data.AccountStatus;
+import main.java.enums.data.EmploymentStatus;
+import main.java.enums.data.JobPosition;
+import main.java.enums.data.Role;
 import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
@@ -62,12 +62,28 @@ public class StaffAccount extends UserAccount {
     }
 
     /**
-     * First get a line of comma-separated user details
-     * Then merge the user details with the staff details for writing into staff account file
+     * Return a human-readable string representation of the object.
+     * Used for debugging and logging.
      */
     @Override
     public String toString() {
         String basicDetails = super.toString();
+
+        return String.join(", ",
+                basicDetails,
+                jobPosition.getJobPosition(),
+                employmentDate.toString(),
+                employmentStatus.getEmpStatus(),
+                specialization != null ? specialization : "(no specialization)"
+        );
+    }
+
+    /**
+     * Return a CSV format string representation of the object.
+     * Used for saving the object to a text file.
+     */
+    public String toTextFile() {
+        String basicDetails = super.toTextFile();
 
         // If the staff is a technician, the specialization field will be added into the record
         if (jobPosition == JobPosition.TECHNICIAN) {

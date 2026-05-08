@@ -1,28 +1,28 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.AccountRepository;
-import main.java.backend.repository.CustomerAccountRepository;
-import main.java.backend.repository.StaffAccountRepository;
-import main.java.backend.service.ServiceOperation;
-import main.java.enums.Role;
+import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.service.GeneralProcess;
 import main.java.records.OperationResult;
 
-public class AccountDeletion implements ServiceOperation {
+public class AccountDeletion implements GeneralProcess {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
-    private final AccountRepository<? extends UserAccount> accountRepo;
+    private final AccountRepository<? extends UserAccount> accountRepository;
+    private final String accountID;
     private final UserAccount existingAcc;
 
-    private final String accountID;
-
-    public AccountDeletion(String accountID, Role userRole) {
+    public AccountDeletion(AccountRepository<? extends UserAccount> accountRepository, String accountID) {
+        this.accountRepository = accountRepository;
         this.accountID = accountID;
-
-        this.accountRepo  = AccountRepository.getInstance(userRole);
-        this.existingAcc  = accountRepo.getAccountByAccId(accountID);
+        this.existingAcc = accountRepository.getRecordById(accountID);
     }
 
+
+    /**
+     * Account deletion process for customer, technician, counter-staff, and manager
+     */
+    @Override
     public OperationResult executeProcess() {
 
         if (existingAcc == null) {
@@ -30,7 +30,13 @@ public class AccountDeletion implements ServiceOperation {
                     " does not exist in the system.");
         }
 
-        // Cast the existingAcc to specific account type, then only delete the record; base implementation
-        return accountRepo.deleteAccountBase(existingAcc);
+        try {
+            // Cast the existingAcc to specific account type, then only delete the record; base implementation
+            return accountRepository.deleteRecordBase(existingAcc);
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); // Print exception message for debugging
+            return OperationResult.failed(
+                    "An unexpected error occurred while deleting your account. Please try again.");
+        }
     }
 }

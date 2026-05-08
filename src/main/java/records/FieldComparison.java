@@ -8,10 +8,16 @@ import java.util.function.Function;
  * Then compare the two values to determine if the field has been changed
  * Functional interface is used to validate the input value such as formatting, length, etc.
  */
-public record FieldComparison(String fieldName, String currentValue, String newValue,
-                              List<Function<String, OperationResult>> validators) {
+public record FieldComparison<T>(String fieldName, T currentValue, T newValue,
+                              List<Function<T, OperationResult>> validators) {
 
     public boolean isChanged() {
+        if (newValue == null && currentValue == null) {
+            return false; // If both values are null, no change
+        }
+        if (newValue == null || currentValue == null) {
+            return true; // If only one value is null, there is change
+        }
         return !newValue.equals(currentValue);
     }
 
@@ -23,7 +29,7 @@ public record FieldComparison(String fieldName, String currentValue, String newV
         if (validators == null || validators.isEmpty())
             return OperationResult.success();
 
-        for (Function<String, OperationResult> validator : validators) {
+        for (Function<T, OperationResult> validator : validators) {
             OperationResult result = validator.apply(newValue);
             if (!result.isValid())
                 return result;
