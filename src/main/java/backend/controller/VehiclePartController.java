@@ -2,6 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.VehiclePart;
 import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.vehiclepart.VehiclePartCreation;
 import main.java.backend.service.vehiclepart.VehiclePartDeletion;
@@ -93,9 +94,15 @@ public class VehiclePartController {
 
         // Instantiate the repository and service for retrieving records
         VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        VehiclePartRetrieval retrieveAllVehicleParts = new VehiclePartRetrieval(vehiclePartRepo);
+        RecordReader retrieveAllVehicleParts = new VehiclePartRetrieval(vehiclePartRepo);
 
-       return retrieveAllVehicleParts.getAllRecords();
+        // Retrieve all the records from the repository
+        List<?> unknownList = retrieveAllVehicleParts.getAllRecords();
+
+        // Since the retrieved list is a list of unknown type, cast each object to the desired type explicitly
+        return unknownList.stream()
+                .map(obj -> (VehiclePart) obj)
+                .toList();
     }
 
     public OperationResult retrieveVehiclePartById(String vehiclePartId) {
@@ -107,7 +114,7 @@ public class VehiclePartController {
 
         // Instantiate the repository and service for retrieving records
         VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        VehiclePartRetrieval retrieveVehiclePartById = new VehiclePartRetrieval(vehiclePartRepo);
+        RecordReader retrieveVehiclePartById = new VehiclePartRetrieval(vehiclePartRepo);
 
         return retrieveVehiclePartById.getRecordById(vehiclePartId);
     }

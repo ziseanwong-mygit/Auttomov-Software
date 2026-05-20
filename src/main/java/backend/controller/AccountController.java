@@ -2,6 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.account.*;
 import main.java.backend.util.DataValidation;
@@ -182,9 +183,14 @@ public class AccountController {
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        AccountRetrieval retrieveAllAccounts = new AccountRetrieval(accountRepo);
+        RecordReader retrieveAllAccounts = new AccountRetrieval(accountRepo);
 
-        return retrieveAllAccounts.getAllAccounts();
+        // Retrieve all the records from the repository
+        List<?> unknownList = retrieveAllAccounts.getAllRecords();
+
+        return unknownList.stream()
+                .map(obj -> (UserAccount) obj)
+                .toList();
     }
 
     public OperationResult retrieveAccountByAccID(String accountID, Role userRole) {
@@ -197,9 +203,9 @@ public class AccountController {
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        AccountRetrieval retrieveAccountByAccID = new AccountRetrieval(accountRepo);
+        RecordReader retrieveAccountByAccID = new AccountRetrieval(accountRepo);
 
-        return retrieveAccountByAccID.getAccountByAccId(accountID);
+        return retrieveAccountByAccID.getRecordById(accountID);
     }
 
     public OperationResult retrieveAccountByUserID(String userID, Role userRole) {

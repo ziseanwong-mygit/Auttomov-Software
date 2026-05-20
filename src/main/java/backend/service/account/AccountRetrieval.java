@@ -2,11 +2,12 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.service.RecordReader;
 import main.java.records.OperationResult;
 
 import java.util.List;
 
-public class AccountRetrieval {
+public class AccountRetrieval implements RecordReader {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -18,14 +19,16 @@ public class AccountRetrieval {
     /**
      * Read and return all customer or staff accounts from the repository
      */
-    public List<? extends UserAccount> getAllAccounts() {
+    @Override
+    public List<? extends UserAccount> getAllRecords() {
         return accountRepository.getAllRecords();
     }
 
     /**
      * Read and return a single customer or staff account based on the given keyword like accID, userID, or email
      */
-    public OperationResult getAccountByAccId(String accountID) {
+    @Override
+    public OperationResult getRecordById(String accountID) {
 
         // Find the account by account ID
         UserAccount existingAcc = accountRepository.getRecordById(accountID);
