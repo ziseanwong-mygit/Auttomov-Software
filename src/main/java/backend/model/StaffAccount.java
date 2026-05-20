@@ -73,7 +73,8 @@ public class StaffAccount extends UserAccount {
                 "\nJob Position: " + jobPosition.getJobPosition() +
                 "\nEmployment Date: " + employmentDate +
                 "\nEmployment Status: " + employmentStatus.getEmpStatus() +
-                "\nSpecialization: " + specialization;
+                "\nSpecialization: " + specialization +
+                "\n";
     }
 
     /**

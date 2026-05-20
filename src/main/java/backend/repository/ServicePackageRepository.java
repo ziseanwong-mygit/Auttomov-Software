@@ -1,13 +1,17 @@
 package main.java.backend.repository;
 
+import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
+import main.java.backend.model.VehiclePart;
 import main.java.backend.repository.general.AbstractRepository;
 import main.java.backend.util.DataStructureOrganizer;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
 import main.java.records.OperationResult;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 
@@ -138,10 +142,22 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
     @Override
     protected ServicePackage parseRecord(String line) {
 
+        ServiceActivityRepository serviceActivityRepository = ServiceActivityRepository.getInstance();
+        VehiclePartRepository vehiclePartRepository = VehiclePartRepository.getInstance();
+
         // Extract both bracket lists from the raw line before any splitting begins
         // 0th occurrence = 1st bracket list, 1st occurrence = 2nd bracket list; nth occurrence = nth bracket list
         List<String> serviceActivityIds = DataStructureOrganizer.extractBracketList(line, 0);
         List<String> vehiclePartIds = DataStructureOrganizer.extractBracketList(line, 1);
+
+        List<ServiceActivity> serviceActivityList = new ArrayList<>();
+        List<VehiclePart> vehiclePartList = new ArrayList<>();
+        if (!serviceActivityIds.isEmpty()) {
+            serviceActivityList = serviceActivityRepository.getRecordsByIds(serviceActivityIds);
+        }
+        if (!vehiclePartIds.isEmpty()) {
+            vehiclePartList = vehiclePartRepository.getRecordsByIds(vehiclePartIds);
+        }
 
         // Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
         // Example: ID, Name, Desc, Type, [A0001, A0002], [B0001, B0002], 20.00, 1 ->
@@ -160,8 +176,8 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
                 columns[1],
                 description,
                 DataTypeConverter.convertStringToServicePackageType(columns[3]),
-                serviceActivityIds,
-                vehiclePartIds,
+                serviceActivityList,
+                vehiclePartList,
                 Double.parseDouble(columns[5]),
                 Integer.parseInt(columns[6])
         );

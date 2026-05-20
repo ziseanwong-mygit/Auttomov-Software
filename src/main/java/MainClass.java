@@ -4,6 +4,40 @@ public class MainClass {
 
     public static void main(String[] args) {
 
+/*        List<String> serviceActivityList = List.of(
+                "a9f320f7-1a1e-4ef0-b793-b41d5a3cd862", "cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1");
+        List<String> vehiclePartList = List.of(
+                "18e5ee0a-3fd1-44f5-b673-6cde7bc131ca", "7bb17911-a1a2-4884-9d77-03c2754a7a66");
+
+        ServicePackageDTO servicePackageDTO = new ServicePackageDTO(
+                "Test Service 1", "This is a normal service.",
+                ServicePackageType.NORMAL, serviceActivityList, vehiclePartList, 30.00);
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult result = servicePackageController.createServicePackage(servicePackageDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+/*
+        List<String> serviceActivityList = List.of(
+                "a9f320f7-1a1e-4ef0-b793-b41d5a3cd862");
+        List<String> vehiclePartList = List.of(
+                "18e5ee0a-3fd1-44f5-b673-6cde7bc131ca");
+
+        ServicePackageDTO servicePackageDTO = new ServicePackageDTO(
+                "14a564e4-d21c-4b21-a456-732e27c6a839", "Test Service 1.2",
+                "This is a normal service here.", ServicePackageType.NORMAL, serviceActivityList,
+                vehiclePartList, 20.00);
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult result = servicePackageController.updateServicePackage(servicePackageDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
 
     }
 }
@@ -107,11 +141,13 @@ public class MainClass {
             System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
 
-/*        List<String> serviceActivityList = List.of("A0001", "A0002", "A0003");
-        List<String> vehiclePartList = List.of("B0001");
+/*        List<String> serviceActivityList = List.of(
+                "a9f320f7-1a1e-4ef0-b793-b41d5a3cd862", "cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1");
+        List<String> vehiclePartList = List.of(
+                "18e5ee0a-3fd1-44f5-b673-6cde7bc131ca", "7bb17911-a1a2-4884-9d77-03c2754a7a66");
 
         ServicePackageDTO servicePackageDTO = new ServicePackageDTO(
-                 "Test Service 1", "This is a normal service.",
+                "Test Service 1", "This is a normal service.",
                 ServicePackageType.NORMAL, serviceActivityList, vehiclePartList, 30.00);
 
         ServicePackageController servicePackageController = new ServicePackageController();

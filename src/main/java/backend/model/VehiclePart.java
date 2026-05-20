@@ -100,7 +100,8 @@ public class VehiclePart {
                 "\nVehicle Part Brand: " + vehiclePartBrand +
                 "\nVehicle Part Specification: " + vehiclePartSpec +
                 "\nVehicle Part Price: RM" + DataTypeConverter.convertDoubleToString(vehiclePartPrice) +
-                "\nVehicle Part Quantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity);
+                "\nVehicle Part Quantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity) +
+                "\n";
     }
 
     /**

@@ -1,1 +1,2 @@
 a9f320f7-1a1e-4ef0-b793-b41d5a3cd862, Tyre Balancing, Tyre balancing ensures even weight distribution across each wheel-and-tire assembly., 130.00
+cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1, Tyre Pressure, Tyre pressure is measured by the pressure applied to the tyre., 60.00

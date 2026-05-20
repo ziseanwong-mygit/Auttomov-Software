@@ -1,7 +1,9 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.ServicePackage;
+import main.java.backend.repository.ServiceActivityRepository;
 import main.java.backend.repository.ServicePackageRepository;
+import main.java.backend.repository.VehiclePartRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.servicepackage.ServicePackageCreation;
@@ -34,9 +36,16 @@ public class ServicePackageController {
             return priceValidation;
         }
 
-        // Instantiate the repository and service for creating records
+        /*
+        Instantiate the repository and service for creating records
+        Service activity and vehicle part repositories are used to
+        retrieve their respective objects for creating record
+         */
         ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
-        RecordWriter createServicePackage = new ServicePackageCreation(servicePackageRepo, servicePackageDTO);
+        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        RecordWriter createServicePackage = new ServicePackageCreation(servicePackageRepo,
+                serviceActivityRepo, vehiclePartRepo, servicePackageDTO);
 
         // Begin creating service package record procedure in service class
         return createServicePackage.execute();
@@ -56,9 +65,16 @@ public class ServicePackageController {
             return priceValidation;
         }
 
-        // Instantiate the repository and service for updating records
+        /*
+        Instantiate the repository and service for creating records
+        Service activity and vehicle part repositories are used to
+        retrieve their respective objects for updating record
+         */
         ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
-        RecordWriter updateServicePackage = new ServicePackageUpdate(servicePackageRepo, servicePackageDTO);
+        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        RecordWriter updateServicePackage = new ServicePackageUpdate(servicePackageRepo,
+                serviceActivityRepo, vehiclePartRepo, servicePackageDTO);
 
         // Begin updating service package record procedure in service class
         return updateServicePackage.execute();

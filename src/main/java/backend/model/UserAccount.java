@@ -114,7 +114,8 @@ public class UserAccount {
                 "\nEmail Address: " + emailAddress +
                 "\nPhone Number: " + phoneNumber +
                 "\nPassword: (not shown)" +
-                "\nAccount Status: " + accountStatus.getAccStatus();
+                "\nAccount Status: " + accountStatus.getAccStatus() +
+                "\n";
     }
 
     /**

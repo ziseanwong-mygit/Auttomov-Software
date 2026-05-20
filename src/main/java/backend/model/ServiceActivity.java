@@ -62,7 +62,8 @@ public class ServiceActivity {
                 "\nService Activity Name: " + serviceActivityName +
                 "\nService Activity Description: " +
                 (serviceActivityDescription != null ? serviceActivityDescription : "(no description)") +
-                "\nService Activity Price: $" + DataTypeConverter.convertDoubleToString(serviceActivityPrice);
+                "\nService Activity Price: $" + DataTypeConverter.convertDoubleToString(serviceActivityPrice) +
+                "\n";
     }
 
     /**

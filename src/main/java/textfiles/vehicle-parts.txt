@@ -1,0 +1,2 @@
+18e5ee0a-3fd1-44f5-b673-6cde7bc131ca, Suzuki Engine 1500cc, This is a good engine., Engine, Suzuki, 1500cc, 5000.00, 3
+7bb17911-a1a2-4884-9d77-03c2754a7a66, Michelin Tyre 195/65 R16, This is a good tyre., Tyre, Michelin, 195/65 R16, 1000.00, 7

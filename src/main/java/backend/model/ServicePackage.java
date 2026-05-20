@@ -4,6 +4,7 @@ import main.java.backend.util.DataTypeConverter;
 import main.java.enums.data.ServicePackageType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServicePackage {
 
@@ -11,14 +12,14 @@ public class ServicePackage {
     private String servicePackageName;
     private String servicePackageDescription;
     private ServicePackageType servicePackageType;
-    private List<String> serviceActivityList;
-    private List<String> vehiclePartList;
+    private List<ServiceActivity> serviceActivityList;
+    private List<VehiclePart> vehiclePartList;
     private double packageBasePrice;
     private int serviceDuration;
 
     public ServicePackage(String servicePackageID, String servicePackageName, String servicePackageDescription,
-                          ServicePackageType servicePackageType, List<String> serviceActivityList,
-                          List<String> vehiclePartList, double packageBasePrice, int serviceDuration) {
+                          ServicePackageType servicePackageType, List<ServiceActivity> serviceActivityList,
+                          List<VehiclePart> vehiclePartList, double packageBasePrice, int serviceDuration) {
         this.servicePackageID = servicePackageID;
         this.servicePackageName = servicePackageName;
         this.servicePackageDescription = servicePackageDescription;
@@ -45,11 +46,11 @@ public class ServicePackage {
         return servicePackageType;
     }
 
-    public List<String> getServiceActivityList() {
+    public List<ServiceActivity> getServiceActivityList() {
         return serviceActivityList;
     }
 
-    public List<String> getVehiclePartList() {
+    public List<VehiclePart> getVehiclePartList() {
         return vehiclePartList;
     }
 
@@ -73,11 +74,11 @@ public class ServicePackage {
         this.servicePackageType = servicePackageType;
     }
 
-    public void setServiceActivityList(List<String> serviceActivityList) {
+    public void setServiceActivityList(List<ServiceActivity> serviceActivityList) {
         this.serviceActivityList = serviceActivityList;
     }
 
-    public void setVehiclePartList(List<String> vehiclePartList) {
+    public void setVehiclePartList(List<VehiclePart> vehiclePartList) {
         this.vehiclePartList = vehiclePartList;
     }
 
@@ -95,16 +96,27 @@ public class ServicePackage {
      */
     @Override
     public String toString() {
-        return String.join(", ",
-                servicePackageID,
-                servicePackageName,
-                servicePackageDescription != null ? servicePackageDescription : "(no description)",
-                servicePackageType.getServicePackageType(),
-                "[" + String.join(", ", serviceActivityList) + "]", // E.g. [A0001, A0002, A0003]
-                "[" + String.join(", ", vehiclePartList) + "]",
-                DataTypeConverter.convertDoubleToString(packageBasePrice),
-                DataTypeConverter.convertIntToString(serviceDuration)
-        );
+
+        // Get the service activity and vehicle part names and concatenate them into a comma-separated value string
+        String serviceActListLine = serviceActivityList.stream()
+                .map(ServiceActivity::getServiceActivityName)
+                .collect(Collectors.joining(", "));
+
+        String vehiclePartListLine = vehiclePartList.stream()
+                .map(VehiclePart::getVehiclePartName)
+                .collect(Collectors.joining(", "));
+
+        return "Service Package ID: " +
+                servicePackageID +
+                "\nService Package Name: " + servicePackageName +
+                "\nService Package Description: " +
+                (servicePackageDescription != null ? servicePackageDescription : "(no description)") +
+                "\nService Package Type: " + servicePackageType.getServicePackageType() +
+                "\nService Activities: " + serviceActListLine +
+                "\nVehicle Parts: " + vehiclePartListLine +
+                "\nPackage Base Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
+                "\nService Duration: " + serviceDuration +
+                "\n";
     }
 
     /**
@@ -112,13 +124,23 @@ public class ServicePackage {
      * Used for saving the object to a text file.
      */
     public String toTextFile() {
+
+        // Get the service activity and vehicle part IDs and concatenate them into a comma-separated value string
+        String serviceActListLine = serviceActivityList.stream()
+                .map(ServiceActivity::getServiceActivityID)
+                .collect(Collectors.joining(", "));
+
+        String vehiclePartListLine = vehiclePartList.stream()
+                .map(VehiclePart::getVehiclePartID)
+                .collect(Collectors.joining(", "));
+
         return String.join(", ",
                 servicePackageID,
                 servicePackageName,
                 servicePackageDescription != null ? servicePackageDescription : "",
                 servicePackageType.getServicePackageType(),
-                "[" + String.join(", ", serviceActivityList) + "]",
-                "[" + String.join(", ", vehiclePartList) + "]",
+                "[" + serviceActListLine + "]",
+                "[" + vehiclePartListLine + "]",
                 DataTypeConverter.convertDoubleToString(packageBasePrice),
                 DataTypeConverter.convertIntToString(serviceDuration)
         );

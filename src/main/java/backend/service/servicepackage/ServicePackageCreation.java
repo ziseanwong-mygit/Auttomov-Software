@@ -1,7 +1,11 @@
 package main.java.backend.service.servicepackage;
 
+import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
+import main.java.backend.model.VehiclePart;
+import main.java.backend.repository.ServiceActivityRepository;
 import main.java.backend.repository.ServicePackageRepository;
+import main.java.backend.repository.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.ServicePackageDTO;
 import main.java.enums.data.ServicePackageType;
@@ -13,11 +17,17 @@ import java.util.UUID;
 public class ServicePackageCreation implements RecordWriter {
     
     private final ServicePackageRepository servicePackageRepository;
+    private final ServiceActivityRepository serviceActivityRepository;
+    private final VehiclePartRepository vehiclePartRepository;
     private final ServicePackageDTO servicePackageDTO;
 
-    public ServicePackageCreation(ServicePackageRepository servicePackageRepository, 
+    public ServicePackageCreation(ServicePackageRepository servicePackageRepository,
+                                  ServiceActivityRepository serviceActivityRepository,
+                                  VehiclePartRepository vehiclePartRepository,
                                   ServicePackageDTO servicePackageDTO) {
         this.servicePackageRepository = servicePackageRepository;
+        this.serviceActivityRepository = serviceActivityRepository;
+        this.vehiclePartRepository = vehiclePartRepository;
         this.servicePackageDTO = servicePackageDTO;
     }
     
@@ -49,10 +59,14 @@ public class ServicePackageCreation implements RecordWriter {
         String servicePkgName = servicePackageDTO.getServicePackageName();
         String servicePkgDescription = servicePackageDTO.getServicePackageDescription();
         ServicePackageType servicePkgType = servicePackageDTO.getServicePackageType();
-        List<String> serviceActivityList = servicePackageDTO.getServiceActivityList();
-        List<String> vehiclePartList = servicePackageDTO.getVehiclePartList();
         double packageBasePrice = servicePackageDTO.getPackageBasePrice();
         int serviceDuration = servicePackageDTO.getServicePackageType().getServiceDuration();
+
+        // Get the service activity and vehicle part objects from the repository
+        List<ServiceActivity> serviceActivityList = serviceActivityRepository.getRecordsByIds(
+                servicePackageDTO.getServiceActivityList());
+        List<VehiclePart> vehiclePartList = vehiclePartRepository.getRecordsByIds(
+                servicePackageDTO.getVehiclePartList());
         
         return new ServicePackage(servicePkgId, servicePkgName, servicePkgDescription, servicePkgType, 
                 serviceActivityList, vehiclePartList, packageBasePrice, serviceDuration);
