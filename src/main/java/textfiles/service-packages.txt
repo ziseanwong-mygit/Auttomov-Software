@@ -1,0 +1,2 @@
+bacf62f3-7c31-46ea-a7b5-86a91c5597b9, Test Service, This is a test service, Normal, [A0001, A0002, A0003, A0004], [A0005, A0006, A0007, A0008], 20.00, 1
+8f036a65-847e-41b5-9154-1ad639cf052f, Test Service 1.1, This is a major service., Major, [A0001, A0002, A0003], [B0001, B0002], 40.00, 3
