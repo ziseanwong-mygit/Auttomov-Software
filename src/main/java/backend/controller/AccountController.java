@@ -2,6 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.account.StaffAccountRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.account.*;
@@ -96,21 +97,18 @@ public class AccountController {
         return updateAccount.execute();
     }
 
-    public OperationResult updateAccountStatus(UserAccountDTO userAccountDTO) {
+    public OperationResult updateStaffAccountStatus(StaffAccountDTO staffAccountDTO) {
 
-        String accountID = userAccountDTO.getAccountID();
-        Role userRole = userAccountDTO.getUserRole();
-        AccountStatus accountStatus = userAccountDTO.getAccountStatus();
+        String accountID = staffAccountDTO.getAccountID();
+        AccountStatus accountStatus = staffAccountDTO.getAccountStatus();
 
-        if (accountID == null || userRole == null || accountStatus == null || accountID.isBlank()) {
+        if (accountID == null || accountStatus == null || accountID.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Instantiate the repository and service for updating records
-        // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
-                userAccountDTO.getUserRole());
-        RecordWriter updateStatus = new AccountStatusUpdate(accountRepo, userAccountDTO);
+        StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
+        RecordWriter updateStatus = new StaffAccountStatusUpdate(staffAccountRepo, staffAccountDTO);
 
         // Begin updating account status procedure in service class
         OperationResult updateStatusResult = updateStatus.execute();

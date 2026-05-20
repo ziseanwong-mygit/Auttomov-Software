@@ -1,5 +1,6 @@
 package main.java.dtos;
 
+import main.java.enums.data.AccountStatus;
 import main.java.enums.data.EmploymentStatus;
 import main.java.enums.data.JobPosition;
 import main.java.enums.data.Role;
@@ -8,10 +9,10 @@ import java.time.LocalDate;
 
 public class StaffAccountDTO extends UserAccountDTO {
 
-    private final JobPosition jobPosition;
+    private JobPosition jobPosition;
     private LocalDate employmentDate;
-    private final EmploymentStatus employmentStatus;
-    private final String specialization;
+    private EmploymentStatus employmentStatus;
+    private String specialization;
 
     /**
      * For creating a new account
@@ -29,13 +30,18 @@ public class StaffAccountDTO extends UserAccountDTO {
      * For updating an existing account
      */
     public StaffAccountDTO(String accountID, String userID, Role userRole, String firstName, String lastName,
-                           String emailAddress, String phoneNumber, JobPosition jobPosition, LocalDate employmentDate,
-                           EmploymentStatus employmentStatus, String specialization) {
-        super(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber);
+                           String emailAddress, String phoneNumber, AccountStatus accountStatus,
+                           JobPosition jobPosition, LocalDate employmentDate, EmploymentStatus employmentStatus,
+                           String specialization) {
+        super(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber, accountStatus);
         this.jobPosition = jobPosition;
         this.employmentDate = employmentDate;
         this.employmentStatus = employmentStatus;
         this.specialization = specialization;
+    }
+
+    public StaffAccountDTO(String accountID, AccountStatus accountStatus) {
+        super(accountID, accountStatus);
     }
 
     public JobPosition getJobPosition() {

@@ -7,7 +7,7 @@ public class UserAccountDTO {
 
     private String accountID;
     private String userID;
-    private final Role userRole;
+    private Role userRole;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -44,7 +44,7 @@ public class UserAccountDTO {
      * For updating an existing account's details
      */
     public UserAccountDTO(String accountID, String userID, Role userRole, String firstName, String lastName,
-                          String emailAddress, String phoneNumber) {
+                          String emailAddress, String phoneNumber, AccountStatus accountStatus) {
         this.accountID = accountID;
         this.userID = userID;
         this.userRole = userRole;
@@ -52,6 +52,7 @@ public class UserAccountDTO {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+        this.accountStatus = accountStatus;
     }
 
     /**
@@ -65,11 +66,10 @@ public class UserAccountDTO {
     }
 
     /**
-     * For updating the status of an existing account
+     * For updating the status of a pending staff account
      */
-    public UserAccountDTO(String accountID, Role userRole, AccountStatus accountStatus) {
+    public UserAccountDTO(String accountID, AccountStatus accountStatus) {
         this.accountID = accountID;
-        this.userRole = userRole;
         this.accountStatus = accountStatus;
     }
 

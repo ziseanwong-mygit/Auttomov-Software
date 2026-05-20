@@ -46,10 +46,10 @@ public class MainClass {
             System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
 
-/*        UserAccountDTO userAccountDTO = new UserAccountDTO("9e016d45-28c3-429d-845a-20e23dbfca04",
-                Role.STAFF, AccountStatus.ACTIVE);
+/*        StaffAccountDTO staffAccountDTO = new StaffAccountDTO("9e016d45-28c3-429d-845a-20e23dbfca04",
+                AccountStatus.ACTIVE);
         AccountController accountController = new AccountController();
-        OperationResult result = accountController.updateAccountStatus(userAccountDTO);
+        OperationResult result = accountController.updateStaffAccountStatus(staffAccountDTO);
         if (result.isValid()) {
             System.out.println(result.generalMessage());
         } else {
