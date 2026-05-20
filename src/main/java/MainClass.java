@@ -139,6 +139,119 @@ public class MainClass {
         }*/
 
 
+//      Read account records
+
+/*        AccountController accountController = new AccountController();
+        Optional<List<UserAccount>> result = accountController.retrieveAllAccounts(Role.STAFF);
+
+        if (result.isPresent()) {
+            for (UserAccount userAccount : result.get()) {
+                System.out.println(userAccount);
+            }
+        } else {
+            System.out.println("No records found.");
+        }*/
+
+/*        String uniqueID = "henryCW88@gmail.com";
+        DataFieldName accUniqueIdType = DataFieldName.EMAIL_ADDRESS;
+        Role userRole = Role.STAFF;
+
+        AccountController accountController = new AccountController();
+        OperationResult uniqueIdValidation = accountController.validateUniqueId(uniqueID, accUniqueIdType);
+
+        if (uniqueIdValidation.isValid()) {
+            Optional<UserAccount> userAccount = accountController.retrieveAccountById(uniqueID, userRole);
+            if (userAccount.isPresent()) {
+                System.out.println("Account found:");
+                UserAccount user = userAccount.get();
+                System.out.println(user.getUserID());
+            } else {
+                System.out.println("Account not found.");
+            }
+        } else {
+            System.out.println(uniqueIdValidation.fieldErrors().get(DataFieldName.EMAIL_ADDRESS));
+        }*/
+
+/*        List<String> accountIDs = List.of("c26b455e-178a-46f4-932e-af9c8061e730",
+                "b3af5b58-337a-4766-bcb4-82c19c4b0453");
+        Role userRole = Role.CUSTOMER;
+        DataFieldName accUniqueIdType = DataFieldName.RECORD_ID;
+
+        AccountController accountController = new AccountController();
+        OperationResult validationResult = accountController.validateUniqueIds(accountIDs, accUniqueIdType);
+
+        if (validationResult.isValid()) {
+            Optional<List<UserAccount>> userAccounts = accountController.retrieveAccountsByIds(accountIDs, userRole);
+            if (userAccounts.isPresent()) {
+                System.out.println("Account found:");
+                for (UserAccount userAccount : userAccounts.get()) {
+                    System.out.println(userAccount);
+                }
+            } else {
+                System.out.println("Account not found.");
+            }
+        } else {
+            System.out.println(validationResult.generalMessage());
+        }*/
+
+/*        ServicePackageController servicePackageController = new ServicePackageController();
+        Optional<List<ServicePackage>> result = servicePackageController.retrieveAllServicePackages();
+
+        if (result.isPresent()) {
+            for (ServicePackage servicePackage : result.get()) {
+                System.out.println(servicePackage);
+            }
+        } else {
+            System.out.println("No records found.");
+        }*/
+
+
+//      Read service packages
+/*        String svcpkgID = "bacf62f3-7c31-46ea-a7b5-86a91c5597b9";
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult uniqueIdValidation = servicePackageController.validateServicePackageId(svcpkgID);
+
+        if (uniqueIdValidation.isValid()) {
+            Optional<ServicePackage> servicePackage = servicePackageController.retrieveServicePackageById(svcpkgID);
+            if (servicePackage.isPresent()) {
+                System.out.println("Pacakge found:");
+                ServicePackage svcpkg = servicePackage.get();
+                System.out.println(svcpkg.getServicePackageName());
+            } else {
+                System.out.println("Package not found.");
+            }
+        } else {
+            System.out.println(uniqueIdValidation.generalMessage());
+        }*/
+
+        /*List<String> svcpkgIDs = List.of("bacf62f3-7c31-46ea-a7b5-86a91c5597b9",
+                "8f036a65-847e-41b5-9154-1ad639cf052f");
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult validationResult = servicePackageController.validateServicePackageIds(svcpkgIDs);
+
+        if (validationResult.isValid()) {
+            Optional<List<ServicePackage>> servicepackages =
+                    servicePackageController.retrieveServicePackagesByIds(svcpkgIDs);
+            if (servicepackages.isPresent()) {
+                System.out.println("Package found:");
+                for (ServicePackage servicePackage : servicepackages.get()) {
+                    System.out.println(servicePackage);
+                }
+            } else {
+                System.out.println("Package not found.");
+            }
+        } else {
+            System.out.println(validationResult.generalMessage());
+        }*/
+
+
+
+
+
+
+
 
 
 

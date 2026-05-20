@@ -122,6 +122,14 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
         return serviceActivityById.get(serviceActId);
     }
 
+    @Override
+    public List<ServiceActivity> getRecordsByIds(List<String> serviceActIds) {
+        // Filter the service activity objects by their IDs
+        return serviceActivityById.values().stream()
+                .filter(serviceAct -> serviceActIds.contains(serviceAct.getServiceActivityID()))
+                .toList();
+    }
+
     /**
      * Used for retrieving records from the text file
      * Here the line is split into columns using comma as the delimiter

@@ -11,4 +11,5 @@ public interface CrudRepository<T> extends FileRepository {
     OperationResult deleteRecord(T record);
     List<T> getAllRecords();
     T getRecordById(String recordId);
+    List<T> getRecordsByIds(List<String> recordIds);
 }

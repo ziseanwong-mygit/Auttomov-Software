@@ -121,6 +121,14 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
     public VehiclePart getRecordById(String vehiclePartID) {
         return vehiclePartById.get(vehiclePartID);
     }
+
+    @Override
+    public List<VehiclePart> getRecordsByIds(List<String> vehiclePartIds) {
+        // Filter the vehicle part objects by their IDs
+        return vehiclePartById.values().stream()
+                .filter(serviceAct -> vehiclePartIds.contains(serviceAct.getVehiclePartID()))
+                .toList();
+    }
     
     /**
      * Used for retrieving records from the text file

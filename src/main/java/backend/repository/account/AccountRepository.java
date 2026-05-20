@@ -148,12 +148,31 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
         return accountByAccId.get(accId);
     }
 
+    @Override
+    public List<T> getRecordsByIds(List<String> accIds) {
+        return accountByAccId.values().stream()
+                .filter(acc -> accIds.contains(acc.getAccountID()))
+                .toList();
+    }
+
     public T getAccountByUserId(String userId) {
         return accountByUserId.get(userId);
     }
 
+    public List<T> getAccountsByUserIds(List<String> userIds) {
+        return accountByUserId.values().stream()
+                .filter(acc -> userIds.contains(acc.getUserID()))
+                .toList();
+    }
+
     public T getAccountByEmail(String email) {
         return accountByEmail.get(email);
+    }
+
+    public List<T> getAccountsByEmails(List<String> emails) {
+        return accountByEmail.values().stream()
+                .filter(acc -> emails.contains(acc.getEmailAddress()))
+                .toList();
     }
 
     /**

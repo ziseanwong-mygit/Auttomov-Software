@@ -9,6 +9,7 @@ import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.JobPosition;
 import main.java.enums.data.Role;
+import main.java.enums.system.DataFieldName;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
@@ -51,7 +52,7 @@ public class AccountUpdate implements RecordWriter {
         }
 
         // Create a shared map to collect all error messages
-        Map<String, String> allErrors = new HashMap<>();
+        Map<DataFieldName, String> allErrors = new HashMap<>();
 
         // For each changed field, validate the new value such as formatting, length, etc.
         // If the validation is unsuccessful, add the error message into the shared map

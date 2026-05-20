@@ -16,6 +16,7 @@ import main.java.records.OperationResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class VehiclePartController {
 
@@ -90,33 +91,84 @@ public class VehiclePartController {
         return deleteVehiclePart.execute();
     }
 
-    public List<VehiclePart> retrieveAllVehicleParts() {
+    /**
+     * Optional class is used to determine whether the records are present or not
+     * This is for frontend logic in displaying the result message for UI
+     */
+    public Optional<List<VehiclePart>> retrieveAllVehicleParts() {
 
         // Instantiate the repository and service for retrieving records
         VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordReader retrieveAllVehicleParts = new VehiclePartRetrieval(vehiclePartRepo);
+        RecordReader<VehiclePart> retrieveAllVehicleParts = new VehiclePartRetrieval(vehiclePartRepo);
 
         // Retrieve all the records from the repository
-        List<?> unknownList = retrieveAllVehicleParts.getAllRecords();
-
-        // Since the retrieved list is a list of unknown type, cast each object to the desired type explicitly
-        return unknownList.stream()
-                .map(obj -> (VehiclePart) obj)
-                .toList();
+        return retrieveAllVehicleParts.getAllRecords();
     }
 
-    public OperationResult retrieveVehiclePartById(String vehiclePartId) {
-
-        // Check if the inputs are null or empty
-        if (vehiclePartId == null || vehiclePartId.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
-        }
+    public Optional<VehiclePart> retrieveVehiclePartById(String vehiclePartId) {
 
         // Instantiate the repository and service for retrieving records
         VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordReader retrieveVehiclePartById = new VehiclePartRetrieval(vehiclePartRepo);
+        RecordReader<VehiclePart> retrieveVehiclePartById = new VehiclePartRetrieval(vehiclePartRepo);
 
+        // Retrieve the record from the repository based on the ID
         return retrieveVehiclePartById.getRecordById(vehiclePartId);
+    }
+
+    public Optional<List<VehiclePart>> retrieveServiceActivitiesByIds(List<String> vehiclePartIds) {
+
+        // Instantiate the repository and service for retrieving records
+        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        RecordReader<VehiclePart> retrieveServiceActsByIds = new VehiclePartRetrieval(vehiclePartRepo);
+
+        // Retrieve the records from the repository based on the ID list
+        return retrieveServiceActsByIds.getRecordsByIds(vehiclePartIds);
+    }
+
+    /**
+     * Validate the format and length of vehicle part ID
+     * This validation is done before record retrieval, so the frontend can first display the validation result
+     */
+    public OperationResult validateVehiclePartId(String vehiclePartId) {
+
+        // Check if the vehicle part ID and its type are null or empty
+        if (vehiclePartId == null || vehiclePartId.isBlank()) {
+            return OperationResult.failed("The vehicle part ID must be provided to validate. " +
+                    "Please try again.");
+        }
+
+        if (!DataValidation.validateRecordId(vehiclePartId).isValid()) {
+            return OperationResult.failed("The vehicle part ID: " + vehiclePartId +
+                    " is not an UUID. Please try again.");
+        }
+
+        return OperationResult.success();
+    }
+
+    public OperationResult validateVehiclePartIds(List<String> vehiclePartIds) {
+
+        // Check if the ID list and its type are null or empty
+        if (vehiclePartIds == null || vehiclePartIds.isEmpty()) {
+            return OperationResult.failed("The vehicle part IDs must be provided to validate. " +
+                    "Please try again.");
+        }
+
+        // Check if any of the vehicle part IDs are null or empty
+        for (String vehiclePartId : vehiclePartIds) {
+            if (vehiclePartId == null || vehiclePartId.isBlank() ) {
+                return OperationResult.failed("One of the vehicle part IDs is null or empty. Please try again.");
+            }
+        }
+
+        // Check if any of the vehicle part IDs are invalid
+        for (String vehiclePartId : vehiclePartIds) {
+            if (!DataValidation.validateRecordId(vehiclePartId).isValid()) {
+                return OperationResult.failed("The vehicle part ID: " + vehiclePartId +
+                        " is not an UUID. Please try again.");
+            }
+        }
+
+        return OperationResult.success();
     }
 
     /**

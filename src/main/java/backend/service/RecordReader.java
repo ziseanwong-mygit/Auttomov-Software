@@ -1,12 +1,13 @@
 package main.java.backend.service;
 
-import main.java.records.OperationResult;
-
 import java.util.List;
+import java.util.Optional;
 
-public interface RecordReader {
+public interface RecordReader<T> {
 
-    List<?> getAllRecords();
+    Optional<List<T>> getAllRecords();
 
-    OperationResult getRecordById(String id);
+    Optional<T> getRecordById(String id);
+
+    Optional<List<T>> getRecordsByIds(List<String> ids);
 }

@@ -4,6 +4,7 @@ import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.CustomerAccountRepository;
 import main.java.backend.repository.account.StaffAccountRepository;
 import main.java.enums.data.Role;
+import main.java.enums.system.DataFieldName;
 import main.java.records.OperationResult;
 
 /**
@@ -30,7 +31,7 @@ public class AccountDataVerification {
         UserAccount existingAcc = getAccountByUserId(userRole, userId);
 
         if (existingAcc != null && !existingAcc.getUserID().equals(originalUserId)) {
-            return OperationResult.failed("userID",
+            return OperationResult.failed(DataFieldName.USER_ID,
                     "User ID already exists in the system.");
         }
 
@@ -42,7 +43,7 @@ public class AccountDataVerification {
         UserAccount existingAcc = getAccountByEmail(userRole, emailAddress);
 
         if (existingAcc != null && !existingAcc.getEmailAddress().equals(originalEmail)) {
-            return OperationResult.failed("email",
+            return OperationResult.failed(DataFieldName.EMAIL_ADDRESS,
                     "Email address already exists in the system.");
         }
 

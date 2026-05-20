@@ -63,19 +63,17 @@ public class StaffAccount extends UserAccount {
 
     /**
      * Return a human-readable string representation of the object.
-     * Used for debugging and logging.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
         String basicDetails = super.toString();
 
-        return String.join(", ",
-                basicDetails,
-                jobPosition.getJobPosition(),
-                employmentDate.toString(),
-                employmentStatus.getEmpStatus(),
-                specialization != null ? specialization : "(no specialization)"
-        );
+        return basicDetails +
+                "\nJob Position: " + jobPosition.getJobPosition() +
+                "\nEmployment Date: " + employmentDate +
+                "\nEmployment Status: " + employmentStatus.getEmpStatus() +
+                "\nSpecialization: " + specialization;
     }
 
     /**

@@ -9,6 +9,7 @@ import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.enums.data.Role;
+import main.java.enums.system.DataFieldName;
 import main.java.records.OperationResult;
 import main.java.records.PasswordHash;
 
@@ -60,7 +61,7 @@ public class AccountCreation implements RecordWriter {
     private OperationResult verifyAccountDetails() {
 
         // Create a shared map to collect all error messages
-        Map<String, String> allErrors = new HashMap<>();
+        Map<DataFieldName, String> allErrors = new HashMap<>();
 
         collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(
                 userAccountDTO.getUserRole(), userAccountDTO.getUserID(), null));
@@ -79,7 +80,7 @@ public class AccountCreation implements RecordWriter {
     /**
      * For each verification, if there are errors, collect the field name and error message into the shared map
      */
-    private void collectErrors(Map<String, String> allErrors, OperationResult result) {
+    private void collectErrors(Map<DataFieldName, String> allErrors, OperationResult result) {
         if (!result.isValid()) {
             allErrors.putAll(result.fieldErrors());
         }

@@ -88,20 +88,19 @@ public class VehiclePart {
 
     /**
      * Return a human-readable string representation of the object.
-     * Used for debugging and logging.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
-        return String.join(", ",
-                vehiclePartID,
-                vehiclePartName,
-                vehiclePartDescription != null ? vehiclePartDescription : "(no description)",
-                vehiclePartType,
-                vehiclePartBrand,
-                vehiclePartSpec,
-                DataTypeConverter.convertDoubleToString(vehiclePartPrice),
-                DataTypeConverter.convertIntToString(vehiclePartQuantity)
-        );
+        return "Vehicle Part ID: " + vehiclePartID +
+                "\nVehicle Part Name: " + vehiclePartName +
+                "\nVehicle Part Description: " +
+                (vehiclePartDescription != null ? vehiclePartDescription : "(no description)") +
+                "\nVehicle Part Type: " + vehiclePartType +
+                "\nVehicle Part Brand: " + vehiclePartBrand +
+                "\nVehicle Part Specification: " + vehiclePartSpec +
+                "\nVehicle Part Price: RM" + DataTypeConverter.convertDoubleToString(vehiclePartPrice) +
+                "\nVehicle Part Quantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity);
     }
 
     /**

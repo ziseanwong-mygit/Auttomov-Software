@@ -3,14 +3,14 @@ package main.java.backend.service.serviceactivity;
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.repository.ServiceActivityRepository;
 import main.java.backend.service.RecordReader;
-import main.java.records.OperationResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ServiceActivityRetrieval implements RecordReader {
+public class ServiceActivityRetrieval implements RecordReader<ServiceActivity> {
 
     private final ServiceActivityRepository serviceActivityRepository;
-
 
     public ServiceActivityRetrieval(ServiceActivityRepository serviceActivityRepository) {
         this.serviceActivityRepository = serviceActivityRepository;
@@ -20,25 +20,44 @@ public class ServiceActivityRetrieval implements RecordReader {
      * Read and return all service activities from the repository
      */
     @Override
-    public List<ServiceActivity> getAllRecords() {
-        return serviceActivityRepository.getAllRecords();
+    public Optional<List<ServiceActivity>> getAllRecords() {
+
+        List<ServiceActivity> existingServiceActs = new ArrayList<>(serviceActivityRepository.getAllRecords());
+
+        if (existingServiceActs.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(existingServiceActs);
     }
 
     /**
-     * Read and return a single service activity based on the given keyword like serviceActivityID
+     * Read and return a single service activity based on the given ID
      */
     @Override
-    public OperationResult getRecordById(String serviceActId) {
+    public Optional<ServiceActivity> getRecordById(String serviceActId) {
 
-        // Find the service activity by its ID
         ServiceActivity existingServiceAct = serviceActivityRepository.getRecordById(serviceActId);
 
         if (existingServiceAct == null) {
-            return OperationResult.failed("The service activity with ID: " + serviceActId +
-                    " does not exist in the system.");
+            return Optional.empty();
         }
 
-        return OperationResult.success("The service activity with ID: " + serviceActId +
-                "has been found.", existingServiceAct);
+        return Optional.of(existingServiceAct);
+    }
+
+    /**
+     * Read and return multiple service activities based on the given IDs
+     */
+    @Override
+    public Optional<List<ServiceActivity>> getRecordsByIds(List<String> serviceActIds) {
+
+        List<ServiceActivity> existingServiceActs = serviceActivityRepository.getRecordsByIds(serviceActIds);
+
+        if (existingServiceActs.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(existingServiceActs);
     }
 }

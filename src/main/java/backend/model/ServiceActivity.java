@@ -1,6 +1,6 @@
 package main.java.backend.model;
 
-import main.java.backend.util.DataFormatter;
+import main.java.backend.util.DataTypeConverter;
 
 public class ServiceActivity {
 
@@ -54,16 +54,15 @@ public class ServiceActivity {
 
     /**
      * Return a human-readable string representation of the object.
-     * Used for debugging and logging.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
-        return String.join(", ",
-                serviceActivityID,
-                serviceActivityName,
-                serviceActivityDescription != null ? serviceActivityDescription : "(no description)",
-                DataFormatter.roundOffDecimal(serviceActivityPrice)
-        );
+        return "Service Activity ID: " + serviceActivityID +
+                "\nService Activity Name: " + serviceActivityName +
+                "\nService Activity Description: " +
+                (serviceActivityDescription != null ? serviceActivityDescription : "(no description)") +
+                "\nService Activity Price: $" + DataTypeConverter.convertDoubleToString(serviceActivityPrice);
     }
 
     /**
@@ -75,7 +74,7 @@ public class ServiceActivity {
                 serviceActivityID,
                 serviceActivityName,
                 serviceActivityDescription != null ? serviceActivityDescription : "",
-                DataFormatter.roundOffDecimal(serviceActivityPrice)
+                DataTypeConverter.convertDoubleToString(serviceActivityPrice)
         );
     }
 }

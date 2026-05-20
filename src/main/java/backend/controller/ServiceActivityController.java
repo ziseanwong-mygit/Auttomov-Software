@@ -16,6 +16,7 @@ import main.java.records.OperationResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceActivityController {
 
@@ -80,33 +81,84 @@ public class ServiceActivityController {
         return deleteServiceActivity.execute();
     }
 
-    public List<ServiceActivity> retrieveAllServiceActivities() {
+    /**
+     * Optional class is used to determine whether the records are present or not
+     * This is for frontend logic in displaying the result message for UI
+     */
+    public Optional<List<ServiceActivity>> retrieveAllServiceActivities() {
 
         // Instantiate the repository and service for retrieving records
         ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        RecordReader retrieveAllServiceActs = new ServiceActivityRetrieval(serviceActivityRepo);
+        RecordReader<ServiceActivity> retrieveAllServiceActs = new ServiceActivityRetrieval(serviceActivityRepo);
 
         // Retrieve all the records from the repository
-        List<?> unknownList = retrieveAllServiceActs.getAllRecords();
-
-        // Since the retrieved list is a list of unknown type, cast each object to the desired type explicitly
-        return unknownList.stream()
-                .map(obj -> (ServiceActivity) obj)
-                .toList();
+        return retrieveAllServiceActs.getAllRecords();
     }
 
-    public OperationResult retrieveServiceActivityById(String serviceActId) {
-
-        // Check if the inputs are null or empty
-        if (serviceActId == null || serviceActId.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
-        }
+    public Optional<ServiceActivity> retrieveServiceActivityById(String serviceActId) {
 
         // Instantiate the repository and service for retrieving records
         ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        RecordReader retrieveServiceActById = new ServiceActivityRetrieval(serviceActivityRepo);
+        RecordReader<ServiceActivity> retrieveServiceActById = new ServiceActivityRetrieval(serviceActivityRepo);
 
+        // Retrieve the record from the repository based on the ID
         return retrieveServiceActById.getRecordById(serviceActId);
+    }
+
+    public Optional<List<ServiceActivity>> retrieveServiceActivitiesByIds(List<String> serviceActIds) {
+
+        // Instantiate the repository and service for retrieving records
+        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        RecordReader<ServiceActivity> retrieveServiceActsByIds = new ServiceActivityRetrieval(serviceActivityRepo);
+
+        // Retrieve the records from the repository based on the ID list
+        return retrieveServiceActsByIds.getRecordsByIds(serviceActIds);
+    }
+
+    /**
+     * Validate the format and length of service activity ID
+     * This validation is done before record retrieval, so the frontend can first display the validation result
+     */
+    public OperationResult validateServiceActId(String serviceActId) {
+
+        // Check if the service activity ID and its type are null or empty
+        if (serviceActId == null || serviceActId.isBlank()) {
+            return OperationResult.failed("The service activity ID must be provided to validate. " +
+                    "Please try again.");
+        }
+
+        if (!DataValidation.validateRecordId(serviceActId).isValid()) {
+            return OperationResult.failed("The service activity ID: " + serviceActId +
+                    " is not an UUID. Please try again.");
+        }
+
+        return OperationResult.success();
+    }
+
+    public OperationResult validateServiceActIds(List<String> serviceActIds) {
+
+        // Check if the ID list and its type are null or empty
+        if (serviceActIds == null || serviceActIds.isEmpty()) {
+            return OperationResult.failed("The service activity IDs must be provided to validate. " +
+                    "Please try again.");
+        }
+
+        // Check if any of the service activity IDs are null or empty
+        for (String serviceActId : serviceActIds) {
+            if (serviceActId == null || serviceActId.isBlank() ) {
+                return OperationResult.failed("One of the service activity IDs is null or empty. Please try again.");
+            }
+        }
+
+        // Check if any of the service activity IDs are invalid
+        for (String serviceActId : serviceActIds) {
+            if (!DataValidation.validateRecordId(serviceActId).isValid()) {
+                return OperationResult.failed("The service activity ID: " + serviceActId +
+                        " is not an UUID. Please try again.");
+            }
+        }
+
+        return OperationResult.success();
     }
 
     /**

@@ -101,22 +101,20 @@ public class UserAccount {
 
     /**
      * Return a human-readable string representation of the object.
-     * Used for debugging and logging.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
-        return String.join(", ",
-                accountID,
-                accountCreationDate.toString(),
-                userID,
-                userRole.getUserRole(),
-                firstName,
-                lastName,
-                emailAddress,
-                phoneNumber,
-                "(password is not shown)",
-                accountStatus.getAccStatus()
-        );
+        return "Account ID: " + accountID +
+                "\nAccount Creation Date: " + accountCreationDate +
+                "\nUser ID: " + userID +
+                "\nUser Role: " + userRole.getUserRole() +
+                "\nFirst Name: " + firstName +
+                "\nLast Name: " + lastName +
+                "\nEmail Address: " + emailAddress +
+                "\nPhone Number: " + phoneNumber +
+                "\nPassword: (not shown)" +
+                "\nAccount Status: " + accountStatus.getAccStatus();
     }
 
     /**

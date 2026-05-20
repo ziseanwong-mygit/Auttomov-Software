@@ -13,13 +13,11 @@ import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.enums.data.JobPosition;
 import main.java.enums.data.Role;
+import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Used for managing both customer and staff accounts
@@ -176,64 +174,134 @@ public class AccountController {
         return deleteAccount.execute();
     }
 
-    public List<? extends UserAccount> retrieveAllAccounts(Role userRole) {
+    /**
+     * Optional class is used to determine whether the records are present or not
+     * This is for frontend logic in displaying the result message for UI
+     */
+    public Optional<List<UserAccount>> retrieveAllAccounts(Role userRole) {
 
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordReader retrieveAllAccounts = new AccountRetrieval(accountRepo);
+        RecordReader<UserAccount> retrieveAllAccounts = new AccountRetrieval(accountRepo);
 
         // Retrieve all the records from the repository
-        List<?> unknownList = retrieveAllAccounts.getAllRecords();
-
-        return unknownList.stream()
-                .map(obj -> (UserAccount) obj)
-                .toList();
+        return retrieveAllAccounts.getAllRecords();
     }
 
-    public OperationResult retrieveAccountByAccID(String accountID, Role userRole) {
-
-        // Check if the inputs are null or empty
-        if (accountID == null || userRole == null || accountID.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
-        }
+    /**
+     * The customer or staff account record can be retrieved by account ID, user ID, or email address
+     */
+    public Optional<UserAccount> retrieveAccountById(String uniqueId, Role userRole) {
 
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordReader retrieveAccountByAccID = new AccountRetrieval(accountRepo);
+        RecordReader<UserAccount> retrieveAccountById = new AccountRetrieval(accountRepo);
 
-        return retrieveAccountByAccID.getRecordById(accountID);
+        // Retrieve the record from the repository based on the unique ID
+        return retrieveAccountById.getRecordById(uniqueId);
     }
 
-    public OperationResult retrieveAccountByUserID(String userID, Role userRole) {
-
-        // Check if the inputs are null or empty
-        if (userID == null || userRole == null || userID.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
-        }
+    /**
+     * The customer or staff account records can be retrieved by a list of account IDs, user IDs, or email addresses
+     */
+    public Optional<List<UserAccount>> retrieveAccountsByIds(List<String> uniqueIds, Role userRole) {
 
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        AccountRetrieval retrieveAccountByUserID = new AccountRetrieval(accountRepo);
+        RecordReader<UserAccount> retrieveAccountsByIds = new AccountRetrieval(accountRepo);
 
-        return retrieveAccountByUserID.getAccountByUserID(userID);
+        // Retrieve the records from the repository based on the unique IDs
+        return retrieveAccountsByIds.getRecordsByIds(uniqueIds);
     }
 
-    public OperationResult retrieveAccountByEmail(String emailAddress, Role userRole) {
+    /**
+     * Validate the format and length of recordID (accountID), userID, or emailAddress
+     * This validation is done before record retrieval, so the frontend can first display the validation result
+     */
+    public OperationResult validateUniqueId(String uniqueId, DataFieldName fieldName) {
 
-        // Check if the inputs are null or empty
-        if (emailAddress == null || userRole == null || emailAddress.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
+        // Check if the unique ID and its type are null or empty
+        if (uniqueId == null || uniqueId.isBlank() || fieldName == null) {
+            return OperationResult.failed("The unique ID and its type must be provided to validate. " +
+                    "Please try again.");
         }
 
-        // Instantiate the repository and service for retrieving records
-        // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        AccountRetrieval retrieveAccountByEmail = new AccountRetrieval(accountRepo);
+        // Validate the unique ID based on its type
+        if (fieldName == DataFieldName.RECORD_ID) {
+            return DataValidation.validateRecordId(uniqueId);
 
-        return retrieveAccountByEmail.getAccountByEmail(emailAddress);
+        } else if (fieldName == DataFieldName.USER_ID) {
+            return DataValidation.validateUserId(uniqueId);
+
+        } else if (fieldName == DataFieldName.EMAIL_ADDRESS) {
+            return DataValidation.validateEmailAddress(uniqueId);
+        }
+
+        return OperationResult.failed("The data field name is invalid for this validation. Please try again.");
+    }
+
+    /**
+     * Validate the format and length of multiple account unique IDs
+     * This validation is done before retrieving multiple account records by their unique IDs
+     */
+    public OperationResult validateUniqueIds(List<String> uniqueIds, DataFieldName fieldName) {
+
+        // Check if the ID list and its type are null or empty
+        if (uniqueIds == null || fieldName == null) {
+            return OperationResult.failed("The unique ID and its type must be provided to validate. " +
+                    "Please try again.");
+        }
+
+        // Check if any of the unique IDs are null or empty
+        for (String uniqueId : uniqueIds) {
+            if (uniqueId == null || uniqueId.isBlank() ) {
+                return OperationResult.failed("One of the unique IDs is null or empty. Please try again.");
+            }
+        }
+
+        // If one of the unique IDs is invalid, return the error message immediately
+        // Otherwise if all unique IDs are valid, return the success status
+        if (fieldName == DataFieldName.RECORD_ID) {
+
+            for (String uniqueId : uniqueIds) {
+                OperationResult validationResult = DataValidation.validateRecordId(uniqueId);
+                if (!validationResult.isValid()) {
+                    return OperationResult.failed("The account ID: " + uniqueId +
+                            " is not an UUID. Please try again.");
+                }
+            }
+            return OperationResult.success();
+
+        } else if (fieldName == DataFieldName.USER_ID) {
+
+            for (String uniqueId : uniqueIds) {
+
+                OperationResult validationResult = DataValidation.validateUserId(uniqueId);
+                if (!validationResult.isValid()) {
+                    return OperationResult.failed("The user ID: " + uniqueId +
+                            " is not an IC number or passport number. Please try again.");
+                }
+            }
+            return OperationResult.success();
+
+        } else if (fieldName == DataFieldName.EMAIL_ADDRESS) {
+
+            for (String uniqueId : uniqueIds) {
+
+                OperationResult validationResult = DataValidation.validateEmailAddress(uniqueId);
+                if (!validationResult.isValid()) {
+                    return OperationResult.failed("The email address: " + uniqueId + " is invalid. Please try again.");
+                }
+            }
+            return OperationResult.success();
+
+        }
+
+        // If the field name is not recognized, return an error message
+        return OperationResult.failed("The data field name is invalid for this validation. Please try again.");
     }
 
     /**
@@ -292,7 +360,7 @@ public class AccountController {
     private OperationResult validateInputFormats(UserAccountDTO userAccountDTO) {
 
         // Create a shared map to collect all error messages
-        Map<String, String> allErrors = new HashMap<>();
+        Map<DataFieldName, String> allErrors = new HashMap<>();
 
         // Validate the user detail first, then if there are errors, collect them into the shared list
         collectErrors(allErrors, DataValidation.validateUserId(userAccountDTO.getUserID()));
@@ -313,7 +381,7 @@ public class AccountController {
     /**
      * For each validation, if there are errors, collect the field name and error message into the shared map
      */
-    private void collectErrors(Map<String, String> allErrors, OperationResult result) {
+    private void collectErrors(Map<DataFieldName, String> allErrors, OperationResult result) {
         if (!result.isValid()) {
             allErrors.putAll(result.fieldErrors());
         }
