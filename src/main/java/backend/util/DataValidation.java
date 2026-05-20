@@ -99,7 +99,18 @@ public class DataValidation {
     public static OperationResult validatePrice(double price) {
 
         if (price < 0.00) {
-            return OperationResult.failed("price", "Price must be greater than or equal to 0");
+            return OperationResult.failed("price",
+                    "Price must be greater than or equal to 0");
+        }
+
+        return OperationResult.success();
+    }
+
+    public static OperationResult validateQuantity(int quantity) {
+
+        if (quantity < 0) {
+            return OperationResult.failed("quantity",
+                    "Quantity must be greater than or equal to 0");
         }
 
         return OperationResult.success();

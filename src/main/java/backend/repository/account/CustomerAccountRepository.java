@@ -36,11 +36,14 @@ public class CustomerAccountRepository extends AccountRepository<UserAccount> {
 
     /**
      * Used for retrieving records from the text file
+     * Here the line is split into columns using comma as the delimiter
      * Customer CSV format (10 columns): accountID, accountCreationDate, userID, userRole, firstName, lastName,
      * emailAddress, phoneNumber, passwordHash, accountStatus
      */
     @Override
-    protected UserAccount parseRecord(String[] columns) {
+    protected UserAccount parseRecord(String line) {
+        String[] columns = line.split(",\\s*");
+
         return new UserAccount(
                 columns[0],
                 DataTypeConverter.convertStringToLocalDate(columns[1]),

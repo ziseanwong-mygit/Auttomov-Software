@@ -3,7 +3,7 @@ package main.java.backend.service.account;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.backend.util.DataValidation;
 import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountUpdate implements GeneralProcess {
+public class AccountUpdate implements RecordWriter {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -31,7 +31,7 @@ public class AccountUpdate implements GeneralProcess {
     }
 
     @Override
-    public OperationResult executeProcess() {
+    public OperationResult execute() {
 
         String accountID = userAccountDTO.getAccountID();
 
@@ -69,13 +69,14 @@ public class AccountUpdate implements GeneralProcess {
         // Apply updates only to changed fields
         setChangedValues(changedFields);
 
+        // Begin updating account record in the repository
         try {
             // Cast the existingAcc to specific account type, then only update the record; base implementation
             return accountRepository.updateRecordBase(existingAcc);
         } catch (Exception e) {
             System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating the account. " +
-                    "Please try again.");
+            return OperationResult.failed("An unexpected error occurred while updating the " +
+                    "account record. Please try again.");
         }
     }
 
@@ -135,19 +136,19 @@ public class AccountUpdate implements GeneralProcess {
     private void setChangedValues(List<FieldComparison<?>> changedFields) {
         for (FieldComparison<?> field : changedFields) {
             switch (field.fieldName()) {
-                case "userID"           -> existingAcc.setUserID(userAccountDTO.getUserID());
-                case "firstName"        -> existingAcc.setFirstName(userAccountDTO.getFirstName());
-                case "lastName"         -> existingAcc.setLastName(userAccountDTO.getLastName());
-                case "emailAddress"     -> existingAcc.setEmailAddress(userAccountDTO.getEmailAddress());
-                case "phoneNumber"      -> existingAcc.setPhoneNumber(userAccountDTO.getPhoneNumber());
+                case "userID" -> existingAcc.setUserID(userAccountDTO.getUserID());
+                case "firstName" -> existingAcc.setFirstName(userAccountDTO.getFirstName());
+                case "lastName" -> existingAcc.setLastName(userAccountDTO.getLastName());
+                case "emailAddress" -> existingAcc.setEmailAddress(userAccountDTO.getEmailAddress());
+                case "phoneNumber" -> existingAcc.setPhoneNumber(userAccountDTO.getPhoneNumber());
             }
             if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO &&
                     existingAcc instanceof StaffAccount staffAcc) {
                 switch (field.fieldName()) {
-                    case "jobPosition"      -> staffAcc.setJobPosition(staffAccountDTO.getJobPosition());
+                    case "jobPosition" -> staffAcc.setJobPosition(staffAccountDTO.getJobPosition());
                     case "employmentStatus" -> staffAcc.setEmploymentStatus(staffAccountDTO.getEmploymentStatus());
-                    case "employmentDate"   -> staffAcc.setEmploymentDate(staffAccountDTO.getEmploymentDate());
-                    case "specialization"   -> staffAcc.setSpecialization(staffAccountDTO.getSpecialization());
+                    case "employmentDate" -> staffAcc.setEmploymentDate(staffAccountDTO.getEmploymentDate());
+                    case "specialization" -> staffAcc.setSpecialization(staffAccountDTO.getSpecialization());
                 }
             }
         }

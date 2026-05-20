@@ -10,17 +10,9 @@ public class AccountRetrieval {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
-    private String accountID;
-    private UserAccount existingAcc;
 
     public AccountRetrieval(AccountRepository<? extends UserAccount> accountRepository) {
         this.accountRepository = accountRepository;
-    }
-
-    public AccountRetrieval(AccountRepository<? extends UserAccount> accountRepository, String accountID) {
-        this.accountRepository = accountRepository;
-        this.accountID = accountID;
-        this.existingAcc = accountRepository.getRecordById(accountID);
     }
 
     /**
@@ -31,16 +23,47 @@ public class AccountRetrieval {
     }
 
     /**
-     * Read and return a single customer or staff account based on the given account ID
+     * Read and return a single customer or staff account based on the given keyword like accID, userID, or email
      */
-    public OperationResult getAccountByAccId() {
+    public OperationResult getAccountByAccId(String accountID) {
+
+        // Find the account by account ID
+        UserAccount existingAcc = accountRepository.getRecordById(accountID);
 
         if (existingAcc == null) {
-            return OperationResult.failed("The account with ID: " + accountID +
+            return OperationResult.failed("The account with account ID: " + accountID +
                     " does not exist in the system.");
         }
 
-        return OperationResult.success("The account with ID: " + accountID +
+        return OperationResult.success("The account with account ID: " + accountID +
+                "has been found.", existingAcc);
+    }
+
+    public OperationResult getAccountByUserID(String userID) {
+
+        // Find the account by user ID
+        UserAccount existingAcc = accountRepository.getAccountByUserId(userID);
+
+        if (existingAcc == null) {
+            return OperationResult.failed("The account with user ID: " + userID +
+                    " does not exist in the system.");
+        }
+
+        return OperationResult.success("The account with user ID: " + userID +
+                "has been found.", existingAcc);
+    }
+
+    public OperationResult getAccountByEmail(String emailAddress) {
+
+        // Find the account by email address
+        UserAccount existingAcc = accountRepository.getAccountByEmail(emailAddress);
+
+        if (existingAcc == null) {
+            return OperationResult.failed("The account with email address: " + emailAddress +
+                    " does not exist in the system.");
+        }
+
+        return OperationResult.success("The account with email address: " + emailAddress +
                 "has been found.", existingAcc);
     }
 }

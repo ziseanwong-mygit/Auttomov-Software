@@ -2,13 +2,13 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.backend.util.PswdHashing;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.records.OperationResult;
 
-public class AccountLogin implements GeneralProcess {
+public class AccountLogin implements RecordWriter {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -20,7 +20,7 @@ public class AccountLogin implements GeneralProcess {
     }
 
     @Override
-    public OperationResult executeProcess() {
+    public OperationResult execute() {
 
         // Check if the customer/staff account exists with the given email address
         UserAccount existingAcc = accountRepository.getAccountByEmail(userAccountDTO.getEmailAddress());
@@ -48,6 +48,7 @@ public class AccountLogin implements GeneralProcess {
                     "Please contact the manager for more information.");
         }
 
-        return OperationResult.success();
+        return OperationResult.success("You have successfully logged in your account as a " +
+                existingAcc.getUserRole() + "!");
     }
 }

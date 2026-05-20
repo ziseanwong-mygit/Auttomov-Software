@@ -2,13 +2,13 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.backend.util.PswdHashing;
 import main.java.dtos.UserAccountDTO;
 import main.java.records.OperationResult;
 import main.java.records.PasswordHash;
 
-public class AccountPasswordUpdate implements GeneralProcess {
+public class AccountPasswordUpdate implements RecordWriter {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -23,7 +23,7 @@ public class AccountPasswordUpdate implements GeneralProcess {
     }
 
     @Override
-    public OperationResult executeProcess() {
+    public OperationResult execute() {
 
         String accountID = userAccountDTO.getAccountID();
         String password = userAccountDTO.getPassword();

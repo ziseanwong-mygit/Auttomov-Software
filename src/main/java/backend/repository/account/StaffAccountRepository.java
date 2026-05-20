@@ -37,12 +37,14 @@ public class StaffAccountRepository extends AccountRepository<StaffAccount> {
 
     /**
      * Used for retrieving records from the text file
+     * Here the line is split into columns using comma as the delimiter
      * Staff CSV format (10 columns): accountID, accountCreationDate, userID, userRole, firstName, lastName,
      * emailAddress, phoneNumber, passwordHash, accountStatus, jobPosition, employmentDate, employmentStatus,
      * specialization
      */
     @Override
-    protected StaffAccount parseRecord(String[] columns) {
+    protected StaffAccount parseRecord(String line) {
+        String[] columns = line.split(",\\s*");
 
         // If the account record is a technician, the specialization field will be included
         String specialization = null;

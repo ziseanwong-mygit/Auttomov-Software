@@ -15,9 +15,9 @@ import java.util.function.Function;
 
 public abstract class AccountRepository<T extends UserAccount> extends AbstractRepository<T> {
 
-    protected final Map<String, T> accountByAccId = new HashMap<>();
-    protected final Map<String, T> accountByUserId = new HashMap<>();
-    protected final Map<String, T> accountByEmail = new HashMap<>();
+    private final Map<String, T> accountByAccId = new HashMap<>();
+    private final Map<String, T> accountByUserId = new HashMap<>();
+    private final Map<String, T> accountByEmail = new HashMap<>();
 
     // Base implementation to cast the account to a generic type before CRUD
     // Safe because each repository only ever receives its own account type
@@ -160,11 +160,13 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
      * Parse a single CSV line into a specific account object
      * The subclass provides implementation to parse the record into its concrete product
      */
-    protected abstract T parseRecord(String[] columns);
+    @Override
+    protected abstract T parseRecord(String line);
 
     /**
      * Add a new/updated account into all lookup maps
      */
+    @Override
     protected void addRecordIntoMap(T account) {
 
         // End the method early if the account is not provided
@@ -180,6 +182,7 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
     /**
      * Remove the old/deleted account from all lookup maps
      */
+    @Override
     protected void removeRecordIntoMap(T account) {
 
         // End the method early if the account is not provided

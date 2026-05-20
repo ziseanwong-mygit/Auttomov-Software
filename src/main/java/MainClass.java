@@ -4,6 +4,7 @@ public class MainClass {
 
     public static void main(String[] args) {
 
+
     }
 }
 
@@ -45,41 +46,6 @@ public class MainClass {
             System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
 
-/*        GeneralProcess operation = new AccountLogin(Role.CUSTOMER,
-                "wongzisean444@gmail.com", "seanWong888&");
-        OperationResult loginResult = operation.executeProcess();
-
-        if (loginResult.isValid()) {
-            System.out.println("Login successful!");
-        } else {
-            if (loginResult.fieldErrors().containsKey("email")) {
-                System.out.println(loginResult.fieldErrors().get("email"));
-            } else {
-                System.out.println(loginResult.generalMessage());
-            }
-        }*/
-
-/*        AccountRetrieval accountRetrieval = new AccountRetrieval(Role.CUSTOMER);
-        UserAccountDTO test = accountRetrieval.getAccountByAccId();
-        System.out.println(test);*/
-
-/*        AccountRetrieval accountRetrieval = new AccountRetrieval(Role.STAFF, "9e016d45-28c3-429d-845a-20e23dbfca04");
-        UserAccountDTO test = accountRetrieval.getAccountByAccId();
-        System.out.println(test);*/
-
-/*        GeneralProcess operation = new AccountUpdate(
-                "c26b455e-178a-46f4-932e-af9c8061e730", "010404145678", Role.CUSTOMER,
-                "Wong", "Zi Sean", "wongzisean444@gmail.com", "0123446464");
-        OperationResult result = operation.executeProcess();
-        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
-
-/*        GeneralProcess operation = new AccountUpdate(
-                "92cc1f5e-d3df-4682-a5da-411c196ecff7", "990216143719", Role.STAFF,
-                "Sean", "Wong", "seanwong778@gmail.com", "0123446725",
-                JobPosition.MANAGER, LocalDate.now(), EmploymentStatus.FULL_TIME, null);
-        OperationResult result = operation.executeProcess();
-        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
-
 /*        UserAccountDTO userAccountDTO = new UserAccountDTO("9e016d45-28c3-429d-845a-20e23dbfca04",
                 Role.STAFF, AccountStatus.ACTIVE);
         AccountController accountController = new AccountController();
@@ -100,12 +66,9 @@ public class MainClass {
             System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
 
-/*        GeneralProcess operation = new AccountDeletion("b3af5b58-337a-4766-bcb5-82c19c4b0453", Role.CUSTOMER);
-        OperationResult result = operation.executeProcess();
-        System.out.println(result.isValid() + "\n" + result.generalMessage());*/
-
-/*        ServiceActivityDTO serviceActivityDTO = new ServiceActivityDTO("Service Activity 1",
-                "hello", 100.00);
+/*        ServiceActivityDTO serviceActivityDTO = new ServiceActivityDTO("Tyre Balancing",
+                "Tyre balancing ensures even weight distribution across each " +
+                        "wheel-and-tire assembly.", 120.00);
         ServiceActivityController serviceActivityController = new ServiceActivityController();
         OperationResult result = serviceActivityController.createServiceActivity(serviceActivityDTO);
         if (result.isValid()) {
@@ -113,6 +76,76 @@ public class MainClass {
         } else {
             System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
         }*/
+
+/*        ServiceActivityDTO serviceActivityDTO = new ServiceActivityDTO(
+                "a9f320f7-1a1e-4ef0-b793-b41d5a3cd862", "Tyre Balancing",
+                "Tyre balancing ensures even weight distribution across each " +
+                        "wheel-and-tire assembly.", 130.00);
+        ServiceActivityController serviceActivityController = new ServiceActivityController();
+        OperationResult result = serviceActivityController.updateServiceActivity(serviceActivityDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        ServiceActivityController serviceActivityController = new ServiceActivityController();
+        OperationResult result = serviceActivityController.deleteServiceActivity(
+                "e4ed0e85-e3a6-42df-937a-443d21207ff1");
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        ServiceActivityController serviceActivityController = new ServiceActivityController();
+        OperationResult result = serviceActivityController.retrieveServiceActivityById("a9f320f7-1a1e-4ef0-b793-b41d5a3cd862");
+        if (result.isValid()) {
+            ServiceActivity data = (ServiceActivity) result.data();
+            System.out.println(data);
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        List<String> serviceActivityList = List.of("A0001", "A0002", "A0003");
+        List<String> vehiclePartList = List.of("B0001");
+
+        ServicePackageDTO servicePackageDTO = new ServicePackageDTO(
+                 "Test Service 1", "This is a normal service.",
+                ServicePackageType.NORMAL, serviceActivityList, vehiclePartList, 30.00);
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult result = servicePackageController.createServicePackage(servicePackageDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        List<String> serviceActivityList = List.of("A0001", "A0002", "A0003");
+        List<String> vehiclePartList = List.of("B0001", "B0002");
+
+        ServicePackageDTO servicePackageDTO = new ServicePackageDTO(
+                "8f036a65-847e-41b5-9154-1ad639cf052f", "Test Service 1.1",
+                "This is a major service.", ServicePackageType.MAJOR, serviceActivityList,
+                vehiclePartList, 40.00);
+
+        ServicePackageController servicePackageController = new ServicePackageController();
+        OperationResult result = servicePackageController.updateServicePackage(servicePackageDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+
+
+
+
+
+
+
+
 
 /*
     Customer

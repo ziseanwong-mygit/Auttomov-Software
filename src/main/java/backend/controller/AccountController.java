@@ -2,7 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.backend.service.account.*;
 import main.java.backend.util.DataValidation;
 import main.java.backend.util.NullValidator;
@@ -42,10 +42,10 @@ public class AccountController {
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
                 userAccountDTO.getUserRole());
-        GeneralProcess createAccount = new AccountCreation(accountRepo, userAccountDTO);
+        RecordWriter createAccount = new AccountCreation(accountRepo, userAccountDTO);
 
         // Begin creating account record procedure in service class
-        return createAccount.executeProcess();
+        return createAccount.execute();
     }
 
     public OperationResult loginAccount(UserAccountDTO userAccountDTO) {
@@ -71,10 +71,10 @@ public class AccountController {
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
                 userAccountDTO.getUserRole());
-        GeneralProcess loginAccount = new AccountLogin(accountRepo, userAccountDTO);
+        RecordWriter loginAccount = new AccountLogin(accountRepo, userAccountDTO);
 
         // Begin logging in account procedure in service class
-        return loginAccount.executeProcess();
+        return loginAccount.execute();
     }
 
     public OperationResult updateAccount(UserAccountDTO userAccountDTO) {
@@ -89,10 +89,10 @@ public class AccountController {
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
                 userAccountDTO.getUserRole());
-        GeneralProcess updateAccount = new AccountUpdate(accountRepo, userAccountDTO);
+        RecordWriter updateAccount = new AccountUpdate(accountRepo, userAccountDTO);
 
         // Begin updating account record procedure in service class
-        return updateAccount.executeProcess();
+        return updateAccount.execute();
     }
 
     public OperationResult updateAccountStatus(UserAccountDTO userAccountDTO) {
@@ -109,10 +109,10 @@ public class AccountController {
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
                 userAccountDTO.getUserRole());
-        GeneralProcess updateStatus = new AccountStatusUpdate(accountRepo, userAccountDTO);
+        RecordWriter updateStatus = new AccountStatusUpdate(accountRepo, userAccountDTO);
 
         // Begin updating account status procedure in service class
-        OperationResult updateStatusResult = updateStatus.executeProcess();
+        OperationResult updateStatusResult = updateStatus.execute();
 
         // Customize result message for updating account password
         if (updateStatusResult.isValid()) {
@@ -145,10 +145,10 @@ public class AccountController {
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
                 userAccountDTO.getUserRole());
-        GeneralProcess updatePassword = new AccountPasswordUpdate(accountRepo, userAccountDTO);
+        RecordWriter updatePassword = new AccountPasswordUpdate(accountRepo, userAccountDTO);
 
         // Begin updating account password procedure in service class
-        OperationResult updatePwdResult = updatePassword.executeProcess();
+        OperationResult updatePwdResult = updatePassword.execute();
 
         // Customize result message for updating account password
         if (updatePwdResult.isValid()) {
@@ -162,18 +162,19 @@ public class AccountController {
 
     public OperationResult deleteAccount(String accountID, Role userRole) {
 
-        // Check if the ID input is null or empty
+        // Check if the inputs are null or empty
         if (accountID == null || userRole == null || accountID.isBlank()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
+            return OperationResult.failed("The account ID and user role must be provided to " +
+                    "delete a record. Please try again.");
         }
 
         // Instantiate the repository and service for deleting records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        GeneralProcess deleteAccount = new AccountDeletion(accountRepo, accountID);
+        RecordWriter deleteAccount = new AccountDeletion(accountRepo, accountID);
 
         // Begin logging in account procedure in service class
-        return deleteAccount.executeProcess();
+        return deleteAccount.execute();
     }
 
     public List<? extends UserAccount> retrieveAllAccounts(Role userRole) {
@@ -186,9 +187,9 @@ public class AccountController {
         return retrieveAllAccounts.getAllAccounts();
     }
 
-    public OperationResult retrieveOneAccount(String accountID, Role userRole) {
+    public OperationResult retrieveAccountByAccID(String accountID, Role userRole) {
 
-        // Check if the ID input is null or empty
+        // Check if the inputs are null or empty
         if (accountID == null || userRole == null || accountID.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
@@ -196,9 +197,39 @@ public class AccountController {
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
         AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        AccountRetrieval retrieveOneAccount = new AccountRetrieval(accountRepo, accountID);
+        AccountRetrieval retrieveAccountByAccID = new AccountRetrieval(accountRepo);
 
-        return retrieveOneAccount.getAccountByAccId();
+        return retrieveAccountByAccID.getAccountByAccId(accountID);
+    }
+
+    public OperationResult retrieveAccountByUserID(String userID, Role userRole) {
+
+        // Check if the inputs are null or empty
+        if (userID == null || userRole == null || userID.isBlank()) {
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
+        }
+
+        // Instantiate the repository and service for retrieving records
+        // Wildcard is used so can accept either customer or staff repository in one variable
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
+        AccountRetrieval retrieveAccountByUserID = new AccountRetrieval(accountRepo);
+
+        return retrieveAccountByUserID.getAccountByUserID(userID);
+    }
+
+    public OperationResult retrieveAccountByEmail(String emailAddress, Role userRole) {
+
+        // Check if the inputs are null or empty
+        if (emailAddress == null || userRole == null || emailAddress.isBlank()) {
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
+        }
+
+        // Instantiate the repository and service for retrieving records
+        // Wildcard is used so can accept either customer or staff repository in one variable
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
+        AccountRetrieval retrieveAccountByEmail = new AccountRetrieval(accountRepo);
+
+        return retrieveAccountByEmail.getAccountByEmail(emailAddress);
     }
 
     /**

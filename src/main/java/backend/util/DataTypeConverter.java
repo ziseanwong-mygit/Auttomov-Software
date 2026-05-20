@@ -17,7 +17,7 @@ public class DataTypeConverter {
     }
 
     public static String convertDoubleToString(double value) {
-        return String.valueOf(value);
+        return String.format("%.2f", value);
     }
 
     public static int convertStringToInt(String str) {
@@ -50,5 +50,9 @@ public class DataTypeConverter {
 
     public static EmploymentStatus convertStringToEmpStatus(String str) {
         return EmploymentStatus.getEmpStatusByValue(str);
+    }
+
+    public static ServicePackageType convertStringToServicePackageType(String str) {
+        return ServicePackageType.getServiceTypeByValue(str);
     }
 }

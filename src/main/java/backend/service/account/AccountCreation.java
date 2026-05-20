@@ -3,7 +3,7 @@ package main.java.backend.service.account;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.backend.util.PswdHashing;
 import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountCreation implements GeneralProcess {
+public class AccountCreation implements RecordWriter {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -29,7 +29,7 @@ public class AccountCreation implements GeneralProcess {
     }
 
     @Override
-    public OperationResult executeProcess() {
+    public OperationResult execute() {
 
         OperationResult verificationResult = verifyAccountDetails();
         if (!verificationResult.isValid()) {
@@ -49,8 +49,8 @@ public class AccountCreation implements GeneralProcess {
 
         } catch (Exception e) {
             System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating the account. " +
-                    "Please try again.");
+            return OperationResult.failed("An unexpected error occurred while creating a new " +
+                    "account record. Please try again.");
         }
     }
 

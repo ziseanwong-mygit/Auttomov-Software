@@ -2,13 +2,13 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.service.GeneralProcess;
+import main.java.backend.service.RecordWriter;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
-public class AccountStatusUpdate implements GeneralProcess {
+public class AccountStatusUpdate implements RecordWriter {
 
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
@@ -23,7 +23,7 @@ public class AccountStatusUpdate implements GeneralProcess {
     }
 
     @Override
-    public OperationResult executeProcess() {
+    public OperationResult execute() {
 
         String accountID = userAccountDTO.getAccountID();
 

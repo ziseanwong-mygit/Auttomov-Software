@@ -17,8 +17,7 @@ public abstract class AbstractRepository<T> implements CrudRepository<T> {
 
             while ((line = reader.readLine()) != null) {
                 try {
-                    String[] columns = line.split(",\\s*");
-                    T record = parseRecord(columns);  // Subclass gives implementation on how to parse the records
+                    T record = parseRecord(line);  // Subclass gives implementation on how to parse the records
                     addRecordIntoMap(record); // Add the parsed records into the lookup maps
 
                 } catch (IllegalArgumentException | DateTimeParseException | ArrayIndexOutOfBoundsException e) {
@@ -33,8 +32,10 @@ public abstract class AbstractRepository<T> implements CrudRepository<T> {
         }
     }
 
-    /** Turn one CSV line (already split into columns) into an object of type T. */
-    protected abstract T parseRecord(String[] columns);
+    /**
+     * Turn one CSV line into an object of type T.
+     */
+    protected abstract T parseRecord(String line);
 
     /**
      * Store a new/updated record into all lookup maps
