@@ -1,9 +1,12 @@
 package main.java;
 
+import main.java.backend.util.RecordNoGenerator;
+
 public class MainClass {
 
     public static void main(String[] args) {
 
+        System.out.println(RecordNoGenerator.generateRecordNo());
 
     }
 }

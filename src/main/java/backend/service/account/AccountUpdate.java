@@ -2,9 +2,9 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
-import main.java.backend.util.DataValidation;
+import main.java.backend.util.DataValidator;
 import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.JobPosition;
@@ -92,7 +92,7 @@ public class AccountUpdate implements RecordWriter {
 
         // Add all the fields to the list
         accountFields.add(new FieldComparison<>("userID", existingAcc.getUserID(),
-                userAccountDTO.getUserID(), List.of(DataValidation::validateUserId,
+                userAccountDTO.getUserID(), List.of(DataValidator::validateUserId,
                 id -> AccountDataVerification.verifyUniqueUserId(userRole, id, existingAcc.getUserID())
         )));
         accountFields.add(new FieldComparison<>("firstName", existingAcc.getFirstName(),
@@ -100,11 +100,11 @@ public class AccountUpdate implements RecordWriter {
         accountFields.add(new FieldComparison<>("lastName", existingAcc.getLastName(),
                 userAccountDTO.getLastName(), null));
         accountFields.add(new FieldComparison<>("emailAddress", existingAcc.getEmailAddress(),
-                userAccountDTO.getEmailAddress(), List.of(DataValidation::validateEmailAddress,
+                userAccountDTO.getEmailAddress(), List.of(DataValidator::validateEmailAddress,
                 email -> AccountDataVerification.verifyUniqueEmail(userRole, email, existingAcc.getEmailAddress())
         )));
         accountFields.add(new FieldComparison<>("phoneNumber", existingAcc.getPhoneNumber(),
-                userAccountDTO.getPhoneNumber(), List.of(DataValidation::validatePhoneNumber)));
+                userAccountDTO.getPhoneNumber(), List.of(DataValidator::validatePhoneNumber)));
 
         // For staff account only
         if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO &&

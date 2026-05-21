@@ -1,8 +1,8 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.CustomerAccountRepository;
-import main.java.backend.repository.account.StaffAccountRepository;
+import main.java.backend.repository.impl.account.CustomerAccountRepository;
+import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.enums.data.Role;
 import main.java.enums.system.DataFieldName;
 import main.java.records.OperationResult;

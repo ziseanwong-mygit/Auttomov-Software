@@ -3,9 +3,9 @@ package main.java.backend.service.servicepackage;
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.ServiceActivityRepository;
-import main.java.backend.repository.ServicePackageRepository;
-import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.repository.impl.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
+import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.ServicePackageDTO;
 import main.java.records.FieldComparison;
@@ -113,10 +113,10 @@ public class ServicePackageUpdate implements RecordWriter {
         }
 
         listFields.add(new ListFieldComparison(
-                "serviceActivities", existingServiceActList, servicePackageDTO.getServiceActivityList()
+                "serviceActivities", existingServiceActList, servicePackageDTO.getServiceActivityIDs()
         ));
         listFields.add(new ListFieldComparison(
-                "vehicleParts", existingVehiclePartList, servicePackageDTO.getVehiclePartList()
+                "vehicleParts", existingVehiclePartList, servicePackageDTO.getVehiclePartIDs()
         ));
 
         // Filter to get the changed list fields
@@ -149,13 +149,13 @@ public class ServicePackageUpdate implements RecordWriter {
                 case "serviceActivities" -> {
 
                     List<ServiceActivity> newServiceActList = serviceActivityRepository.getRecordsByIds(
-                            servicePackageDTO.getServiceActivityList());
+                            servicePackageDTO.getServiceActivityIDs());
                     existingServicePackage.setServiceActivityList(newServiceActList);
                 }
                 case "vehicleParts" -> {
 
                     List<VehiclePart> newVehiclePartList = vehiclePartRepository.getRecordsByIds(
-                            servicePackageDTO.getVehiclePartList());
+                            servicePackageDTO.getVehiclePartIDs());
                     existingServicePackage.setVehiclePartList(newVehiclePartList);
                 }
             }

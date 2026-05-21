@@ -1,14 +1,14 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.vehiclepart.VehiclePartCreation;
 import main.java.backend.service.vehiclepart.VehiclePartDeletion;
 import main.java.backend.service.vehiclepart.VehiclePartRetrieval;
 import main.java.backend.service.vehiclepart.VehiclePartUpdate;
-import main.java.backend.util.DataValidation;
+import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.VehiclePartDTO;
 import main.java.enums.system.OperationType;
@@ -29,13 +29,13 @@ public class VehiclePartController {
         }
 
         // Validate price logic
-        OperationResult priceValidation = DataValidation.validatePrice(vehiclePartDTO.getVehiclePartPrice());
+        OperationResult priceValidation = DataValidator.validatePrice(vehiclePartDTO.getVehiclePartPrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
         }
 
         // Validate quantity logic
-        OperationResult quantityValidation = DataValidation.validateQuantity(vehiclePartDTO.getVehiclePartQuantity());
+        OperationResult quantityValidation = DataValidator.validateQuantity(vehiclePartDTO.getVehiclePartQuantity());
         if (!quantityValidation.isValid()) {
             return quantityValidation;
         }
@@ -57,13 +57,13 @@ public class VehiclePartController {
         }
 
         // Validate price logic
-        OperationResult priceValidation = DataValidation.validatePrice(vehiclePartDTO.getVehiclePartPrice());
+        OperationResult priceValidation = DataValidator.validatePrice(vehiclePartDTO.getVehiclePartPrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
         }
 
         // Validate quantity logic
-        OperationResult quantityValidation = DataValidation.validateQuantity(vehiclePartDTO.getVehiclePartQuantity());
+        OperationResult quantityValidation = DataValidator.validateQuantity(vehiclePartDTO.getVehiclePartQuantity());
         if (!quantityValidation.isValid()) {
             return quantityValidation;
         }
@@ -137,7 +137,7 @@ public class VehiclePartController {
                     "Please try again.");
         }
 
-        if (!DataValidation.validateRecordId(vehiclePartId).isValid()) {
+        if (!DataValidator.validateRecordId(vehiclePartId).isValid()) {
             return OperationResult.failed("The vehicle part ID: " + vehiclePartId +
                     " is not an UUID. Please try again.");
         }
@@ -162,7 +162,7 @@ public class VehiclePartController {
 
         // Check if any of the vehicle part IDs are invalid
         for (String vehiclePartId : vehiclePartIds) {
-            if (!DataValidation.validateRecordId(vehiclePartId).isValid()) {
+            if (!DataValidator.validateRecordId(vehiclePartId).isValid()) {
                 return OperationResult.failed("The vehicle part ID: " + vehiclePartId +
                         " is not an UUID. Please try again.");
             }

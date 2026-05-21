@@ -1,7 +1,7 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.StaffAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;

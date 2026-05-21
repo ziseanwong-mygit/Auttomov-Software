@@ -4,10 +4,10 @@ import main.java.enums.system.DataFieldName;
 import main.java.enums.system.RegexPattern;
 import main.java.records.OperationResult;
 
-public class DataValidation {
+public class DataValidator {
 
     // Private constructor to prevent instantiation
-    private DataValidation() {
+    private DataValidator() {
         throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
 

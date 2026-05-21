@@ -1,7 +1,7 @@
 package main.java.backend.service.servicepackage;
 
 import main.java.backend.model.ServicePackage;
-import main.java.backend.repository.ServicePackageRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.records.OperationResult;
 

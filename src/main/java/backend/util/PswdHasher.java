@@ -11,10 +11,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class PswdHashing {
+public class PswdHasher {
 
     // Private constructor to prevent instantiation
-    private PswdHashing() {
+    private PswdHasher() {
         throw new UnsupportedOperationException("This class is a utility class, which cannot be instantiated.");
     }
 
@@ -47,7 +47,7 @@ public class PswdHashing {
 
         // Compute hashing for password input
         byte[] saltBytes = Base64.getDecoder().decode(pswdSalt);
-        String hashedPswdInput = PswdHashing.computeHash(password, saltBytes);
+        String hashedPswdInput = PswdHasher.computeHash(password, saltBytes);
 
         // If the input hash matches the existing hash, returns true
         return hashedPswdInput.equals(pswdHash);

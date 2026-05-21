@@ -121,23 +121,4 @@ public class UserAccount {
                 "\nAccount Status: " + accountStatus.getAccStatus() +
                 "\n";
     }
-
-    /**
-     * Return a CSV format string representation of the object.
-     * Used for saving the object to a text file.
-     */
-    public String toTextFile() {
-        return String.join(", ",
-                accountID,
-                accountCreationDate.toString(),
-                userID,
-                userRole.getUserRole(),
-                firstName,
-                lastName,
-                emailAddress,
-                phoneNumber,
-                passwordHash.toString(),
-                accountStatus.getAccStatus()
-        );
-    }
 }

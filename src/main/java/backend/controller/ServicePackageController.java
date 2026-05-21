@@ -1,16 +1,16 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.ServicePackage;
-import main.java.backend.repository.ServiceActivityRepository;
-import main.java.backend.repository.ServicePackageRepository;
-import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.repository.impl.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
+import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.servicepackage.ServicePackageCreation;
 import main.java.backend.service.servicepackage.ServicePackageDeletion;
 import main.java.backend.service.servicepackage.ServicePackageRetrieval;
 import main.java.backend.service.servicepackage.ServicePackageUpdate;
-import main.java.backend.util.DataValidation;
+import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.ServicePackageDTO;
 import main.java.enums.system.OperationType;
@@ -31,7 +31,7 @@ public class ServicePackageController {
         }
 
         // Validate price logic
-        OperationResult priceValidation = DataValidation.validatePrice(servicePackageDTO.getPackageBasePrice());
+        OperationResult priceValidation = DataValidator.validatePrice(servicePackageDTO.getPackageBasePrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
         }
@@ -60,7 +60,7 @@ public class ServicePackageController {
         }
 
         // Validate price logic
-        OperationResult priceValidation = DataValidation.validatePrice(servicePackageDTO.getPackageBasePrice());
+        OperationResult priceValidation = DataValidator.validatePrice(servicePackageDTO.getPackageBasePrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
         }
@@ -141,7 +141,7 @@ public class ServicePackageController {
                     "Please try again.");
         }
 
-        if (!DataValidation.validateRecordId(servicePkgId).isValid()) {
+        if (!DataValidator.validateRecordId(servicePkgId).isValid()) {
             return OperationResult.failed("The service package ID: " + servicePkgId +
                     " is not an UUID. Please try again.");
         }
@@ -166,7 +166,7 @@ public class ServicePackageController {
 
         // Check if any of the service package IDs are invalid
         for (String servicePkgId : servicePkgIds) {
-            if (!DataValidation.validateRecordId(servicePkgId).isValid()) {
+            if (!DataValidator.validateRecordId(servicePkgId).isValid()) {
                 return OperationResult.failed("The service package ID: " + servicePkgId +
                         " is not an UUID. Please try again.");
             }
@@ -192,8 +192,8 @@ public class ServicePackageController {
 
         // Both the service activity and vehicle part lists cannot be empty
         // Either one of the lists must have values
-        if (servicePackageDTO.getServiceActivityList() == null &&
-                servicePackageDTO.getVehiclePartList() == null ) {
+        if (servicePackageDTO.getServiceActivityIDs() == null &&
+                servicePackageDTO.getVehiclePartIDs() == null ) {
             return new OperationResult(false,
                     "Both service activity and vehicle part list cannot be empty");
         }

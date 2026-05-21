@@ -1,7 +1,7 @@
 package main.java.backend.service.vehiclepart;
 
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.VehiclePartDTO;
 import main.java.records.FieldComparison;

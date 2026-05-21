@@ -10,21 +10,21 @@ public class ServicePackageDTO {
     private String servicePackageName;
     private String servicePackageDescription;
     private ServicePackageType servicePackageType;
-    private List<String> serviceActivityList;
-    private List<String> vehiclePartList;
+    private List<String> serviceActivityIDs;
+    private List<String> vehiclePartIDs;
     private final double packageBasePrice;
 
     /**
      * For creating a new service package
      */
     public ServicePackageDTO(String servicePackageName, String servicePackageDescription,
-                             ServicePackageType servicePackageType, List<String> serviceActivityList,
-                             List<String> vehiclePartList, double packageBasePrice) {
+                             ServicePackageType servicePackageType, List<String> serviceActivityIDs,
+                             List<String> vehiclePartIDs, double packageBasePrice) {
         this.servicePackageName = servicePackageName;
         this.servicePackageDescription = servicePackageDescription;
         this.servicePackageType = servicePackageType;
-        this.serviceActivityList = serviceActivityList;
-        this.vehiclePartList = vehiclePartList;
+        this.serviceActivityIDs = serviceActivityIDs;
+        this.vehiclePartIDs = vehiclePartIDs;
         this.packageBasePrice = packageBasePrice;
     }
 
@@ -32,9 +32,9 @@ public class ServicePackageDTO {
      * For updating an existing service package's details
      */
     public ServicePackageDTO(String servicePackageID, String servicePackageName, String servicePackageDescription,
-                             ServicePackageType servicePackageType, List<String> serviceActivityList,
-                             List<String> vehiclePartList, double packageBasePrice) {
-        this(servicePackageName, servicePackageDescription, servicePackageType, serviceActivityList, vehiclePartList,
+                             ServicePackageType servicePackageType, List<String> serviceActivityIDs,
+                             List<String> vehiclePartIDs, double packageBasePrice) {
+        this(servicePackageName, servicePackageDescription, servicePackageType, serviceActivityIDs, vehiclePartIDs,
                 packageBasePrice); // Constructor chaining
         this.servicePackageID = servicePackageID;
     }
@@ -63,12 +63,12 @@ public class ServicePackageDTO {
         return servicePackageType;
     }
 
-    public List<String> getServiceActivityList() {
-        return serviceActivityList;
+    public List<String> getServiceActivityIDs() {
+        return serviceActivityIDs;
     }
 
-    public List<String> getVehiclePartList() {
-        return vehiclePartList;
+    public List<String> getVehiclePartIDs() {
+        return vehiclePartIDs;
     }
 
     public double getPackageBasePrice() {

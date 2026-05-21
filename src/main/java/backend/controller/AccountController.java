@@ -1,12 +1,12 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
-import main.java.backend.repository.account.StaffAccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
+import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.account.*;
-import main.java.backend.util.DataValidation;
+import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
@@ -38,10 +38,15 @@ public class AccountController {
             return formatValidation;
         }
 
+        // Determine the user role based on the DTO type - default to customer
+        Role userRole = Role.CUSTOMER;
+        if (userAccountDTO instanceof StaffAccountDTO) {
+            userRole = Role.STAFF;
+        }
+
         // Instantiate the repository and service for creating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
-                userAccountDTO.getUserRole());
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
         RecordWriter createAccount = new AccountCreation(accountRepo, userAccountDTO);
 
         // Begin creating account record procedure in service class
@@ -50,27 +55,31 @@ public class AccountController {
 
     public OperationResult loginAccount(UserAccountDTO userAccountDTO) {
 
-        Role userRole = userAccountDTO.getUserRole();
         String emailAddress = userAccountDTO.getEmailAddress();
         String password = userAccountDTO.getPassword();
 
         // Check if there are any null or empty values in the list
-        if (userRole == null || emailAddress == null || password == null ||
+        if (emailAddress == null || password == null ||
                 emailAddress.isBlank() || password.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Check email address format
         // If email address format is invalid, return error message
-        OperationResult emailFormatValidation = DataValidation.validateEmailAddress(emailAddress);
+        OperationResult emailFormatValidation = DataValidator.validateEmailAddress(emailAddress);
         if (!emailFormatValidation.isValid()) {
             return emailFormatValidation;
         }
 
+        // Determine the user role based on the DTO type - default to customer
+        Role userRole = Role.CUSTOMER;
+        if (userAccountDTO instanceof StaffAccountDTO) {
+            userRole = Role.STAFF;
+        }
+
         // Instantiate the repository and service for creating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
-                userAccountDTO.getUserRole());
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
         RecordWriter loginAccount = new AccountLogin(accountRepo, userAccountDTO);
 
         // Begin logging in account procedure in service class
@@ -85,10 +94,15 @@ public class AccountController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
+        // Determine the user role based on the DTO type - default to customer
+        Role userRole = Role.CUSTOMER;
+        if (userAccountDTO instanceof StaffAccountDTO) {
+            userRole = Role.STAFF;
+        }
+
         // Instantiate the repository and service for updating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
-                userAccountDTO.getUserRole());
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
         RecordWriter updateAccount = new AccountUpdate(accountRepo, userAccountDTO);
 
         // Begin updating account record procedure in service class
@@ -124,24 +138,28 @@ public class AccountController {
     public OperationResult updateAccountPassword(UserAccountDTO userAccountDTO) {
 
         String accountID = userAccountDTO.getAccountID();
-        Role userRole = userAccountDTO.getUserRole();
         String password = userAccountDTO.getPassword();
         String confirmPassword = userAccountDTO.getConfirmPassword();
 
-        if (accountID == null || userRole == null || password == null || confirmPassword == null ||
+        if (accountID == null || password == null || confirmPassword == null ||
                 accountID.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
-        OperationResult pwdValidation = DataValidation.validatePassword(password, confirmPassword);
+        OperationResult pwdValidation = DataValidator.validatePassword(password, confirmPassword);
         if (!pwdValidation.isValid()) {
             return pwdValidation;
         }
 
+        // Determine the user role based on the DTO type - default to customer
+        Role userRole = Role.CUSTOMER;
+        if (userAccountDTO instanceof StaffAccountDTO) {
+            userRole = Role.STAFF;
+        }
+
         // Instantiate the repository and service for updating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(
-                userAccountDTO.getUserRole());
+        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
         RecordWriter updatePassword = new AccountPasswordUpdate(accountRepo, userAccountDTO);
 
         // Begin updating account password procedure in service class
@@ -231,13 +249,13 @@ public class AccountController {
 
         // Validate the unique ID based on its type
         if (fieldName == DataFieldName.RECORD_ID) {
-            return DataValidation.validateRecordId(uniqueId);
+            return DataValidator.validateRecordId(uniqueId);
 
         } else if (fieldName == DataFieldName.USER_ID) {
-            return DataValidation.validateUserId(uniqueId);
+            return DataValidator.validateUserId(uniqueId);
 
         } else if (fieldName == DataFieldName.EMAIL_ADDRESS) {
-            return DataValidation.validateEmailAddress(uniqueId);
+            return DataValidator.validateEmailAddress(uniqueId);
         }
 
         return OperationResult.failed("The data field name is invalid for this validation. Please try again.");
@@ -267,7 +285,7 @@ public class AccountController {
         if (fieldName == DataFieldName.RECORD_ID) {
 
             for (String uniqueId : uniqueIds) {
-                OperationResult validationResult = DataValidation.validateRecordId(uniqueId);
+                OperationResult validationResult = DataValidator.validateRecordId(uniqueId);
                 if (!validationResult.isValid()) {
                     return OperationResult.failed("The account ID: " + uniqueId +
                             " is not an UUID. Please try again.");
@@ -279,7 +297,7 @@ public class AccountController {
 
             for (String uniqueId : uniqueIds) {
 
-                OperationResult validationResult = DataValidation.validateUserId(uniqueId);
+                OperationResult validationResult = DataValidator.validateUserId(uniqueId);
                 if (!validationResult.isValid()) {
                     return OperationResult.failed("The user ID: " + uniqueId +
                             " is not an IC number or passport number. Please try again.");
@@ -291,7 +309,7 @@ public class AccountController {
 
             for (String uniqueId : uniqueIds) {
 
-                OperationResult validationResult = DataValidation.validateEmailAddress(uniqueId);
+                OperationResult validationResult = DataValidator.validateEmailAddress(uniqueId);
                 if (!validationResult.isValid()) {
                     return OperationResult.failed("The email address: " + uniqueId + " is invalid. Please try again.");
                 }
@@ -314,7 +332,6 @@ public class AccountController {
         switch (operationType) {
             case CREATE -> {
                 accountValues.add(userAccountDTO.getUserID());
-                accountValues.add(userAccountDTO.getUserRole());
                 accountValues.add(userAccountDTO.getFirstName());
                 accountValues.add(userAccountDTO.getLastName());
                 accountValues.add(userAccountDTO.getEmailAddress());
@@ -334,7 +351,6 @@ public class AccountController {
             case UPDATE -> {
                 accountValues.add(userAccountDTO.getAccountID());
                 accountValues.add(userAccountDTO.getUserID());
-                accountValues.add(userAccountDTO.getUserRole());
                 accountValues.add(userAccountDTO.getFirstName());
                 accountValues.add(userAccountDTO.getLastName());
                 accountValues.add(userAccountDTO.getEmailAddress());
@@ -363,10 +379,10 @@ public class AccountController {
         Map<DataFieldName, String> allErrors = new HashMap<>();
 
         // Validate the user detail first, then if there are errors, collect them into the shared list
-        collectErrors(allErrors, DataValidation.validateUserId(userAccountDTO.getUserID()));
-        collectErrors(allErrors, DataValidation.validateEmailAddress(userAccountDTO.getEmailAddress()));
-        collectErrors(allErrors, DataValidation.validatePhoneNumber(userAccountDTO.getPhoneNumber()));
-        collectErrors(allErrors, DataValidation.validatePassword(userAccountDTO.getPassword(),
+        collectErrors(allErrors, DataValidator.validateUserId(userAccountDTO.getUserID()));
+        collectErrors(allErrors, DataValidator.validateEmailAddress(userAccountDTO.getEmailAddress()));
+        collectErrors(allErrors, DataValidator.validatePhoneNumber(userAccountDTO.getPhoneNumber()));
+        collectErrors(allErrors, DataValidator.validatePassword(userAccountDTO.getPassword(),
                 userAccountDTO.getConfirmPassword()));
 
         // If all validations are successful, return the success message

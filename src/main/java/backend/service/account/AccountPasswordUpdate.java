@@ -1,9 +1,9 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
-import main.java.backend.util.PswdHashing;
+import main.java.backend.util.PswdHasher;
 import main.java.dtos.UserAccountDTO;
 import main.java.records.OperationResult;
 import main.java.records.PasswordHash;
@@ -35,7 +35,7 @@ public class AccountPasswordUpdate implements RecordWriter {
         }
 
         // Hash password to prevent storing plain text password
-        PasswordHash passwordHash = PswdHashing.hashNewPassword(password);
+        PasswordHash passwordHash = PswdHasher.hashNewPassword(password);
 
         // Set the new password hash into the existing account record
         existingAcc.setPasswordHash(passwordHash);

@@ -76,30 +76,4 @@ public class StaffAccount extends UserAccount {
                 "\nSpecialization: " + specialization +
                 "\n";
     }
-
-    /**
-     * Return a CSV format string representation of the object.
-     * Used for saving the object to a text file.
-     */
-    public String toTextFile() {
-        String basicDetails = super.toTextFile();
-
-        // If the staff is a technician, the specialization field will be added into the record
-        if (jobPosition == JobPosition.TECHNICIAN) {
-            return String.join(", ",
-                    basicDetails,
-                    jobPosition.getJobPosition(),
-                    employmentDate.toString(),
-                    employmentStatus.getEmpStatus(),
-                    specialization
-            );
-        } else {
-            return String.join(", ",
-                    basicDetails,
-                    jobPosition.getJobPosition(),
-                    employmentDate.toString(),
-                    employmentStatus.getEmpStatus()
-            );
-        }
-    }
 }

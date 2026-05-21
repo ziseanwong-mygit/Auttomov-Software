@@ -106,8 +106,7 @@ public class ServicePackage {
                 .map(VehiclePart::getVehiclePartName)
                 .collect(Collectors.joining(", "));
 
-        return "Service Package ID: " +
-                servicePackageID +
+        return "Service Package ID: " + servicePackageID +
                 "\nService Package Name: " + servicePackageName +
                 "\nService Package Description: " +
                 (servicePackageDescription != null ? servicePackageDescription : "(no description)") +

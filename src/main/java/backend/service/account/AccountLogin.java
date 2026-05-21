@@ -1,9 +1,9 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
-import main.java.backend.util.PswdHashing;
+import main.java.backend.util.PswdHasher;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.records.OperationResult;
@@ -30,7 +30,7 @@ public class AccountLogin implements RecordWriter {
         }
 
         // Verify input password
-        boolean pwdVerification = PswdHashing.verifyPassword(userAccountDTO.getPassword(), existingAcc);
+        boolean pwdVerification = PswdHasher.verifyPassword(userAccountDTO.getPassword(), existingAcc);
         if (!pwdVerification) {
             return OperationResult.failed(
                     "Sorry! The password you entered is incorrect. Please try again.");

@@ -108,11 +108,12 @@ public class CSVFormatter {
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
                 appointment.getAppointmentCreationDate().toString(),
+                appointment.getAppointmentUpdateDate().toString(),
                 appointment.getAppointmentTitle(),
                 appointmentDescription != null ? appointmentDescription : "",
-                appointment.getAppointmentDate().toString(),
-                appointment.getAppointmentTime().toString(),
                 appointment.getServicePackage().getServicePackageID(),
+                appointment.getServiceDate().toString(),
+                appointment.getServiceTime().toString(),
                 appointment.getAppointmentStatus().getAppointmentStatus()
         );
 

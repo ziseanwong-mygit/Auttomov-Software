@@ -1,7 +1,7 @@
 package main.java.backend.service.account;
 
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordReader;
 import main.java.enums.system.RegexPattern;
 

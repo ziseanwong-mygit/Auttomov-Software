@@ -1,9 +1,9 @@
-package main.java.backend.repository;
+package main.java.backend.repository.impl;
 
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.repository.AbstractRepository;
 import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataStructureOrganizer;
 import main.java.backend.util.DataTypeConverter;
@@ -169,13 +169,10 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         // Without the bracket lists, split the line into an array of columns
         String[] columns = strippedLine.split(",\\s*");
 
-        // If the description field is empty, set it to null, otherwise keep it as-is
-        String description = columns[2].isBlank() ? null : columns[2];
-
         return new ServicePackage(
                 columns[0],
                 columns[1],
-                description,
+                columns[2].isBlank() ? null : columns[2], // If description is empty, set it to null
                 DataTypeConverter.convertStringToServicePackageType(columns[3]),
                 serviceActivityList,
                 vehiclePartList,

@@ -1,7 +1,7 @@
-package main.java.backend.repository;
+package main.java.backend.repository.impl;
 
 import main.java.backend.model.ServiceActivity;
-import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.repository.AbstractRepository;
 import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
@@ -141,13 +141,10 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
     protected ServiceActivity parseRecord(String line) {
         String[] columns = line.split(",\\s*");
 
-        // If the description field is empty, set it to null, otherwise keep it as-is
-        String description = columns[2].isBlank() ? null : columns[2];
-
         return new ServiceActivity(
                 columns[0],
                 columns[1],
-                description,
+                columns[2].isBlank() ? null : columns[2], // If description is empty, set it to null
                 DataTypeConverter.convertStringToDouble(columns[3])
         );
     }

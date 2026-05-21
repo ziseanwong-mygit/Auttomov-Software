@@ -2,9 +2,9 @@ package main.java.backend.service.account;
 
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.account.AccountRepository;
+import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
-import main.java.backend.util.PswdHashing;
+import main.java.backend.util.PswdHasher;
 import main.java.dtos.StaffAccountDTO;
 import main.java.dtos.UserAccountDTO;
 import main.java.enums.data.AccountStatus;
@@ -63,10 +63,16 @@ public class AccountCreation implements RecordWriter {
         // Create a shared map to collect all error messages
         Map<DataFieldName, String> allErrors = new HashMap<>();
 
+        // Determine the user role based on the DTO type - default to customer
+        Role userRole = Role.CUSTOMER;
+        if (userAccountDTO instanceof StaffAccountDTO) {
+            userRole = Role.STAFF;
+        }
+
         collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(
-                userAccountDTO.getUserRole(), userAccountDTO.getUserID(), null));
-        collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(userAccountDTO.getUserRole(),
-                userAccountDTO.getEmailAddress(), null));
+                userRole, userAccountDTO.getUserID(), null));
+        collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(
+                userRole, userAccountDTO.getEmailAddress(), null));
 
         // If all validations are successful, return the success message
         // Otherwise, return the map of error messages
@@ -97,7 +103,6 @@ public class AccountCreation implements RecordWriter {
         AccountStatus accountStatus;
 
         String userID = userAccountDTO.getUserID();
-        Role userRole = userAccountDTO.getUserRole();
         String firstName = userAccountDTO.getFirstName();
         String lastName = userAccountDTO.getLastName();
         String emailAddress = userAccountDTO.getEmailAddress();
@@ -105,19 +110,19 @@ public class AccountCreation implements RecordWriter {
         String password = userAccountDTO.getPassword();
 
         // Hash password to prevent storing plain text password
-        PasswordHash passwordHash = PswdHashing.hashNewPassword(password);
+        PasswordHash passwordHash = PswdHasher.hashNewPassword(password);
 
-        // If the account is a staff type, set its status for manager's approval
+        // If the account is a staff type, set its status PENDING for manager's approval
         // Otherwise, automatically authorize the customer's account for immediate login
         if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO) {
             accountStatus = AccountStatus.PENDING;
             LocalDate employmentDate = LocalDate.now();
-            return new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+            return new StaffAccount(accountId, creationDate, userID, Role.STAFF, firstName, lastName,
                     emailAddress, phoneNumber, passwordHash, accountStatus, staffAccountDTO.getJobPosition(),
                     employmentDate, staffAccountDTO.getEmploymentStatus(), staffAccountDTO.getSpecialization());
         } else {
             accountStatus = AccountStatus.ACTIVE;
-            return new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
+            return new UserAccount(accountId, creationDate, userID, Role.CUSTOMER, firstName, lastName,
                     emailAddress, phoneNumber, passwordHash, accountStatus);
         }
     }

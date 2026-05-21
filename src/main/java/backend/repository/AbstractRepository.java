@@ -1,4 +1,4 @@
-package main.java.backend.repository.general;
+package main.java.backend.repository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

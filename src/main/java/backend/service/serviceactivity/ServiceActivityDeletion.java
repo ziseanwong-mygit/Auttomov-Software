@@ -1,7 +1,7 @@
 package main.java.backend.service.serviceactivity;
 
 import main.java.backend.model.ServiceActivity;
-import main.java.backend.repository.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServiceActivityRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.records.OperationResult;
 

@@ -1,14 +1,14 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.ServiceActivity;
-import main.java.backend.repository.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServiceActivityRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.serviceactivity.ServiceActivityCreation;
 import main.java.backend.service.serviceactivity.ServiceActivityDeletion;
 import main.java.backend.service.serviceactivity.ServiceActivityRetrieval;
 import main.java.backend.service.serviceactivity.ServiceActivityUpdate;
-import main.java.backend.util.DataValidation;
+import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.ServiceActivityDTO;
 import main.java.enums.system.OperationType;
@@ -29,7 +29,7 @@ public class ServiceActivityController {
         }
 
         // Validate price logic
-        OperationResult priceValidation = DataValidation.validatePrice(
+        OperationResult priceValidation = DataValidator.validatePrice(
                 serviceActivityDTO.getServiceActivityPrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
@@ -52,7 +52,7 @@ public class ServiceActivityController {
         }
 
         // Validate price format
-        OperationResult formatValidation = DataValidation.validatePrice(
+        OperationResult formatValidation = DataValidator.validatePrice(
                 serviceActivityDTO.getServiceActivityPrice());
         if (!formatValidation.isValid()) {
             return formatValidation;
@@ -127,7 +127,7 @@ public class ServiceActivityController {
                     "Please try again.");
         }
 
-        if (!DataValidation.validateRecordId(serviceActId).isValid()) {
+        if (!DataValidator.validateRecordId(serviceActId).isValid()) {
             return OperationResult.failed("The service activity ID: " + serviceActId +
                     " is not an UUID. Please try again.");
         }
@@ -152,7 +152,7 @@ public class ServiceActivityController {
 
         // Check if any of the service activity IDs are invalid
         for (String serviceActId : serviceActIds) {
-            if (!DataValidation.validateRecordId(serviceActId).isValid()) {
+            if (!DataValidator.validateRecordId(serviceActId).isValid()) {
                 return OperationResult.failed("The service activity ID: " + serviceActId +
                         " is not an UUID. Please try again.");
             }

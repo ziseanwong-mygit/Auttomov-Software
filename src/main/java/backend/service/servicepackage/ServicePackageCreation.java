@@ -3,9 +3,9 @@ package main.java.backend.service.servicepackage;
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.ServiceActivityRepository;
-import main.java.backend.repository.ServicePackageRepository;
-import main.java.backend.repository.VehiclePartRepository;
+import main.java.backend.repository.impl.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
+import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.ServicePackageDTO;
 import main.java.enums.data.ServicePackageType;
@@ -64,9 +64,9 @@ public class ServicePackageCreation implements RecordWriter {
 
         // Get the service activity and vehicle part objects from the repository
         List<ServiceActivity> serviceActivityList = serviceActivityRepository.getRecordsByIds(
-                servicePackageDTO.getServiceActivityList());
+                servicePackageDTO.getServiceActivityIDs());
         List<VehiclePart> vehiclePartList = vehiclePartRepository.getRecordsByIds(
-                servicePackageDTO.getVehiclePartList());
+                servicePackageDTO.getVehiclePartIDs());
         
         return new ServicePackage(servicePkgId, servicePkgName, servicePkgDescription, servicePkgType, 
                 serviceActivityList, vehiclePartList, packageBasePrice, serviceDuration);
