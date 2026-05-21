@@ -37,7 +37,6 @@ public class ServicePackageRetrieval implements RecordReader<ServicePackage> {
     @Override
     public Optional<ServicePackage> getRecordById(String servicePackageId) {
 
-        // Find the service package by its ID
         ServicePackage existingServicePkg = servicePackageRepository.getRecordById(servicePackageId);
 
         if (existingServicePkg == null) {

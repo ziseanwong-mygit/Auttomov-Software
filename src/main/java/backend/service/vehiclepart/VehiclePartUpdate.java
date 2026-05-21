@@ -14,26 +14,24 @@ public class VehiclePartUpdate implements RecordWriter {
     
     private final VehiclePartRepository vehiclePartRepository;
     private final VehiclePartDTO vehiclePartDTO;
-    private final VehiclePart existingVehiclePart;
     
     public VehiclePartUpdate(VehiclePartRepository vehiclePartRepository, VehiclePartDTO vehiclePartDTO) {
         this.vehiclePartRepository = vehiclePartRepository;
         this.vehiclePartDTO = vehiclePartDTO;
-        this.existingVehiclePart = vehiclePartRepository.getRecordById(vehiclePartDTO.getVehiclePartID());
     }
     
     @Override
     public OperationResult execute() {
-        
-        String vehiclePartID = vehiclePartDTO.getVehiclePartID();
 
+        // Check if the vehicle part exists with the given ID
+        VehiclePart existingVehiclePart = vehiclePartRepository.getRecordById(vehiclePartDTO.getVehiclePartID());
         if (existingVehiclePart == null) {
-            return OperationResult.failed("The vehicle part with ID: " + vehiclePartID +
+            return OperationResult.failed("The vehicle part with ID: " + vehiclePartDTO.getVehiclePartID() +
                     " does not exist in the system.");
         }
 
         // Get the list of fields that are changed
-        List<FieldComparison<?>> changedFields = compareChanges();
+        List<FieldComparison<?>> changedFields = compareChanges(existingVehiclePart);
 
         // If no fields are changed, return an error message
         if (changedFields.isEmpty()) {
@@ -42,22 +40,16 @@ public class VehiclePartUpdate implements RecordWriter {
         }
 
         // Apply updates only to changed fields
-        setChangedValues(changedFields);
+        setChangedValues(changedFields, existingVehiclePart);
 
         // Begin updating vehicle part record in the repository
-        try {
-            return vehiclePartRepository.updateRecord(existingVehiclePart);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating " +
-                    "the vehicle part record. Please try again.");
-        }
+        return vehiclePartRepository.updateRecord(existingVehiclePart);
     }
 
     /**
      * Compare the values between the existing vehicle part and incoming inputs (DTO) to get the changed fields
      */
-    private List<FieldComparison<?>> compareChanges() {
+    private List<FieldComparison<?>> compareChanges(VehiclePart existingVehiclePart) {
 
         // Declare a list to store all the fields for comparison later
         List<FieldComparison<?>> vehiclePartFields = new ArrayList<>();
@@ -88,7 +80,7 @@ public class VehiclePartUpdate implements RecordWriter {
      * Set the new values of the changed fields in the existing vehicle part object
      * The object will be used to update the record in the file
      */
-    private void setChangedValues(List<FieldComparison<?>> changedFields) {
+    private void setChangedValues(List<FieldComparison<?>> changedFields, VehiclePart existingVehiclePart) {
         for (FieldComparison<?> field : changedFields) {
             switch (field.fieldName()) {
                 case "name" -> existingVehiclePart.setVehiclePartName(vehiclePartDTO.getVehiclePartName());

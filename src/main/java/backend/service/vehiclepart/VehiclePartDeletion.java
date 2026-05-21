@@ -18,21 +18,14 @@ public class VehiclePartDeletion implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        // Get the vehicle part record by its ID
+        // Check if the vehicle part exists with the given ID
         VehiclePart existingVehiclePart = vehiclePartRepository.getRecordById(vehiclePartID);
-
-        // If the vehicle part is not found, return an error message
         if (existingVehiclePart == null) {
             return OperationResult.failed("The vehicle part with ID: " + vehiclePartID +
                     " does not exist in the system.");
         }
 
-        try {
-            return vehiclePartRepository.deleteRecord(existingVehiclePart);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while deleting the " +
-                    "vehicle part record. Please try again.");
-        }
+        // Begin deleting vehicle part record in the repository
+        return vehiclePartRepository.deleteRecord(existingVehiclePart);
     }
 }

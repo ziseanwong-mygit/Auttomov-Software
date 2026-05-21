@@ -29,11 +29,11 @@ public class StaffAccountDTO extends UserAccountDTO {
     /**
      * For updating an existing account
      */
-    public StaffAccountDTO(String accountID, String userID, Role userRole, String firstName, String lastName,
+    public StaffAccountDTO(String accountID, Role userRole, String userID, String firstName, String lastName,
                            String emailAddress, String phoneNumber, AccountStatus accountStatus,
                            JobPosition jobPosition, LocalDate employmentDate, EmploymentStatus employmentStatus,
                            String specialization) {
-        super(accountID, userID, userRole, firstName, lastName, emailAddress, phoneNumber, accountStatus);
+        super(accountID, userRole, userID, firstName, lastName, emailAddress, phoneNumber, accountStatus);
         this.jobPosition = jobPosition;
         this.employmentDate = employmentDate;
         this.employmentStatus = employmentStatus;

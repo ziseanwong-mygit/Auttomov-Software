@@ -25,30 +25,24 @@ public class AccountPasswordUpdate implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        String accountID = userAccountDTO.getAccountID();
-        String password = userAccountDTO.getPassword();
-
-        // If the account is not found, return an error message
+        // Check if the account exists with the given ID
+        UserAccount existingAcc = accountRepository.getRecordById(userAccountDTO.getAccountID());
         if (existingAcc == null) {
-            return OperationResult.failed("The account with ID: " + accountID +
+            return OperationResult.failed("The account with ID: " + userAccountDTO.getAccountID() +
                     " does not exist in the system.");
         }
 
         // Hash password to prevent storing plain text password
-        PasswordHash passwordHash = PswdHasher.hashNewPassword(password);
+        PasswordHash passwordHash = PswdHasher.hashNewPassword(userAccountDTO.getPassword());
 
         // Set the new password hash into the existing account record
         existingAcc.setPasswordHash(passwordHash);
 
-        // Regardless of whether the new password is the same as the old one,
-        // begin updating account record with new status in the repository
-        try {
-            // Cast the existingAcc to specific account type, then only update the record; base implementation
-            return accountRepository.updateRecordBase(existingAcc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating the account. " +
-                    "Please try again.");
-        }
+        /*
+            Regardless of whether the new password is the same as the old one,
+            begin updating account record with new status in the repository
+            Cast the existingAcc to specific account type, then only update the record; base implementation
+         */
+        return accountRepository.updateRecordBase(existingAcc);
     }
 }

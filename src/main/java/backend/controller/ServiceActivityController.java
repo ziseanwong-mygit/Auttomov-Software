@@ -11,6 +11,7 @@ import main.java.backend.service.serviceactivity.ServiceActivityUpdate;
 import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.ServiceActivityDTO;
+import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
 
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class ServiceActivityController {
+
+    // Singleton instance of the repository
+    private final ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
 
     public OperationResult createServiceActivity(ServiceActivityDTO serviceActivityDTO) {
 
@@ -35,11 +39,8 @@ public class ServiceActivityController {
             return priceValidation;
         }
 
-        // Instantiate the repository and service for creating records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        RecordWriter createServiceActivity = new ServiceActivityCreation(serviceActivityRepo, serviceActivityDTO);
-
         // Begin creating service activity record procedure in service class
+        RecordWriter createServiceActivity = new ServiceActivityCreation(serviceActivityRepo, serviceActivityDTO);
         return createServiceActivity.execute();
     }
 
@@ -51,18 +52,21 @@ public class ServiceActivityController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
-        // Validate price format
+        // Check if the service activity ID is in UUID format
+        if (!DataValidator.validateRecordId(serviceActivityDTO.getServiceActivityID()).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The service activity ID: " +
+                    serviceActivityDTO.getServiceActivityID() + " is not an UUID. Please try again.");
+        }
+
+        // Validate price logic
         OperationResult formatValidation = DataValidator.validatePrice(
                 serviceActivityDTO.getServiceActivityPrice());
         if (!formatValidation.isValid()) {
             return formatValidation;
         }
 
-        // Instantiate the repository and service for updating records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        RecordWriter updateServiceActivity = new ServiceActivityUpdate(serviceActivityRepo, serviceActivityDTO);
-
         // Begin updating service activity record procedure in service class
+        RecordWriter updateServiceActivity = new ServiceActivityUpdate(serviceActivityRepo, serviceActivityDTO);
         return updateServiceActivity.execute();
     }
 
@@ -74,10 +78,14 @@ public class ServiceActivityController {
                     "delete a record. Please try again.");
         }
 
-        // Instantiate the repository and service for deleting records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        RecordWriter deleteServiceActivity = new ServiceActivityDeletion(serviceActivityRepo, serviceActId);
+        // Check if the input is a valid UUID
+        if (!DataValidator.validateRecordId(serviceActId).isValid()) {
+            return OperationResult.failed("The service activity ID: " + serviceActId +
+                    " is not an UUID. Please try again.");
+        }
 
+        // Begin deleting service activity record procedure in service class
+        RecordWriter deleteServiceActivity = new ServiceActivityDeletion(serviceActivityRepo, serviceActId);
         return deleteServiceActivity.execute();
     }
 
@@ -87,31 +95,22 @@ public class ServiceActivityController {
      */
     public Optional<List<ServiceActivity>> retrieveAllServiceActivities() {
 
-        // Instantiate the repository and service for retrieving records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        // Begin retrieving all service activity record procedures in service class
         RecordReader<ServiceActivity> retrieveAllServiceActs = new ServiceActivityRetrieval(serviceActivityRepo);
-
-        // Retrieve all the records from the repository
         return retrieveAllServiceActs.getAllRecords();
     }
 
     public Optional<ServiceActivity> retrieveServiceActivityById(String serviceActId) {
 
-        // Instantiate the repository and service for retrieving records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        // Begin retrieving service activity record by ID procedure in service class
         RecordReader<ServiceActivity> retrieveServiceActById = new ServiceActivityRetrieval(serviceActivityRepo);
-
-        // Retrieve the record from the repository based on the ID
         return retrieveServiceActById.getRecordById(serviceActId);
     }
 
     public Optional<List<ServiceActivity>> retrieveServiceActivitiesByIds(List<String> serviceActIds) {
 
-        // Instantiate the repository and service for retrieving records
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+        // Begin retrieving multiple service activity records by IDs procedure in service class
         RecordReader<ServiceActivity> retrieveServiceActsByIds = new ServiceActivityRetrieval(serviceActivityRepo);
-
-        // Retrieve the records from the repository based on the ID list
         return retrieveServiceActsByIds.getRecordsByIds(serviceActIds);
     }
 

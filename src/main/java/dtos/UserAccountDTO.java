@@ -1,11 +1,13 @@
 package main.java.dtos;
 
 import main.java.enums.data.AccountStatus;
+import main.java.enums.data.Role;
 
 public class UserAccountDTO {
 
     private String accountID;
     private String userID;
+    private Role userRole;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -17,9 +19,10 @@ public class UserAccountDTO {
     /**
      * For creating a new account
      */
-    public UserAccountDTO(String userID, String firstName, String lastName, String emailAddress,
+    public UserAccountDTO(String userID, Role userRole, String firstName, String lastName, String emailAddress,
                           String phoneNumber, String password, String confirmPassword) {
         this.userID = userID;
+        this.userRole = userRole;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
@@ -31,7 +34,8 @@ public class UserAccountDTO {
     /**
      * For logging in an existing account
      */
-    public UserAccountDTO(String emailAddress, String password) {
+    public UserAccountDTO(Role userRole, String emailAddress, String password) {
+        this.userRole = userRole;
         this.emailAddress = emailAddress;
         this.password = password;
     }
@@ -39,10 +43,11 @@ public class UserAccountDTO {
     /**
      * For updating an existing account's details
      */
-    public UserAccountDTO(String accountID, String userID, String firstName, String lastName,
+    public UserAccountDTO(String accountID, Role userRole, String userID, String firstName, String lastName,
                           String emailAddress, String phoneNumber, AccountStatus accountStatus) {
         this.accountID = accountID;
         this.userID = userID;
+        this.userRole = userRole;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
@@ -53,8 +58,9 @@ public class UserAccountDTO {
     /**
      * For updating the password of an existing account
      */
-    public UserAccountDTO(String accountID, String password, String confirmPassword) {
+    public UserAccountDTO(String accountID, Role userRole, String password, String confirmPassword) {
         this.accountID = accountID;
+        this.userRole = userRole;
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
@@ -73,6 +79,10 @@ public class UserAccountDTO {
 
     public String getUserID() {
         return userID;
+    }
+
+    public Role getUserRole() {
+        return userRole;
     }
 
     public String getFirstName() {

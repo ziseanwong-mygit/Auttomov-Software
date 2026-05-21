@@ -23,27 +23,24 @@ public class AccountUpdate implements RecordWriter {
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
     private final UserAccountDTO userAccountDTO;
-    private final UserAccount existingAcc;
 
     public AccountUpdate(AccountRepository<? extends UserAccount> accountRepository, UserAccountDTO userAccountDTO) {
         this.accountRepository = accountRepository;
         this.userAccountDTO = userAccountDTO;
-        this.existingAcc = accountRepository.getRecordById(userAccountDTO.getAccountID());
     }
 
     @Override
     public OperationResult execute() {
 
-        String accountID = userAccountDTO.getAccountID();
-
-        // If the account is not found, return an error message
+        // Check if the account exists with the given ID
+        UserAccount existingAcc = accountRepository.getRecordById(userAccountDTO.getAccountID());
         if (existingAcc == null) {
-            return OperationResult.failed("The account with ID: " + accountID +
+            return OperationResult.failed("The account with ID " + userAccountDTO.getAccountID()  +
                     " does not exist in the system.");
         }
 
         // Get the list of fields that are changed
-        List<FieldComparison<?>> changedFields = compareChanges();
+        List<FieldComparison<?>> changedFields = compareChanges(existingAcc);
 
         // If no fields are changed, return an error message
         if (changedFields.isEmpty()) {
@@ -68,23 +65,17 @@ public class AccountUpdate implements RecordWriter {
         }
 
         // Apply updates only to changed fields
-        setChangedValues(changedFields);
+        setChangedValues(changedFields, existingAcc);
 
         // Begin updating account record in the repository
-        try {
-            // Cast the existingAcc to specific account type, then only update the record; base implementation
-            return accountRepository.updateRecordBase(existingAcc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating the " +
-                    "account record. Please try again.");
-        }
+        // Cast the existingAcc to specific account type, then only update the record; base implementation
+        return accountRepository.updateRecordBase(existingAcc);
     }
 
     /**
      * Compare the values between the existing account and incoming inputs (DTO) to get the changed fields
      */
-    private List<FieldComparison<?>> compareChanges() {
+    private List<FieldComparison<?>> compareChanges(UserAccount existingAcc) {
 
         // Declare a list to store all the fields for comparison later
         List<FieldComparison<?>> accountFields = new ArrayList<>();
@@ -105,6 +96,8 @@ public class AccountUpdate implements RecordWriter {
         )));
         accountFields.add(new FieldComparison<>("phoneNumber", existingAcc.getPhoneNumber(),
                 userAccountDTO.getPhoneNumber(), List.of(DataValidator::validatePhoneNumber)));
+        accountFields.add(new FieldComparison<>("accountStatus", existingAcc.getAccountStatus(),
+                userAccountDTO.getAccountStatus(), null));
 
         // For staff account only
         if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO &&
@@ -134,7 +127,7 @@ public class AccountUpdate implements RecordWriter {
      * Set the new values of the changed fields in the existing account object
      * The object will be used to update the record in the file
      */
-    private void setChangedValues(List<FieldComparison<?>> changedFields) {
+    private void setChangedValues(List<FieldComparison<?>> changedFields, UserAccount existingAcc) {
         for (FieldComparison<?> field : changedFields) {
             switch (field.fieldName()) {
                 case "userID" -> existingAcc.setUserID(userAccountDTO.getUserID());
@@ -142,6 +135,7 @@ public class AccountUpdate implements RecordWriter {
                 case "lastName" -> existingAcc.setLastName(userAccountDTO.getLastName());
                 case "emailAddress" -> existingAcc.setEmailAddress(userAccountDTO.getEmailAddress());
                 case "phoneNumber" -> existingAcc.setPhoneNumber(userAccountDTO.getPhoneNumber());
+                case "accountStatus" -> existingAcc.setAccountStatus(userAccountDTO.getAccountStatus());
             }
             if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO &&
                     existingAcc instanceof StaffAccount staffAcc) {

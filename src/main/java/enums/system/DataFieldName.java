@@ -11,5 +11,8 @@ public enum DataFieldName {
     PHONE_NUMBER,
     PASSWORD,
     PRICE,
-    QUANTITY
+    QUANTITY,
+    SERVICE_ACTIVITY,
+    VEHICLE_PART,
+    SERVICE_PACKAGE,
 }

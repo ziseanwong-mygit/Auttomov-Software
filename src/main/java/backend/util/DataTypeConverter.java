@@ -4,6 +4,7 @@ import main.java.enums.data.*;
 import main.java.records.PasswordHash;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class DataTypeConverter {
@@ -35,6 +36,10 @@ public class DataTypeConverter {
 
     public static LocalTime convertStringToLocalTime(String str) {
         return LocalTime.parse(str);
+    }
+
+    public static LocalDateTime convertStringToLocalDateTime(String str) {
+        return LocalDateTime.parse(str);
     }
 
     public static Role convertStringToRole(String str) {

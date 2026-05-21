@@ -3,39 +3,39 @@ package main.java.backend.service.account;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordWriter;
-import main.java.dtos.UserAccountDTO;
+import main.java.dtos.StaffAccountDTO;
 import main.java.enums.data.AccountStatus;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
+/**
+ * Used for updating the status of newly registered staff accounts who currently have a pending status
+ * Convenient for manager to approve staff accounts
+ */
 public class StaffAccountStatusUpdate implements RecordWriter {
 
-    // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<StaffAccount> accountRepository;
-    private final UserAccountDTO userAccountDTO;
-    private final StaffAccount existingAcc;
+    private final StaffAccountDTO staffAccountDTO;
 
     public StaffAccountStatusUpdate(AccountRepository<StaffAccount> accountRepository,
-                                    UserAccountDTO userAccountDTO) {
+                                    StaffAccountDTO staffAccountDTO) {
         this.accountRepository = accountRepository;
-        this.userAccountDTO = userAccountDTO;
-        this.existingAcc = accountRepository.getRecordById(userAccountDTO.getAccountID());
+        this.staffAccountDTO = staffAccountDTO;
     }
 
     @Override
     public OperationResult execute() {
 
-        String accountID = userAccountDTO.getAccountID();
-
-        // If the account is not found, return an error message
+        // Check if the staff account exists with the given ID
+        StaffAccount existingAcc = accountRepository.getRecordById(staffAccountDTO.getAccountID());
         if (existingAcc == null) {
-            return OperationResult.failed("The staff account with ID: " + accountID +
+            return OperationResult.failed("The staff account with ID " + staffAccountDTO.getAccountID()  +
                     " does not exist in the system.");
         }
 
         // Check if the input status is different from the current status
         FieldComparison<AccountStatus> statusChange = new FieldComparison<>(
-                "accountStatus", existingAcc.getAccountStatus(), userAccountDTO.getAccountStatus(),
+                "accountStatus", existingAcc.getAccountStatus(), staffAccountDTO.getAccountStatus(),
                 null);
 
         if (!statusChange.isChanged()) {
@@ -44,16 +44,10 @@ public class StaffAccountStatusUpdate implements RecordWriter {
         }
 
         // Set the new status into the existing account record
-        existingAcc.setAccountStatus(userAccountDTO.getAccountStatus());
+        existingAcc.setAccountStatus(staffAccountDTO.getAccountStatus());
 
         // Begin updating staff account record with new status in the repository
-        try {
-            // Cast the existingAcc to specific account type, then only update the record; base implementation
-            return accountRepository.updateRecordBase(existingAcc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating the account. " +
-                    "Please try again.");
-        }
+        // Cast the existingAcc to specific account type, then only update the record; base implementation
+        return accountRepository.updateRecordBase(existingAcc);
     }
 }

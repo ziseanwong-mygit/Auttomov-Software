@@ -4,6 +4,7 @@ import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.AbstractRepository;
 import main.java.backend.util.CSVFormatter;
+import main.java.enums.data.AccountStatus;
 import main.java.enums.data.Role;
 import main.java.records.OperationResult;
 
@@ -173,23 +174,29 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
                 .toList();
     }
 
-    public T getAccountByUserId(String userId) {
+    public T getRecordByUserId(String userId) {
         return accountByUserId.get(userId);
     }
 
-    public List<T> getAccountsByUserIds(List<String> userIds) {
+    public List<T> getRecordsByUserIds(List<String> userIds) {
         return accountByUserId.values().stream()
                 .filter(acc -> userIds.contains(acc.getUserID()))
                 .toList();
     }
 
-    public T getAccountByEmail(String email) {
+    public T getRecordByEmail(String email) {
         return accountByEmail.get(email);
     }
 
-    public List<T> getAccountsByEmails(List<String> emails) {
+    public List<T> getRecordsByEmails(List<String> emails) {
         return accountByEmail.values().stream()
                 .filter(acc -> emails.contains(acc.getEmailAddress()))
+                .toList();
+    }
+
+    public List<T> getRecordsByAccStatus(AccountStatus status) {
+        return accountByAccId.values().stream()
+                .filter(acc -> acc.getAccountStatus().equals(status))
                 .toList();
     }
 

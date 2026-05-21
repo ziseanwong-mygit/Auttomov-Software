@@ -1,6 +1,8 @@
 package main.java.backend.controller;
 
+import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
+import main.java.backend.model.VehiclePart;
 import main.java.backend.repository.impl.ServiceActivityRepository;
 import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.repository.impl.VehiclePartRepository;
@@ -13,6 +15,7 @@ import main.java.backend.service.servicepackage.ServicePackageUpdate;
 import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.ServicePackageDTO;
+import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
 
@@ -21,6 +24,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class ServicePackageController {
+
+    // Singleton instances of the repositories
+    private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
+    private final ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+    private final VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
 
     public OperationResult createServicePackage(ServicePackageDTO servicePackageDTO) {
 
@@ -36,18 +44,21 @@ public class ServicePackageController {
             return priceValidation;
         }
 
-        /*
-        Instantiate the repository and service for creating records
-        Service activity and vehicle part repositories are used to
-        retrieve their respective objects for creating record
-         */
-        ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordWriter createServicePackage = new ServicePackageCreation(servicePackageRepo,
-                serviceActivityRepo, vehiclePartRepo, servicePackageDTO);
+        // Validate service activity and vehicle part IDs
+        OperationResult idVerification = validateReferencedIds(servicePackageDTO);
+        if (!idVerification.isValid()) {
+            return idVerification;
+        }
+
+        // Fetch all the service activities and vehicle parts after validation process
+        List<ServiceActivity> serviceActivityList =
+                serviceActivityRepo.getRecordsByIds(servicePackageDTO.getServiceActivityIDs());
+        List<VehiclePart> vehiclePartList =
+                vehiclePartRepo.getRecordsByIds(servicePackageDTO.getVehiclePartIDs());
 
         // Begin creating service package record procedure in service class
+        RecordWriter createServicePackage = new ServicePackageCreation(servicePackageRepo, servicePackageDTO,
+                serviceActivityList, vehiclePartList);
         return createServicePackage.execute();
     }
 
@@ -59,24 +70,33 @@ public class ServicePackageController {
             return nullValidation;
         }
 
+        // Check if the service package ID is in UUID format
+        if (!DataValidator.validateRecordId(servicePackageDTO.getServicePackageID()).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The service package ID: " +
+                    servicePackageDTO.getServicePackageID() + " is not an UUID. Please try again.");
+        }
+
         // Validate price logic
         OperationResult priceValidation = DataValidator.validatePrice(servicePackageDTO.getPackageBasePrice());
         if (!priceValidation.isValid()) {
             return priceValidation;
         }
 
-        /*
-        Instantiate the repository and service for creating records
-        Service activity and vehicle part repositories are used to
-        retrieve their respective objects for updating record
-         */
-        ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
-        ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordWriter updateServicePackage = new ServicePackageUpdate(servicePackageRepo,
-                serviceActivityRepo, vehiclePartRepo, servicePackageDTO);
+        // Validate service activity and vehicle part IDs
+        OperationResult referenceIdValidation = validateReferencedIds(servicePackageDTO);
+        if (!referenceIdValidation.isValid()) {
+            return referenceIdValidation;
+        }
+
+        // Fetch all the service activities and vehicle parts after ID verification
+        List<ServiceActivity> serviceActivityList =
+                serviceActivityRepo.getRecordsByIds(servicePackageDTO.getServiceActivityIDs());
+        List<VehiclePart> vehiclePartList =
+                vehiclePartRepo.getRecordsByIds(servicePackageDTO.getVehiclePartIDs());
 
         // Begin updating service package record procedure in service class
+        RecordWriter updateServicePackage = new ServicePackageUpdate(servicePackageRepo, servicePackageDTO,
+                serviceActivityList, vehiclePartList);
         return updateServicePackage.execute();
     }
 
@@ -88,10 +108,14 @@ public class ServicePackageController {
                     "delete a record. Please try again.");
         }
 
-        // Instantiate the repository and service for deleting records
-        ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
-        RecordWriter deleteServicePackage = new ServicePackageDeletion(servicePackageRepo, servicePkgId);
+        // Check if the input is a valid UUID
+        if (!DataValidator.validateRecordId(servicePkgId).isValid()) {
+            return OperationResult.failed("The service package ID: " + servicePkgId +
+                    " is not an UUID. Please try again.");
+        }
 
+        // Begin deleting service package record procedure in service class
+        RecordWriter deleteServicePackage = new ServicePackageDeletion(servicePackageRepo, servicePkgId);
         return deleteServicePackage.execute();
     }
 
@@ -101,31 +125,22 @@ public class ServicePackageController {
      */
     public Optional<List<ServicePackage>> retrieveAllServicePackages() {
 
-        // Instantiate the repository and service for deleting records
-        ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
+        // Begin retrieving all service package record procedures in service class
         RecordReader<ServicePackage> retrieveAllServicePackages = new ServicePackageRetrieval(servicePackageRepo);
-
-        // Retrieve all the records from the repository
         return retrieveAllServicePackages.getAllRecords();
     }
 
     public Optional<ServicePackage> retrieveServicePackageById(String servicePkgId) {
 
-        // Instantiate the repository and service for retrieving records
-        ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
+        // Begin retrieving service package record by ID procedure in service class
         RecordReader<ServicePackage> retrieveServicePackageById = new ServicePackageRetrieval(servicePackageRepo);
-
-        // Retrieve the record from the repository based on the ID
         return retrieveServicePackageById.getRecordById(servicePkgId);
     }
 
     public Optional<List<ServicePackage>> retrieveServicePackagesByIds(List<String> servicePkgIds) {
 
-        // Instantiate the repository and service for retrieving records
-        ServicePackageRepository vehiclePartRepo = ServicePackageRepository.getInstance();
-        RecordReader<ServicePackage> retrieveServiceActsByIds = new ServicePackageRetrieval(vehiclePartRepo);
-
-        // Retrieve the records from the repository based on the ID list
+        // Begin retrieving multiple service package records by IDs procedure in service class
+        RecordReader<ServicePackage> retrieveServiceActsByIds = new ServicePackageRetrieval(servicePackageRepo);
         return retrieveServiceActsByIds.getRecordsByIds(servicePkgIds);
     }
 
@@ -137,7 +152,7 @@ public class ServicePackageController {
 
         // Check if the service package ID and its type are null or empty
         if (servicePkgId == null || servicePkgId.isBlank()) {
-            return OperationResult.failed("The service package ID must be provided to validate. " +
+            return OperationResult.failed("The service package ID must be provided to retrieve records. " +
                     "Please try again.");
         }
 
@@ -153,7 +168,7 @@ public class ServicePackageController {
 
         // Check if the ID list and its type are null or empty
         if (servicePkgIds == null || servicePkgIds.isEmpty()) {
-            return OperationResult.failed("The service package IDs must be provided to validate. " +
+            return OperationResult.failed("The service package IDs must be provided to retrieve records. " +
                     "Please try again.");
         }
 
@@ -176,7 +191,8 @@ public class ServicePackageController {
     }
 
     /**
-     * Check if there are any null or empty values of required fields in the given DTO
+     * Check if there are any null or empty values of required fields in the given DTO,
+     * excluding service activity and vehicle part IDs.
      * Used for creating and updating records
      */
     private OperationResult validateNullValues(ServicePackageDTO servicePackageDTO, OperationType operationType) {
@@ -190,24 +206,74 @@ public class ServicePackageController {
         servicePkgValues.add(servicePackageDTO.getServicePackageType());
         servicePkgValues.add(servicePackageDTO.getPackageBasePrice());
 
-        // Both the service activity and vehicle part lists cannot be empty
-        // Either one of the lists must have values
-        if (servicePackageDTO.getServiceActivityIDs() == null &&
-                servicePackageDTO.getVehiclePartIDs() == null ) {
-            return new OperationResult(false,
-                    "Both service activity and vehicle part list cannot be empty");
-        }
-
         // Check if all values are null and get the boolean result
         boolean validationResult =  NullValidator.isAllValuesNull(servicePkgValues).isValid();
 
         // This conditional statement is used to customize the error message
         // if there is a null value in the servicePkgValues
         if (!validationResult) {
-            return new OperationResult(false,
-                    "All required fields must be filled in. Please try again.");
-        } else {
-            return OperationResult.success();
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
+
+        // If all values are not null, return success
+        return OperationResult.success();
+    }
+
+    /**
+     * Full validation for service activity and vehicle part IDs in checking nullity, format, and linking records
+     */
+    private OperationResult validateReferencedIds(ServicePackageDTO servicePackageDTO) {
+
+        // 1. Check if both service activity and vehicle part lists are empty; if so, return an error message
+        if (servicePackageDTO.getServiceActivityIDs() == null && servicePackageDTO.getVehiclePartIDs() == null ) {
+            return OperationResult.failed("Both service activity and vehicle part list cannot be empty. " +
+                    "Please fill in at least one of them.");
+        }
+
+        /*
+            For each loop:
+            2. Check if one of the IDs is null or empty; if so, return an error message
+            3. Then check if the ID is a valid UUID; if not, return an error message
+            4. Finally, check if the record exists with the ID
+         */
+        for (String activityId : servicePackageDTO.getServiceActivityIDs()) {
+
+            if (activityId == null || activityId.isBlank() ) {
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                        "One of the service activity IDs is null or empty. Please try again.");
+
+            }
+
+            if (!DataValidator.validateRecordId(activityId).isValid()) {
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                        "The service activity ID: " + activityId + " is not an UUID. Please try again.");
+            }
+
+            if (serviceActivityRepo.getRecordById(activityId) == null) {
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                        "The service activity with ID " + activityId + " does not exist in the records.");
+            }
+
+        }
+        for (String partId : servicePackageDTO.getVehiclePartIDs()) {
+
+            if (partId == null || partId.isBlank() ) {
+                return OperationResult.failed("One of the vehicle part IDs is null or empty. Please try again.");
+
+            }
+
+            if (!DataValidator.validateRecordId(partId).isValid()) {
+                return OperationResult.failed(DataFieldName.VEHICLE_PART,
+                        "The vehicle part ID: " + partId + " is not an UUID. Please try again.");
+            }
+
+            if (vehiclePartRepo.getRecordById(partId) == null) {
+                return OperationResult.failed(DataFieldName.VEHICLE_PART,
+                        "The vehicle part with ID " + partId + " does not exist in the records.");
+            }
+        }
+
+        // If all validations pass, return success
+        return OperationResult.success();
     }
 }

@@ -21,17 +21,11 @@ public class VehiclePartCreation implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        try {
-            // Create a new vehicle part object
-            VehiclePart newVehiclePart = populateVehiclePartDetails();
-            // Save the vehicle part into the file
-            return vehiclePartRepository.createRecord(newVehiclePart);
+        // Create a new vehicle part object
+        VehiclePart newVehiclePart = populateVehiclePartDetails();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while creating a new " +
-                    "vehicle part record. Please try again.");
-        }
+        // Save the vehicle part into the file
+        return vehiclePartRepository.createRecord(newVehiclePart);
     }
 
     /**

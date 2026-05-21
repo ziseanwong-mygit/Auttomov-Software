@@ -2,6 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.impl.account.AccountRepository;
+import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
@@ -24,6 +25,10 @@ import java.util.*;
  */
 public class AccountController {
 
+    // Singleton instances of the repositories
+    private final CustomerAccountRepository customerAccountRepo = CustomerAccountRepository.getInstance();
+    private final StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
+
     public OperationResult createAccount(UserAccountDTO userAccountDTO) {
 
         // Check if there are any null or empty values in the list
@@ -38,28 +43,23 @@ public class AccountController {
             return formatValidation;
         }
 
-        // Determine the user role based on the DTO type - default to customer
-        Role userRole = Role.CUSTOMER;
-        if (userAccountDTO instanceof StaffAccountDTO) {
-            userRole = Role.STAFF;
-        }
-
-        // Instantiate the repository and service for creating records
+        // Instantiate the customer/staff account repository for creating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordWriter createAccount = new AccountCreation(accountRepo, userAccountDTO);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userAccountDTO.getUserRole());
 
         // Begin creating account record procedure in service class
+        RecordWriter createAccount = new AccountCreation(accountRepo, userAccountDTO);
         return createAccount.execute();
     }
 
     public OperationResult loginAccount(UserAccountDTO userAccountDTO) {
 
+        Role userRole = userAccountDTO.getUserRole();
         String emailAddress = userAccountDTO.getEmailAddress();
         String password = userAccountDTO.getPassword();
 
         // Check if there are any null or empty values in the list
-        if (emailAddress == null || password == null ||
+        if (userRole == null || emailAddress == null || password == null ||
                 emailAddress.isBlank() || password.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
@@ -71,18 +71,12 @@ public class AccountController {
             return emailFormatValidation;
         }
 
-        // Determine the user role based on the DTO type - default to customer
-        Role userRole = Role.CUSTOMER;
-        if (userAccountDTO instanceof StaffAccountDTO) {
-            userRole = Role.STAFF;
-        }
-
-        // Instantiate the repository and service for creating records
+        // Instantiate the customer/staff account repository for logging in account
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordWriter loginAccount = new AccountLogin(accountRepo, userAccountDTO);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
         // Begin logging in account procedure in service class
+        RecordWriter loginAccount = new AccountLogin(accountRepo, userAccountDTO);
         return loginAccount.execute();
     }
 
@@ -94,18 +88,18 @@ public class AccountController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
-        // Determine the user role based on the DTO type - default to customer
-        Role userRole = Role.CUSTOMER;
-        if (userAccountDTO instanceof StaffAccountDTO) {
-            userRole = Role.STAFF;
+        // Check if the account ID is a valid UUID
+        if (!DataValidator.validateRecordId(userAccountDTO.getAccountID()).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The account ID: " +
+                    userAccountDTO.getAccountID() + " is not an UUID. Please try again.");
         }
 
-        // Instantiate the repository and service for updating records
+        // Instantiate the customer/staff account repository for updating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordWriter updateAccount = new AccountUpdate(accountRepo, userAccountDTO);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userAccountDTO.getUserRole());
 
         // Begin updating account record procedure in service class
+        RecordWriter updateAccount = new AccountUpdate(accountRepo, userAccountDTO);
         return updateAccount.execute();
     }
 
@@ -118,14 +112,19 @@ public class AccountController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
+        // Check if the staff account ID is a valid UUID
+        if (!DataValidator.validateRecordId(accountID).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The account ID: " +
+                    accountID + " is not an UUID. Please try again.");
+        }
+
         // Instantiate the repository and service for updating records
-        StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
         RecordWriter updateStatus = new StaffAccountStatusUpdate(staffAccountRepo, staffAccountDTO);
 
         // Begin updating account status procedure in service class
         OperationResult updateStatusResult = updateStatus.execute();
 
-        // Customize result message for updating account password
+        // Customize result message for updating account status
         if (updateStatusResult.isValid()) {
             return OperationResult.success("The account status for ID: " + accountID +
                     " has been updated successfully. Please check the new status to ensure it has been changed.");
@@ -138,31 +137,33 @@ public class AccountController {
     public OperationResult updateAccountPassword(UserAccountDTO userAccountDTO) {
 
         String accountID = userAccountDTO.getAccountID();
+        Role userRole = userAccountDTO.getUserRole();
         String password = userAccountDTO.getPassword();
         String confirmPassword = userAccountDTO.getConfirmPassword();
 
-        if (accountID == null || password == null || confirmPassword == null ||
+        if (accountID == null || userRole == null || password == null || confirmPassword == null ||
                 accountID.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
+        // Check if the account ID is a valid UUID
+        if (!DataValidator.validateRecordId(accountID).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The account ID: " +
+                    accountID + " is not an UUID. Please try again.");
+        }
+
+        // Check the format and confirmation of the password
         OperationResult pwdValidation = DataValidator.validatePassword(password, confirmPassword);
         if (!pwdValidation.isValid()) {
             return pwdValidation;
         }
 
-        // Determine the user role based on the DTO type - default to customer
-        Role userRole = Role.CUSTOMER;
-        if (userAccountDTO instanceof StaffAccountDTO) {
-            userRole = Role.STAFF;
-        }
-
-        // Instantiate the repository and service for updating records
+        // Instantiate the customer/staff account repository for updating records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordWriter updatePassword = new AccountPasswordUpdate(accountRepo, userAccountDTO);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
         // Begin updating account password procedure in service class
+        RecordWriter updatePassword = new AccountPasswordUpdate(accountRepo, userAccountDTO);
         OperationResult updatePwdResult = updatePassword.execute();
 
         // Customize result message for updating account password
@@ -183,12 +184,18 @@ public class AccountController {
                     "delete a record. Please try again.");
         }
 
-        // Instantiate the repository and service for deleting records
-        // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordWriter deleteAccount = new AccountDeletion(accountRepo, accountID);
+        // Check if the account ID is a valid UUID
+        if (!DataValidator.validateRecordId(accountID).isValid()) {
+            return OperationResult.failed("The account ID: " + accountID +
+                    " is not an UUID. Please try again.");
+        }
 
-        // Begin logging in account procedure in service class
+        // Instantiate the customer/staff account repository for deleting records
+        // Wildcard is used so can accept either customer or staff repository in one variable
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
+
+        // Begin deleting account record procedure in service class
+        RecordWriter deleteAccount = new AccountDeletion(accountRepo, accountID);
         return deleteAccount.execute();
     }
 
@@ -198,12 +205,12 @@ public class AccountController {
      */
     public Optional<List<UserAccount>> retrieveAllAccounts(Role userRole) {
 
-        // Instantiate the repository and service for retrieving records
+        // Instantiate the customer/staff account repository for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordReader<UserAccount> retrieveAllAccounts = new AccountRetrieval(accountRepo);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
-        // Retrieve all the records from the repository
+        // Begin retrieving all account record procedures in service class
+        RecordReader<UserAccount> retrieveAllAccounts = new AccountRetrieval(accountRepo);
         return retrieveAllAccounts.getAllRecords();
     }
 
@@ -214,10 +221,10 @@ public class AccountController {
 
         // Instantiate the repository and service for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordReader<UserAccount> retrieveAccountById = new AccountRetrieval(accountRepo);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
-        // Retrieve the record from the repository based on the unique ID
+        // Begin retrieving account record by ID procedure in service class
+        RecordReader<UserAccount> retrieveAccountById = new AccountRetrieval(accountRepo);
         return retrieveAccountById.getRecordById(uniqueId);
     }
 
@@ -226,25 +233,37 @@ public class AccountController {
      */
     public Optional<List<UserAccount>> retrieveAccountsByIds(List<String> uniqueIds, Role userRole) {
 
-        // Instantiate the repository and service for retrieving records
+        // Instantiate the customer/staff account repository for retrieving records
         // Wildcard is used so can accept either customer or staff repository in one variable
-        AccountRepository<? extends UserAccount> accountRepo = AccountRepository.getInstance(userRole);
-        RecordReader<UserAccount> retrieveAccountsByIds = new AccountRetrieval(accountRepo);
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
-        // Retrieve the records from the repository based on the unique IDs
+        // Begin retrieving multiple account records by IDs procedure in service class
+        RecordReader<UserAccount> retrieveAccountsByIds = new AccountRetrieval(accountRepo);
         return retrieveAccountsByIds.getRecordsByIds(uniqueIds);
+    }
+
+    public Optional<List<UserAccount>> retrieveAccountsByAccStatus(AccountStatus accountStatus, Role userRole) {
+
+        // Instantiate the customer/staff account repository for retrieving records
+        // Wildcard is used so can accept either customer or staff repository in one variable
+        AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
+
+        // Begin retrieving multiple account records by account status procedure in service class
+        AccountRetrieval retrieveAccountsByAccStatus = new AccountRetrieval(accountRepo);
+        return retrieveAccountsByAccStatus.getRecordsByAccStatus(accountStatus);
     }
 
     /**
      * Validate the format and length of recordID (accountID), userID, or emailAddress
+     * Used for retrieving a single record by ID
      * This validation is done before record retrieval, so the frontend can first display the validation result
      */
-    public OperationResult validateUniqueId(String uniqueId, DataFieldName fieldName) {
+    public OperationResult validateUniqueId(String uniqueId, DataFieldName fieldName, Role userRole) {
 
         // Check if the unique ID and its type are null or empty
-        if (uniqueId == null || uniqueId.isBlank() || fieldName == null) {
-            return OperationResult.failed("The unique ID and its type must be provided to validate. " +
-                    "Please try again.");
+        if (uniqueId == null || uniqueId.isBlank() || fieldName == null || userRole == null) {
+            return OperationResult.failed("The unique ID, field name and user role must be provided " +
+                    "to retrieve records. Please try again.");
         }
 
         // Validate the unique ID based on its type
@@ -262,15 +281,15 @@ public class AccountController {
     }
 
     /**
-     * Validate the format and length of multiple account unique IDs
+     * Validate the format and length of multiple account unique IDs; used for retreiving record by multiple IDs
      * This validation is done before retrieving multiple account records by their unique IDs
      */
-    public OperationResult validateUniqueIds(List<String> uniqueIds, DataFieldName fieldName) {
+    public OperationResult validateUniqueIds(List<String> uniqueIds, DataFieldName fieldName, Role userRole) {
 
         // Check if the ID list and its type are null or empty
-        if (uniqueIds == null || fieldName == null) {
-            return OperationResult.failed("The unique ID and its type must be provided to validate. " +
-                    "Please try again.");
+        if (uniqueIds == null || fieldName == null || userRole == null) {
+            return OperationResult.failed("The unique ID, field name and user role must be provided " +
+                    "to retrieve records. Please try again.");
         }
 
         // Check if any of the unique IDs are null or empty
@@ -323,6 +342,42 @@ public class AccountController {
     }
 
     /**
+     * Check if the user role is null before retrieving records; used for retrieving all records
+     * So the frontend can display the validation result before beginning the retrieval
+     */
+    public OperationResult validateUserRole(Role userRole) {
+
+        if (userRole == null) {
+            return OperationResult.failed("The user role must be provided to retrieve records. " +
+                    "Please try again.");
+        }
+
+        return OperationResult.success();
+    }
+
+
+    /**
+     * Check if the account status is null before retrieving records; used for retrieving records by status
+     * So the frontend can display the validation result before beginning the retrieval
+     */
+    public OperationResult validateAccountStatus(AccountStatus accountStatus, Role userRole) {
+
+        if (accountStatus == null || userRole == null) {
+            return OperationResult.failed("The account status and user role must be provided to retrieve records. " +
+                    "Please try again.");
+        }
+
+        return OperationResult.success();
+    }
+
+    /**
+     * Resolve the customer or staff account repository based on the user role
+     */
+    private AccountRepository<? extends UserAccount> resolveAccRepo(Role userRole) {
+        return userRole == Role.CUSTOMER ? customerAccountRepo : staffAccountRepo;
+    }
+
+    /**
      * Check if there are any null or empty values of required fields in the given DTO
      * Used for creating and updating records
      */
@@ -332,6 +387,7 @@ public class AccountController {
         switch (operationType) {
             case CREATE -> {
                 accountValues.add(userAccountDTO.getUserID());
+                accountValues.add(userAccountDTO.getUserRole());
                 accountValues.add(userAccountDTO.getFirstName());
                 accountValues.add(userAccountDTO.getLastName());
                 accountValues.add(userAccountDTO.getEmailAddress());
@@ -351,10 +407,12 @@ public class AccountController {
             case UPDATE -> {
                 accountValues.add(userAccountDTO.getAccountID());
                 accountValues.add(userAccountDTO.getUserID());
+                accountValues.add(userAccountDTO.getUserRole());
                 accountValues.add(userAccountDTO.getFirstName());
                 accountValues.add(userAccountDTO.getLastName());
                 accountValues.add(userAccountDTO.getEmailAddress());
                 accountValues.add(userAccountDTO.getPhoneNumber());
+                accountValues.add(userAccountDTO.getAccountStatus());
 
                 if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO) {
                     accountValues.add(staffAccountDTO.getJobPosition());

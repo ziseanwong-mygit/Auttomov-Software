@@ -18,21 +18,14 @@ public class ServicePackageDeletion implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        // Get the service package record by its ID
+        // Check if the service package exists with the given ID
         ServicePackage existingServicePkg = servicePackageRepository.getRecordById(servicePkgID);
-
-        // If the service package is not found, return an error message
         if (existingServicePkg == null) {
             return OperationResult.failed("The service package with ID: " + servicePkgID +
                     " does not exist in the system.");
         }
 
-        try {
-            return servicePackageRepository.deleteRecord(existingServicePkg);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while deleting the " +
-                    "service package record. Please try again.");
-        }
+        // Begin deleting service package record in the repository
+        return servicePackageRepository.deleteRecord(existingServicePkg);
     }
 }

@@ -22,17 +22,11 @@ public class ServiceActivityCreation implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        try {
-            // Create a new service activity object
-            ServiceActivity newServiceAct = populateServiceActDetails();
-            // Save the service activity into the file
-            return serviceActRepository.createRecord(newServiceAct);
+        // Create a new service activity object
+        ServiceActivity newServiceAct = populateServiceActDetails();
 
-        }  catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while creating a new " +
-                    "service activity record. Please try again.");
-        }
+        // Save the service activity into the file
+        return serviceActRepository.createRecord(newServiceAct);
     }
 
     /**

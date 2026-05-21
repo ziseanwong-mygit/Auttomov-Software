@@ -52,15 +52,15 @@ public class AccountDataVerification {
 
     private static UserAccount getAccountByUserId(Role userRole, String userId) {
         if (userRole == Role.CUSTOMER) {
-            return customerAccRepository.getAccountByUserId(userId);
+            return customerAccRepository.getRecordByUserId(userId);
         }
-        return staffAccRepository.getAccountByUserId(userId);
+        return staffAccRepository.getRecordByUserId(userId);
     }
 
     private static UserAccount getAccountByEmail(Role userRole, String email) {
         if (userRole == Role.CUSTOMER) {
-            return customerAccRepository.getAccountByEmail(email);
+            return customerAccRepository.getRecordByEmail(email);
         }
-        return staffAccRepository.getAccountByEmail(email);
+        return staffAccRepository.getRecordByEmail(email);
     }
 }

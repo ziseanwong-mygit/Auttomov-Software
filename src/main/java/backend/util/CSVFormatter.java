@@ -107,11 +107,11 @@ public class CSVFormatter {
         return String.join(", ",
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
-                appointment.getAppointmentCreationDate().toString(),
-                appointment.getAppointmentUpdateDate().toString(),
+                appointment.getAppointmentCreationTime().toString(),
+                appointment.getAppointmentUpdateTime().toString(),
                 appointment.getAppointmentTitle(),
                 appointmentDescription != null ? appointmentDescription : "",
-                appointment.getServicePackage().getServicePackageID(),
+                appointment.getServicePackage().getServicePackageID(), // Get the service package ID from the object
                 appointment.getServiceDate().toString(),
                 appointment.getServiceTime().toString(),
                 appointment.getAppointmentStatus().getAppointmentStatus()

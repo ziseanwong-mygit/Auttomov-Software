@@ -18,21 +18,14 @@ public class ServiceActivityDeletion implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        // Get the service activity record by its ID
+        // Check if the service activity exists with the given ID
         ServiceActivity existingServiceAct = serviceActRepository.getRecordById(serviceActID);
-
-        // If the service activity is not found, return an error message
         if (existingServiceAct == null) {
             return OperationResult.failed("The service activity with ID: " + serviceActID +
                     " does not exist in the system.");
         }
 
-        try {
-            return serviceActRepository.deleteRecord(existingServiceAct);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while deleting the " +
-                    "service activity record. Please try again.");
-        }
+        // Begin deleting service activity record in the repository
+        return serviceActRepository.deleteRecord(existingServiceAct);
     }
 }

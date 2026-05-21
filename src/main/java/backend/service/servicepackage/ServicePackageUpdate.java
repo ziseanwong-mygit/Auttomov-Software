@@ -3,9 +3,7 @@ package main.java.backend.service.servicepackage;
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
-import main.java.backend.repository.impl.ServiceActivityRepository;
 import main.java.backend.repository.impl.ServicePackageRepository;
-import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.ServicePackageDTO;
 import main.java.records.FieldComparison;
@@ -18,35 +16,35 @@ import java.util.List;
 public class ServicePackageUpdate implements RecordWriter {
 
     private final ServicePackageRepository servicePackageRepository;
-    private final ServiceActivityRepository serviceActivityRepository;
-    private final VehiclePartRepository vehiclePartRepository;
     private final ServicePackageDTO servicePackageDTO;
-    private final ServicePackage existingServicePackage;
+    private final List<ServiceActivity> newServiceActList;
+    private final List<VehiclePart> newVehiclePartList;
 
     public ServicePackageUpdate(ServicePackageRepository servicePackageRepository,
-                                ServiceActivityRepository serviceActivityRepository,
-                                VehiclePartRepository vehiclePartRepository,
-                                ServicePackageDTO servicePackageDTO) {
+                                ServicePackageDTO servicePackageDTO, List<ServiceActivity> newServiceActList,
+                                List<VehiclePart> newVehiclePartList) {
         this.servicePackageRepository = servicePackageRepository;
-        this.serviceActivityRepository = serviceActivityRepository;
-        this.vehiclePartRepository = vehiclePartRepository;
         this.servicePackageDTO = servicePackageDTO;
-        this.existingServicePackage = servicePackageRepository.getRecordById(servicePackageDTO.getServicePackageID());
+        this.newServiceActList = newServiceActList;
+        this.newVehiclePartList = newVehiclePartList;
     }
 
     @Override
     public OperationResult execute() {
 
-        String servicePackageID = servicePackageDTO.getServicePackageID();
-
+        // Check if the service package exists with the given ID
+        ServicePackage existingServicePackage = servicePackageRepository.getRecordById(
+                servicePackageDTO.getServicePackageID());
         if (existingServicePackage == null) {
-            return OperationResult.failed("The service package with ID: " + servicePackageID +
+            return OperationResult.failed("The service package with ID: " + servicePackageDTO.getServicePackageID() +
                     " does not exist in the system.");
         }
 
         // Get the list of fields that are changed
-        List<FieldComparison<?>> changedFields = compareChanges();
-        List<ListFieldComparison> changedLists  = compareListChanges(); // The fields containing a list
+        List<FieldComparison<?>> changedFields = compareChanges(existingServicePackage);
+
+        // Get the list of lists that are changed
+        List<ListFieldComparison> changedLists  = compareListChanges(existingServicePackage);
 
         // If nothing changed at all across both kinds
         if (changedFields.isEmpty() && changedLists.isEmpty()) {
@@ -55,22 +53,16 @@ public class ServicePackageUpdate implements RecordWriter {
         }
 
         // Apply updates only to changed fields
-        setChangedValues(changedFields, changedLists);
+        setChangedValues(changedFields, changedLists, existingServicePackage);
 
         // Begin updating service package record in the repository
-        try {
-            return servicePackageRepository.updateRecord(existingServicePackage);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while updating " +
-                    "the service package record. Please try again.");
-        }
+        return servicePackageRepository.updateRecord(existingServicePackage);
     }
 
     /**
      * Compare the values between the existing service package and incoming inputs (DTO) to get the changed fields
      */
-    private List<FieldComparison<?>> compareChanges() {
+    private List<FieldComparison<?>> compareChanges(ServicePackage existingServicePackage) {
 
         // Declare a list to store all the fields for comparison later
         List<FieldComparison<?>> servicePkgFields = new ArrayList<>();
@@ -97,14 +89,14 @@ public class ServicePackageUpdate implements RecordWriter {
     /**
      * Compare two lists between existing record and incoming inputs (DTO) to determine if any list is changed
      */
-    private List<ListFieldComparison> compareListChanges() {
+    private List<ListFieldComparison> compareListChanges(ServicePackage existingServicePackage) {
 
         // Declare a list to store all the fields for comparison later
         List<ListFieldComparison> listFields = new ArrayList<>();
 
         // Get the existing list of service activities and vehicle parts for comparison
         List<String> existingServiceActList = new ArrayList<>();
-        List<String> existingVehiclePartList = new ArrayList<>();;
+        List<String> existingVehiclePartList = new ArrayList<>();
         for (ServiceActivity serviceAct : existingServicePackage.getServiceActivityList() ) {
             existingServiceActList.add(serviceAct.getServiceActivityID());
         }
@@ -112,12 +104,20 @@ public class ServicePackageUpdate implements RecordWriter {
             existingVehiclePartList.add(vehiclePart.getVehiclePartID());
         }
 
+        // Get the new list of service activities and vehicle parts for comparison
+        List<String > newServiceActList = new ArrayList<>();
+        List<String > newVehiclePartList = new ArrayList<>();
+        for (ServiceActivity serviceAct : this.newServiceActList) {
+            newServiceActList.add(serviceAct.getServiceActivityID());
+        }
+        for (VehiclePart vehiclePart : this.newVehiclePartList) {
+            newVehiclePartList.add(vehiclePart.getVehiclePartID());
+        }
+
         listFields.add(new ListFieldComparison(
-                "serviceActivities", existingServiceActList, servicePackageDTO.getServiceActivityIDs()
-        ));
+                "serviceActivities", existingServiceActList, newServiceActList));
         listFields.add(new ListFieldComparison(
-                "vehicleParts", existingVehiclePartList, servicePackageDTO.getVehiclePartIDs()
-        ));
+                "vehicleParts", existingVehiclePartList, newVehiclePartList));
 
         // Filter to get the changed list fields
         return listFields.stream()
@@ -129,7 +129,8 @@ public class ServicePackageUpdate implements RecordWriter {
      * Set the new values of the changed fields in the existing service package object
      * The object will be used to update the record in the file
      */
-    private void setChangedValues(List<FieldComparison<?>> changedFields, List<ListFieldComparison> changedLists) {
+    private void setChangedValues(List<FieldComparison<?>> changedFields,
+                                  List<ListFieldComparison> changedLists, ServicePackage existingServicePackage) {
         for (FieldComparison<?> field : changedFields) {
             switch (field.fieldName()) {
                 case "name" -> existingServicePackage.setServicePackageName(servicePackageDTO.getServicePackageName());
@@ -146,18 +147,8 @@ public class ServicePackageUpdate implements RecordWriter {
         // Then set the list to the existing service package object
         for (ListFieldComparison listField : changedLists){
             switch (listField.fieldName()) {
-                case "serviceActivities" -> {
-
-                    List<ServiceActivity> newServiceActList = serviceActivityRepository.getRecordsByIds(
-                            servicePackageDTO.getServiceActivityIDs());
-                    existingServicePackage.setServiceActivityList(newServiceActList);
-                }
-                case "vehicleParts" -> {
-
-                    List<VehiclePart> newVehiclePartList = vehiclePartRepository.getRecordsByIds(
-                            servicePackageDTO.getVehiclePartIDs());
-                    existingServicePackage.setVehiclePartList(newVehiclePartList);
-                }
+                case "serviceActivities" -> existingServicePackage.setServiceActivityList(newServiceActList);
+                case "vehicleParts" -> existingServicePackage.setVehiclePartList(newVehiclePartList);
             }
         }
     }

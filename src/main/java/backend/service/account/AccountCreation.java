@@ -37,22 +37,11 @@ public class AccountCreation implements RecordWriter {
             return verificationResult;
         }
 
-        try {
-            // Create a new account object based on the user role
-            UserAccount newAccount = populateAccountDetails();
-            // Cast the newAccount to specific account type, then only create the record; base implementation
-            return accountRepository.createRecordBase(newAccount);
+        // Create a new account object based on the user role
+        UserAccount newAccount = populateAccountDetails();
 
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while preparing the account. " +
-                    "Please try again.");
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while creating a new " +
-                    "account record. Please try again.");
-        }
+        // Cast the newAccount to specific account type, then only create the record; base implementation
+        return accountRepository.createRecordBase(newAccount);
     }
 
     /**
@@ -63,16 +52,11 @@ public class AccountCreation implements RecordWriter {
         // Create a shared map to collect all error messages
         Map<DataFieldName, String> allErrors = new HashMap<>();
 
-        // Determine the user role based on the DTO type - default to customer
-        Role userRole = Role.CUSTOMER;
-        if (userAccountDTO instanceof StaffAccountDTO) {
-            userRole = Role.STAFF;
-        }
-
+        // Verify if the user ID and email address does not exist in the records
         collectErrors(allErrors, AccountDataVerification.verifyUniqueUserId(
-                userRole, userAccountDTO.getUserID(), null));
+                userAccountDTO.getUserRole(), userAccountDTO.getUserID(), null));
         collectErrors(allErrors, AccountDataVerification.verifyUniqueEmail(
-                userRole, userAccountDTO.getEmailAddress(), null));
+                userAccountDTO.getUserRole(), userAccountDTO.getEmailAddress(), null));
 
         // If all validations are successful, return the success message
         // Otherwise, return the map of error messages
@@ -103,6 +87,7 @@ public class AccountCreation implements RecordWriter {
         AccountStatus accountStatus;
 
         String userID = userAccountDTO.getUserID();
+        Role userRole = userAccountDTO.getUserRole();
         String firstName = userAccountDTO.getFirstName();
         String lastName = userAccountDTO.getLastName();
         String emailAddress = userAccountDTO.getEmailAddress();
@@ -117,12 +102,12 @@ public class AccountCreation implements RecordWriter {
         if (userAccountDTO instanceof StaffAccountDTO staffAccountDTO) {
             accountStatus = AccountStatus.PENDING;
             LocalDate employmentDate = LocalDate.now();
-            return new StaffAccount(accountId, creationDate, userID, Role.STAFF, firstName, lastName,
+            return new StaffAccount(accountId, creationDate, userID, userRole, firstName, lastName,
                     emailAddress, phoneNumber, passwordHash, accountStatus, staffAccountDTO.getJobPosition(),
                     employmentDate, staffAccountDTO.getEmploymentStatus(), staffAccountDTO.getSpecialization());
         } else {
             accountStatus = AccountStatus.ACTIVE;
-            return new UserAccount(accountId, creationDate, userID, Role.CUSTOMER, firstName, lastName,
+            return new UserAccount(accountId, creationDate, userID, userRole, firstName, lastName,
                     emailAddress, phoneNumber, passwordHash, accountStatus);
         }
     }

@@ -114,7 +114,7 @@ public class ServicePackage {
                 "\nService Activities: " + serviceActListLine +
                 "\nVehicle Parts: " + vehiclePartListLine +
                 "\nPackage Base Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
-                "\nService Duration: " + serviceDuration +
+                "\nService Duration: " + serviceDuration + " hour(s)" +
                 "\n";
     }
 }

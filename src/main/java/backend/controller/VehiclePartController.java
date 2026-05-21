@@ -11,6 +11,7 @@ import main.java.backend.service.vehiclepart.VehiclePartUpdate;
 import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.VehiclePartDTO;
+import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
 
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class VehiclePartController {
+
+    // Singleton instance of the repository
+    private final VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
 
     public OperationResult createVehiclePart(VehiclePartDTO vehiclePartDTO) {
 
@@ -40,11 +44,8 @@ public class VehiclePartController {
             return quantityValidation;
         }
 
-        // Instantiate the repository and service for creating records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordWriter createVehiclePart = new VehiclePartCreation(vehiclePartRepo, vehiclePartDTO);
-
         // Begin creating vehicle part record procedure in service class
+        RecordWriter createVehiclePart = new VehiclePartCreation(vehiclePartRepo, vehiclePartDTO);
         return createVehiclePart.execute();
     }
 
@@ -54,6 +55,12 @@ public class VehiclePartController {
         OperationResult nullValidation = validateNullValues(vehiclePartDTO, OperationType.UPDATE);
         if (!nullValidation.isValid()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
+        }
+
+        // Check if the vehicle part ID is in UUID format
+        if (!DataValidator.validateRecordId(vehiclePartDTO.getVehiclePartID()).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The vehicle part ID: " +
+                    vehiclePartDTO.getVehiclePartID() + " is not an UUID. Please try again.");
         }
 
         // Validate price logic
@@ -68,11 +75,8 @@ public class VehiclePartController {
             return quantityValidation;
         }
 
-        // Instantiate the repository and service for updating records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordWriter updateVehiclePart = new VehiclePartUpdate(vehiclePartRepo, vehiclePartDTO);
-
         // Begin updating vehicle part record procedure in service class
+        RecordWriter updateVehiclePart = new VehiclePartUpdate(vehiclePartRepo, vehiclePartDTO);
         return updateVehiclePart.execute();
     }
 
@@ -84,10 +88,14 @@ public class VehiclePartController {
                     "delete a record. Please try again.");
         }
 
-        // Instantiate the repository and service for deleting records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
-        RecordWriter deleteVehiclePart = new VehiclePartDeletion(vehiclePartRepo, vehiclePartId);
+        // Check if the input is a valid UUID
+        if (!DataValidator.validateRecordId(vehiclePartId).isValid()) {
+            return OperationResult.failed("The vehicle part ID: " + vehiclePartId +
+                    " is not an UUID. Please try again.");
+        }
 
+        // Begin deleting vehicle part record procedure in service class
+        RecordWriter deleteVehiclePart = new VehiclePartDeletion(vehiclePartRepo, vehiclePartId);
         return deleteVehiclePart.execute();
     }
 
@@ -97,31 +105,22 @@ public class VehiclePartController {
      */
     public Optional<List<VehiclePart>> retrieveAllVehicleParts() {
 
-        // Instantiate the repository and service for retrieving records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        // Begin retrieving all vehicle part record procedures in service class
         RecordReader<VehiclePart> retrieveAllVehicleParts = new VehiclePartRetrieval(vehiclePartRepo);
-
-        // Retrieve all the records from the repository
         return retrieveAllVehicleParts.getAllRecords();
     }
 
     public Optional<VehiclePart> retrieveVehiclePartById(String vehiclePartId) {
 
-        // Instantiate the repository and service for retrieving records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        // Begin retrieving vehicle part record by ID procedure in service class
         RecordReader<VehiclePart> retrieveVehiclePartById = new VehiclePartRetrieval(vehiclePartRepo);
-
-        // Retrieve the record from the repository based on the ID
         return retrieveVehiclePartById.getRecordById(vehiclePartId);
     }
 
-    public Optional<List<VehiclePart>> retrieveServiceActivitiesByIds(List<String> vehiclePartIds) {
+    public Optional<List<VehiclePart>> retrieveVehiclePartsByIds(List<String> vehiclePartIds) {
 
-        // Instantiate the repository and service for retrieving records
-        VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+        // Begin retrieving multiple vehicle part records by IDs procedure in service class
         RecordReader<VehiclePart> retrieveServiceActsByIds = new VehiclePartRetrieval(vehiclePartRepo);
-
-        // Retrieve the records from the repository based on the ID list
         return retrieveServiceActsByIds.getRecordsByIds(vehiclePartIds);
     }
 

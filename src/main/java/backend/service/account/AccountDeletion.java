@@ -22,22 +22,14 @@ public class AccountDeletion implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        // Get the account record by its ID
+        // Check if the account exists with the given ID
         UserAccount existingAcc = accountRepository.getRecordById(accountID);
-
-        // If the account is not found, return an error message
         if (existingAcc == null) {
             return OperationResult.failed("The account with ID: " + accountID +
                     " does not exist in the system.");
         }
 
-        try {
-            // Cast the existingAcc to specific account type, then only delete the record; base implementation
-            return accountRepository.deleteRecordBase(existingAcc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage()); // Print exception message for debugging
-            return OperationResult.failed("An unexpected error occurred while deleting the " +
-                    "account record. Please try again.");
-        }
+        // Cast the existingAcc to specific account type, then only delete the record; base implementation
+        return accountRepository.deleteRecordBase(existingAcc);
     }
 }

@@ -3,6 +3,7 @@ package main.java.backend.service.account;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.service.RecordReader;
+import main.java.enums.data.AccountStatus;
 import main.java.enums.system.RegexPattern;
 
 import java.util.ArrayList;
@@ -51,10 +52,10 @@ public class AccountRetrieval implements RecordReader<UserAccount> {
             existingAccount = accountRepository.getRecordById(uniqueId);
 
         } else if (RegexPattern.IC_PATTERN.matches(uniqueId) || RegexPattern.PASSPORT_PATTERN.matches(uniqueId)) {
-            existingAccount = accountRepository.getAccountByUserId(uniqueId);
+            existingAccount = accountRepository.getRecordByUserId(uniqueId);
 
         } else if (RegexPattern.EMAIL_PATTERN.matches(uniqueId)) {
-            existingAccount = accountRepository.getAccountByEmail(uniqueId);
+            existingAccount = accountRepository.getRecordByEmail(uniqueId);
         }
 
         if (existingAccount == null) {
@@ -78,11 +79,22 @@ public class AccountRetrieval implements RecordReader<UserAccount> {
 
         } else if (RegexPattern.IC_PATTERN.matches(uniqueIds.getFirst()) ||
                 RegexPattern.PASSPORT_PATTERN.matches(uniqueIds.getFirst())) {
-            existingAccounts = accountRepository.getAccountsByUserIds(uniqueIds);
+            existingAccounts = accountRepository.getRecordsByUserIds(uniqueIds);
 
         } else if (RegexPattern.EMAIL_PATTERN.matches(uniqueIds.getFirst())) {
-            existingAccounts = accountRepository.getAccountsByEmails(uniqueIds);
+            existingAccounts = accountRepository.getRecordsByEmails(uniqueIds);
         }
+
+        if (existingAccounts.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new ArrayList<>(existingAccounts));
+    }
+
+    public Optional<List<UserAccount>> getRecordsByAccStatus(AccountStatus status) {
+
+        List<? extends UserAccount> existingAccounts = accountRepository.getRecordsByAccStatus(status);
 
         if (existingAccounts.isEmpty()) {
             return Optional.empty();

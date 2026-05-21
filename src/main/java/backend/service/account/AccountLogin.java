@@ -23,7 +23,7 @@ public class AccountLogin implements RecordWriter {
     public OperationResult execute() {
 
         // Check if the customer/staff account exists with the given email address
-        UserAccount existingAcc = accountRepository.getAccountByEmail(userAccountDTO.getEmailAddress());
+        UserAccount existingAcc = accountRepository.getRecordByEmail(userAccountDTO.getEmailAddress());
         if (existingAcc == null) {
             return OperationResult.failed("Sorry! We could not find your account with this " +
                     "email address: " + userAccountDTO.getEmailAddress() + " Please sign up a new account first.");
