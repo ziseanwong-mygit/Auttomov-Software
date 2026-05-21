@@ -13,13 +13,11 @@ public class AccountPasswordUpdate implements RecordWriter {
     // Wildcard is used so can accept either customer or staff repository in one variable
     private final AccountRepository<? extends UserAccount> accountRepository;
     private final UserAccountDTO userAccountDTO;
-    private final UserAccount existingAcc;
 
     public AccountPasswordUpdate(AccountRepository<? extends UserAccount> accountRepository,
                                  UserAccountDTO userAccountDTO) {
         this.accountRepository = accountRepository;
         this.userAccountDTO = userAccountDTO;
-        this.existingAcc = accountRepository.getRecordById(userAccountDTO.getAccountID());
     }
 
     @Override
