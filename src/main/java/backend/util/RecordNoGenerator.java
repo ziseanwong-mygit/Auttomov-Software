@@ -32,7 +32,7 @@ public class RecordNoGenerator {
         }
 
         // Concatenate the formatted date and random string together and return it (e.g., "20260501-A1ZK83")
-        return dateTodayStr + "-" + sb.toString();
+        return dateTodayStr + "-" + sb;
     }
 
 }

@@ -1,34 +1,40 @@
 package main.java.backend.model;
 
-import main.java.enums.AppointmentStatus;
+import main.java.enums.data.AppointmentStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Appointment {
 
-    private String appointmentID;
-    private String appointmentOrderNo;
-    private LocalDate appointmentCreationDate;
+    private final String appointmentID;
+    private final String appointmentOrderNo;
+    private final LocalDateTime appointmentCreationTime;
+    private LocalDateTime appointmentUpdateTime;
     private String appointmentTitle;
     private String appointmentDescription;
-    private LocalDate appointmentDate;
-    private LocalTime appointmentTime;
-    private String serviceID;
+    private ServicePackage servicePackage;
+    private LocalDate serviceDate;
+    private LocalTime serviceTime;
+    private StaffAccount assignedTechnician;
     private AppointmentStatus appointmentStatus;
 
-    public Appointment(String appointmentID, String appointmentOrderNo, LocalDate appointmentCreationDate,
-                       String appointmentTitle, String appointmentDescription, LocalDate appointmentDate,
-                       LocalTime appointmentTime, String serviceID, AppointmentStatus appointmentStatus) {
+    public Appointment(String appointmentID, String appointmentOrderNo, LocalDateTime appointmentCreationTime,
+                       LocalDateTime appointmentUpdateTime, String appointmentTitle, String appointmentDescription,
+                       ServicePackage servicePackage, LocalDate serviceDate, LocalTime serviceTime,
+                       StaffAccount assignedTechnician, AppointmentStatus appointmentStatus) {
 
         this.appointmentID = appointmentID;
         this.appointmentOrderNo = appointmentOrderNo;
-        this.appointmentCreationDate = appointmentCreationDate;
+        this.appointmentCreationTime = appointmentCreationTime;
+        this.appointmentUpdateTime = appointmentUpdateTime;
         this.appointmentTitle = appointmentTitle;
         this.appointmentDescription = appointmentDescription;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
-        this.serviceID = serviceID;
+        this.servicePackage = servicePackage;
+        this.serviceDate = serviceDate;
+        this.serviceTime = serviceTime;
+        this.assignedTechnician = assignedTechnician;
         this.appointmentStatus = appointmentStatus;
     }
 
@@ -40,8 +46,12 @@ public class Appointment {
         return appointmentOrderNo;
     }
 
-    public LocalDate getAppointmentCreationDate() {
-        return appointmentCreationDate;
+    public LocalDateTime getAppointmentCreationTime() {
+        return appointmentCreationTime;
+    }
+
+    public LocalDateTime getAppointmentUpdateTime() {
+        return appointmentUpdateTime;
     }
 
     public String getAppointmentTitle() {
@@ -52,20 +62,56 @@ public class Appointment {
         return appointmentDescription;
     }
 
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
+    public ServicePackage getServicePackage() {
+        return servicePackage;
     }
 
-    public LocalTime getAppointmentTime() {
-        return appointmentTime;
+    public LocalDate getServiceDate() {
+        return serviceDate;
     }
 
-    public String getServiceID() {
-        return serviceID;
+    public LocalTime getServiceTime() {
+        return serviceTime;
+    }
+
+    public StaffAccount getAssignedTechnician() {
+        return assignedTechnician;
     }
 
     public AppointmentStatus getAppointmentStatus() {
         return appointmentStatus;
+    }
+
+    public void setAppointmentUpdateTime(LocalDateTime appointmentUpdateTime) {
+        this.appointmentUpdateTime = appointmentUpdateTime;
+    }
+
+    public void setAppointmentTitle(String appointmentTitle){
+        this.appointmentTitle = appointmentTitle;
+    }
+
+    public void setAppointmentDescription(String appointmentDescription){
+        this.appointmentDescription = appointmentDescription;
+    }
+
+    public void setServicePackage(ServicePackage servicePackage){
+        this.servicePackage = servicePackage;
+    }
+
+    public void setServiceDate(LocalDate serviceDate){
+        this.serviceDate = serviceDate;
+    }
+
+    public void setServiceTime(LocalTime serviceTime){
+        this.serviceTime = serviceTime;
+    }
+
+    public void setAssignedTechnician(StaffAccount assignedTechnician) {
+        this.assignedTechnician = assignedTechnician;
+    }
+
+    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
     /**
@@ -74,16 +120,17 @@ public class Appointment {
      */
     @Override
     public String toString() {
-        return String.join(", ",
-                appointmentID,
-                appointmentOrderNo,
-                appointmentCreationDate.toString(),
-                appointmentTitle,
-                appointmentDescription,
-                appointmentDate.toString(),
-                appointmentTime.toString(),
-                serviceID,
-                appointmentStatus.getAppointmentStatus()
-        );
+        return "Appointment ID: " + appointmentID +
+                "\nAppointment Order No: " + appointmentOrderNo +
+                "\nAppointment Creation Date: " + appointmentCreationTime +
+                "\nAppointment Update Date: " + appointmentUpdateTime +
+                "\nAppointment Title: " + appointmentTitle +
+                "\nAppointment Description: " + appointmentDescription +
+                "\nService Package: " + servicePackage.getServicePackageName() +
+                "\nService Date: " + serviceDate +
+                "\nService Time: " + serviceTime +
+                "\nAssigned Technician: " + assignedTechnician.getFirstName() + " " + assignedTechnician.getLastName() +
+                "\nAppointment Status: " + appointmentStatus.getAppointmentStatus() +
+                "\n";
     }
 }

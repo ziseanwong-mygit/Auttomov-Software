@@ -1,4 +1,4 @@
-package main.java.enums;
+package main.java.enums.data;
 
 public enum AppointmentStatus {
     COMPLETED("Completed"),
