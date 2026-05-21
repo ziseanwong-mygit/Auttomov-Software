@@ -1,7 +1,9 @@
 package main.java.backend.repository.account;
 
+import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
 import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.util.CSVFormatter;
 import main.java.enums.data.Role;
 import main.java.records.OperationResult;
 
@@ -71,8 +73,16 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
 
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(getFilePath(), true))) {
 
+            // Determine the CSV format based on the account type
+            String accCsvLine;
+            if (accToCreate instanceof StaffAccount staffAcc) {
+                accCsvLine = CSVFormatter.toCsvFormat(staffAcc);
+            } else {
+                accCsvLine = CSVFormatter.toCsvFormat(accToCreate);
+            }
+
             // Write the new account record into the file
-            bufferWrite.write(accToCreate.toTextFile());
+            bufferWrite.write(accCsvLine);
             bufferWrite.newLine();
 
             // Add the new account records into the maps to ensure the latest changes are reflected
@@ -94,9 +104,17 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
 
         String accountId = accToUpdate.getAccountID();
 
+        // Determine the CSV format based on the account type
+        String accCsvLine;
+        if (accToUpdate instanceof StaffAccount staffAcc) {
+            accCsvLine = CSVFormatter.toCsvFormat(staffAcc);
+        } else {
+            accCsvLine = CSVFormatter.toCsvFormat(accToUpdate);
+        }
+
         // Map the target account object by its accountID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
-                accountId, _ -> Optional.of(accToUpdate.toTextFile())
+                accountId, _ -> Optional.of(accCsvLine)
         );
 
         // Rewrite the file to update the target record

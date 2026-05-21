@@ -5,7 +5,8 @@ public enum TextFilePath {
     STAFF_ACCOUNT_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/staff-accounts.txt"),
     SERVICE_ACTIVITIES_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/service-activities.txt"),
     VEHICLE_PARTS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/vehicle-parts.txt"),
-    SERVICE_PACKAGE_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/service-packages.txt");
+    SERVICE_PACKAGE_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/service-packages.txt"),
+    APPOINTMENT_RECORDS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/appointment-records.txt"),;
 
     private final String textFilePath;
 

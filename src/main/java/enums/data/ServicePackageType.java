@@ -12,7 +12,7 @@ public enum ServicePackageType {
         this.serviceDuration = serviceDuration;
     }
 
-    public String getServicePackageType() {
+    public String getServicePkgType() {
         return servicePackageType;
     }
 

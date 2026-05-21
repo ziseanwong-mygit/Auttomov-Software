@@ -2,6 +2,7 @@ package main.java.backend.repository;
 
 import main.java.backend.model.VehiclePart;
 import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
 import main.java.records.OperationResult;
@@ -45,7 +46,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(getFilePath(), true))) {
 
             // Write the new vehicle part record into the file
-            bufferWrite.write(vehPartToCreate.toTextFile());
+            bufferWrite.write(CSVFormatter.toCsvFormat(vehPartToCreate));
             bufferWrite.newLine();
 
             // Add the new vehicle part records into the maps to ensure the latest changes are reflected
@@ -70,7 +71,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
 
         // Map the target vehicle part object by its ID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
-                vehiclePartID, _ -> Optional.of(vehPartToUpdate.toTextFile())
+                vehiclePartID, _ -> Optional.of(CSVFormatter.toCsvFormat(vehPartToUpdate))
         );
 
         // Rewrite the file to update the target record

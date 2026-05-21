@@ -2,6 +2,7 @@ package main.java.backend.repository;
 
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
 import main.java.records.OperationResult;
@@ -45,7 +46,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(getFilePath(), true))) {
 
             // Write the new service activity record into the file
-            bufferWrite.write(serviceActToCreate.toTextFile());
+            bufferWrite.write(CSVFormatter.toCsvFormat(serviceActToCreate));
             bufferWrite.newLine();
 
             // Add the new service activity records into the maps to ensure the latest changes are reflected
@@ -70,7 +71,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
 
         // Map the target service activity object by its ID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
-                serviceActID, _ -> Optional.of(serviceActToUpdate.toTextFile())
+                serviceActID, _ -> Optional.of(CSVFormatter.toCsvFormat(serviceActToUpdate))
         );
 
         // Rewrite the file to update the target record
@@ -136,6 +137,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
      * Service Activity CSV format (4 columns): serviceActivityID, serviceActivityName, serviceActivityDescription,
      * serviceActivityPrice
      */
+    @Override
     protected ServiceActivity parseRecord(String line) {
         String[] columns = line.split(",\\s*");
 
@@ -153,6 +155,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
     /**
      * Add a new/updated service activity into all lookup maps
      */
+    @Override
     protected void addRecordIntoMap(ServiceActivity serviceActivity) {
 
         // End the method early if the service activity is not provided
@@ -166,6 +169,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
     /**
      * Remove the old/deleted service activity from all lookup maps
      */
+    @Override
     protected void removeRecordIntoMap(ServiceActivity serviceActivity) {
 
         // End the method early if the service activity is not provided

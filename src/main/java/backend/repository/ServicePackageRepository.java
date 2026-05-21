@@ -4,6 +4,7 @@ import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
 import main.java.backend.repository.general.AbstractRepository;
+import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataStructureOrganizer;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
@@ -49,7 +50,7 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         try (BufferedWriter bufferWrite = new BufferedWriter(new FileWriter(getFilePath(), true))) {
 
             // Write the new service package record into the file
-            bufferWrite.write(servicePkgToCreate.toTextFile());
+            bufferWrite.write(CSVFormatter.toCsvFormat(servicePkgToCreate));
             bufferWrite.newLine();
 
             // Add the new service package records into the maps to ensure the latest changes are reflected
@@ -74,7 +75,7 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
 
         // Map the target service package object by its ID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
-                servicePkgID, _ -> Optional.of(servicePkgToUpdate.toTextFile())
+                servicePkgID, _ -> Optional.of(CSVFormatter.toCsvFormat(servicePkgToUpdate))
         );
 
         // Rewrite the file to update the target record
@@ -122,15 +123,15 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
     }
 
     @Override
-    public ServicePackage getRecordById(String serviceActId) {
-        return servicePackageById.get(serviceActId);
+    public ServicePackage getRecordById(String servicePkgId) {
+        return servicePackageById.get(servicePkgId);
     }
 
     @Override
     public List<ServicePackage> getRecordsByIds(List<String> servicePkgIds) {
-        // Filter the service activity objects by their IDs
+        // Filter the service package objects by their IDs
         return servicePackageById.values().stream()
-                .filter(serviceAct -> servicePkgIds.contains(serviceAct.getServicePackageID()))
+                .filter(servicePkg -> servicePkgIds.contains(servicePkg.getServicePackageID()))
                 .toList();
     }
 
@@ -184,11 +185,12 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
     }
 
     /**
-     * Add a new/updated service activity into all lookup maps
+     * Add a new/updated service package into all lookup maps
      */
+    @Override
     protected void addRecordIntoMap(ServicePackage servicePackage) {
 
-        // End the method early if the service activity is not provided
+        // End the method early if the service package is not provided
         if (servicePackage == null) {
             return;
         }
@@ -197,15 +199,16 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
     }
 
     /**
-     * Remove the old/deleted service activity from all lookup maps
+     * Remove the old/deleted service package from all lookup maps
      */
-    protected void removeRecordIntoMap(ServicePackage serviceActivity) {
+    @Override
+    protected void removeRecordIntoMap(ServicePackage servicePackage) {
 
-        // End the method early if the service activity is not provided
-        if (serviceActivity == null) {
+        // End the method early if the service package is not provided
+        if (servicePackage == null) {
             return;
         }
 
-        servicePackageById.remove(serviceActivity.getServicePackageID());
+        servicePackageById.remove(servicePackage.getServicePackageID());
     }
 }

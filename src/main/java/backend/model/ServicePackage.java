@@ -111,38 +111,11 @@ public class ServicePackage {
                 "\nService Package Name: " + servicePackageName +
                 "\nService Package Description: " +
                 (servicePackageDescription != null ? servicePackageDescription : "(no description)") +
-                "\nService Package Type: " + servicePackageType.getServicePackageType() +
+                "\nService Package Type: " + servicePackageType.getServicePkgType() +
                 "\nService Activities: " + serviceActListLine +
                 "\nVehicle Parts: " + vehiclePartListLine +
                 "\nPackage Base Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
                 "\nService Duration: " + serviceDuration +
                 "\n";
-    }
-
-    /**
-     * Return a CSV format string representation of the object.
-     * Used for saving the object to a text file.
-     */
-    public String toTextFile() {
-
-        // Get the service activity and vehicle part IDs and concatenate them into a comma-separated value string
-        String serviceActListLine = serviceActivityList.stream()
-                .map(ServiceActivity::getServiceActivityID)
-                .collect(Collectors.joining(", "));
-
-        String vehiclePartListLine = vehiclePartList.stream()
-                .map(VehiclePart::getVehiclePartID)
-                .collect(Collectors.joining(", "));
-
-        return String.join(", ",
-                servicePackageID,
-                servicePackageName,
-                servicePackageDescription != null ? servicePackageDescription : "",
-                servicePackageType.getServicePackageType(),
-                "[" + serviceActListLine + "]",
-                "[" + vehiclePartListLine + "]",
-                DataTypeConverter.convertDoubleToString(packageBasePrice),
-                DataTypeConverter.convertIntToString(serviceDuration)
-        );
     }
 }

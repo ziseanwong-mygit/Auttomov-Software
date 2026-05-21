@@ -65,17 +65,4 @@ public class ServiceActivity {
                 "\nService Activity Price: $" + DataTypeConverter.convertDoubleToString(serviceActivityPrice) +
                 "\n";
     }
-
-    /**
-     * Return a CSV format string representation of the object.
-     * Used for saving the object to a text file.
-     */
-    public String toTextFile() {
-        return String.join(", ",
-                serviceActivityID,
-                serviceActivityName,
-                serviceActivityDescription != null ? serviceActivityDescription : "",
-                DataTypeConverter.convertDoubleToString(serviceActivityPrice)
-        );
-    }
 }

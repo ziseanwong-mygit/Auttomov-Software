@@ -103,21 +103,4 @@ public class VehiclePart {
                 "\nVehicle Part Quantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity) +
                 "\n";
     }
-
-    /**
-     * Return a CSV format string representation of the object.
-     * Used for saving the object to a text file.
-     */
-    public String toTextFile() {
-        return String.join(", ",
-                vehiclePartID,
-                vehiclePartName,
-                vehiclePartDescription != null ? vehiclePartDescription : "",
-                vehiclePartType,
-                vehiclePartBrand,
-                vehiclePartSpec,
-                DataTypeConverter.convertDoubleToString(vehiclePartPrice),
-                DataTypeConverter.convertIntToString(vehiclePartQuantity)
-        );
-    }
 }

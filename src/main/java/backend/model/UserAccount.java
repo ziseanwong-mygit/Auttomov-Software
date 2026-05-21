@@ -39,6 +39,10 @@ public class UserAccount {
         return accountID;
     }
 
+    public LocalDate getAccountCreationDate() {
+        return accountCreationDate;
+    }
+
     public String getUserID() {
         return userID;
     }
