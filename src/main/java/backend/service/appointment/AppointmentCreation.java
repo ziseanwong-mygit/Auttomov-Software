@@ -50,12 +50,16 @@ public class AppointmentCreation implements RecordWriter {
         String appointmentTitle = appointmentDTO.getAppointmentTitle();
         String appointmentDescription = appointmentDTO.getAppointmentDescription();
         LocalDate serviceDate = appointmentDTO.getServiceDate();
-        LocalTime serviceTime = appointmentDTO.getServiceTime();
-        AppointmentStatus appointmentStatus = AppointmentStatus.PENDING;
+        LocalTime serviceStartTime = appointmentDTO.getServiceStartTime();
+
+        // Calculate the end time of the service based on the service duration from the package
+        int serviceDuration = existingPackage.getServiceDuration();
+        LocalTime serviceEndTime = serviceStartTime.plusHours(serviceDuration);
 
         // When creating a new appointment, the technician is not assigned yet, so it is set to null
+        // Also set the appointment status to PENDING by default
         return new Appointment(appointmentId, appointmentOrderNo, currentDateTime, currentDateTime,
-                appointmentTitle, appointmentDescription, existingPackage, serviceDate, serviceTime,
-                null, appointmentStatus);
+                appointmentTitle, appointmentDescription, existingPackage, serviceDate, serviceStartTime,
+                serviceEndTime, null, AppointmentStatus.PENDING);
     }
 }

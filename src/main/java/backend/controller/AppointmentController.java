@@ -16,6 +16,7 @@ import main.java.enums.data.AppointmentStatus;
 import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
+import main.java.records.TechAvailabilityResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,17 +34,18 @@ public class AppointmentController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(appointmentDTO, OperationType.CREATE);
         if (!nullValidation.isValid()) {
-            return nullValidation;
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Validate service package ID
-        OperationResult pkgIdVerification = validateServicePackageId(appointmentDTO.getServicePackageID());
+        String servicePackageId = appointmentDTO.getServicePackageID();
+        OperationResult pkgIdVerification = validateServicePackageId(servicePackageId);
         if (!pkgIdVerification.isValid()) {
             return pkgIdVerification;
         }
 
         // Retrieve the service package record with the input ID from the repository
-        ServicePackage servicePackage = servicePackageRepo.getRecordById(appointmentDTO.getServicePackageID());
+        ServicePackage servicePackage = servicePackageRepo.getRecordById(servicePackageId);
 
         // Begin creating appointment record procedure in service class
         RecordWriter createAppointment = new AppointmentCreation(appointmentRepo, appointmentDTO, servicePackage);
@@ -55,23 +57,24 @@ public class AppointmentController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(appointmentDTO, OperationType.UPDATE);
         if (!nullValidation.isValid()) {
-            return nullValidation;
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
-        // Check if the appointment ID is a valid UUID
+        // Check if the appointment ID is in UUID format
         if (!DataValidator.validateRecordId(appointmentDTO.getAppointmentID()).isValid()) {
-            return OperationResult.failed(DataFieldName.RECORD_ID, " The appointment ID: " +
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The appointment ID: " +
                     appointmentDTO.getAppointmentID() + " is not an UUID. Please try again.");
         }
 
-        // Validate if the service package ID is a valid UUID
-        if (!DataValidator.validateRecordId(appointmentDTO.getServicePackageID()).isValid()) {
-            return OperationResult.failed(DataFieldName.RECORD_ID, "The service package ID: " +
-                    appointmentDTO.getServicePackageID() + " is not an UUID. Please try again.");
+        // Validate service package ID
+        String servicePackageId = appointmentDTO.getServicePackageID();
+        OperationResult pkgIdVerification = validateServicePackageId(servicePackageId);
+        if (!pkgIdVerification.isValid()) {
+            return pkgIdVerification;
         }
 
         // Retrieve the service package record with the input ID from the repository
-        ServicePackage servicePackage = servicePackageRepo.getRecordById(appointmentDTO.getServicePackageID());
+        ServicePackage servicePackage = servicePackageRepo.getRecordById(servicePackageId);
 
         // Begin updating appointment record procedure in service class
         RecordWriter updateAppointment = new AppointmentUpdate(appointmentRepo, appointmentDTO, servicePackage);
@@ -81,29 +84,30 @@ public class AppointmentController {
     public OperationResult assignTechnicianToAppointment(AppointmentDTO appointmentDTO) {
 
         String appointmentID = appointmentDTO.getAppointmentID();
-        String technicianID = appointmentDTO.getTechnicianID();
+        List<String> technicianIDList = appointmentDTO.getTechnicianIDs();
 
-        if (appointmentID == null || appointmentID.isBlank() || technicianID == null || technicianID.isBlank()) {
+        if (appointmentID == null || appointmentID.isBlank()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Check if the appointment ID is a valid UUID
-        if (!DataValidator.validateRecordId(appointmentDTO.getAppointmentID()).isValid()) {
+        if (!DataValidator.validateRecordId(appointmentID).isValid()) {
             return OperationResult.failed(DataFieldName.RECORD_ID, " The appointment ID: " +
-                    appointmentDTO.getAppointmentID() + " is not an UUID. Please try again.");
+                    appointmentID + " is not an UUID. Please try again.");
         }
 
-        // Check if the technician ID is a valid UUID
-        if (!DataValidator.validateRecordId(technicianID).isValid()) {
-            return OperationResult.failed(DataFieldName.RECORD_ID, "The technician ID: " +
-                    technicianID + " is not an UUID. Please try again.");
+        // Validate all technician account IDs
+        OperationResult techIdVerification = validateTechnicianId(technicianIDList);
+        if (!techIdVerification.isValid()) {
+            return techIdVerification;
         }
 
-        // Retrieve the technician account record with the input ID from the repository
-        StaffAccount technicianAcc = staffAccountRepo.getRecordById(technicianID);
+        // Retrieve all the technician account records with the given ID list from the repository
+        List<StaffAccount> technicianAccList = staffAccountRepo.getRecordsByIds(technicianIDList);
 
         // Begin assigning technician to appointment procedure in service class
-        RecordWriter assignTechnician = new AppointmentTechAssignment(appointmentRepo, appointmentDTO, technicianAcc);
+        RecordWriter assignTechnician = new AppointmentTechAssignment(
+                appointmentRepo, appointmentDTO, technicianAccList);
         return assignTechnician.execute();
     }
 
@@ -191,6 +195,20 @@ public class AppointmentController {
     }
 
     /**
+     * Retrieve the list of all available and unavailable technicians for the specific appointment
+     * For the frontend to display the list during technician assignment
+     * Frontend to handle the logic of displaying the result message and the lists
+     */
+    public Optional<TechAvailabilityResult> retrieveTechAvailabilityList(String appointmentId) {
+
+        // Begin retrieving list of available and unavailable technicians procedure in service class
+        AppointmentTechAvailabilityRetrieval techAvailabilityRetrieval = new AppointmentTechAvailabilityRetrieval(
+                appointmentRepo, staffAccountRepo, appointmentId);
+        return techAvailabilityRetrieval.getTechAvailability();
+
+    }
+
+    /**
      * Validate the format and length of appointment ID
      * This validation is done before record retrieval, so the frontend can first display the validation result
      */
@@ -219,16 +237,16 @@ public class AppointmentController {
         }
 
         // Check if any of the appointment IDs are null or empty
-        for (String servicePkgId : appointmentIds) {
-            if (servicePkgId == null || servicePkgId.isBlank() ) {
+        for (String appointmentId : appointmentIds) {
+            if (appointmentId == null || appointmentId.isBlank() ) {
                 return OperationResult.failed("One of the appointment IDs is null or empty. Please try again.");
             }
         }
 
         // Check if any of the appointment IDs are invalid
-        for (String servicePkgId : appointmentIds) {
-            if (!DataValidator.validateRecordId(servicePkgId).isValid()) {
-                return OperationResult.failed("The appointment ID: " + servicePkgId +
+        for (String appointmentId : appointmentIds) {
+            if (!DataValidator.validateRecordId(appointmentId).isValid()) {
+                return OperationResult.failed("The appointment ID: " + appointmentId +
                         " is not an UUID. Please try again.");
             }
         }
@@ -260,13 +278,13 @@ public class AppointmentController {
         // If the operation is updating record, add the ID to the list for null validation
         if (operationType == OperationType.UPDATE) {
             appointmentValues.add(appointmentDTO.getAppointmentID());
+            appointmentValues.add(appointmentDTO.getAppointmentStatus());
         }
 
         appointmentValues.add(appointmentDTO.getAppointmentTitle());
         appointmentValues.add(appointmentDTO.getAppointmentDescription());
         appointmentValues.add(appointmentDTO.getServiceDate());
-        appointmentValues.add(appointmentDTO.getServiceTime());
-        appointmentValues.add(appointmentDTO.getAppointmentStatus());
+        appointmentValues.add(appointmentDTO.getServiceStartTime());
 
         return NullValidator.isAllValuesNull(appointmentValues);
     }
@@ -292,6 +310,43 @@ public class AppointmentController {
         if (servicePackageRepo.getRecordById(servicePackageId) == null) {
             return OperationResult.failed(DataFieldName.SERVICE_PACKAGE,
                     "The service package with ID " + servicePackageId + " does not exist in the records.");
+        }
+
+        // If all validations pass, return success
+        return OperationResult.success();
+    }
+
+    /**
+     * Full validation of the technician account ID in checking nullity, format, and linking record
+     */
+    private OperationResult validateTechnicianId(List<String> technicianIdList) {
+
+        // 1. Check if the technician ID list is null or not; if so, return an error message
+        if (technicianIdList == null) {
+            return OperationResult.failed("The technician account ID list cannot be empty. " +
+                    "Please fill in at least one ID.");
+        }
+
+        for (String technicianId : technicianIdList) {
+
+            if (technicianId == null || technicianId.isBlank() ) {
+                return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
+                        "One of the technician account IDs is null or empty. Please try again.");
+
+            }
+
+            if (!DataValidator.validateRecordId(technicianId).isValid()) {
+                return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
+                        "The technician account ID: " + technicianId +
+                                " is not an UUID. Please try again.");
+            }
+
+            if (staffAccountRepo.getRecordById(technicianId) == null) {
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                        "The technician account with ID " + technicianId +
+                                " does not exist in the records.");
+            }
+
         }
 
         // If all validations pass, return success
