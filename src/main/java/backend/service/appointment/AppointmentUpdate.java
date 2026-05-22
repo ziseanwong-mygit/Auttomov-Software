@@ -70,7 +70,7 @@ public class AppointmentUpdate implements RecordWriter {
         appointmentFields.add(new FieldComparison<>("serviceDate", 
                 existingAppointment.getServiceDate(), appointmentDTO.getServiceDate(), null));
         appointmentFields.add(new FieldComparison<>("serviceTime",
-                existingAppointment.getServiceTime(), appointmentDTO.getServiceTime(), null));
+                existingAppointment.getServiceStartTime(), appointmentDTO.getServiceStartTime(), null));
         appointmentFields.add(new FieldComparison<>("appointmentStatus",
                 existingAppointment.getAppointmentStatus(), appointmentDTO.getAppointmentStatus(), null));
 
@@ -96,7 +96,7 @@ public class AppointmentUpdate implements RecordWriter {
                         appointmentDTO.getAppointmentDescription());
                 case "servicePackage" -> existingAppointment.setServicePackage(existingServicePkg);
                 case "serviceDate" -> existingAppointment.setServiceDate(appointmentDTO.getServiceDate());
-                case "serviceTime" -> existingAppointment.setServiceTime(appointmentDTO.getServiceTime());
+                case "serviceTime" -> existingAppointment.setServiceStartTime(appointmentDTO.getServiceStartTime());
                 case "appointmentStatus" -> existingAppointment.setAppointmentStatus(
                         appointmentDTO.getAppointmentStatus());
             }

@@ -8,10 +8,7 @@ import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
-import main.java.backend.service.servicepackage.ServicePackageCreation;
-import main.java.backend.service.servicepackage.ServicePackageDeletion;
-import main.java.backend.service.servicepackage.ServicePackageRetrieval;
-import main.java.backend.service.servicepackage.ServicePackageUpdate;
+import main.java.backend.service.servicepackage.*;
 import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.ServicePackageDTO;
@@ -35,7 +32,7 @@ public class ServicePackageController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(servicePackageDTO, OperationType.CREATE);
         if (!nullValidation.isValid()) {
-            return nullValidation;
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Validate price logic
@@ -67,7 +64,7 @@ public class ServicePackageController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(servicePackageDTO, OperationType.UPDATE);
         if (!nullValidation.isValid()) {
-            return nullValidation;
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Check if the service package ID is in UUID format
@@ -98,6 +95,32 @@ public class ServicePackageController {
         RecordWriter updateServicePackage = new ServicePackageUpdate(servicePackageRepo, servicePackageDTO,
                 serviceActivityList, vehiclePartList);
         return updateServicePackage.execute();
+    }
+
+    public OperationResult updateServicePackagePrice(ServicePackageDTO servicePackageDTO) {
+
+        String servicePackageID = servicePackageDTO.getServicePackageID();
+        double packageBasePrice = servicePackageDTO.getPackageBasePrice();
+
+        if (servicePackageID == null || servicePackageID.isBlank()) {
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
+        }
+
+        // Check if the service package ID is a valid UUID
+        if (!DataValidator.validateRecordId(servicePackageID).isValid()) {
+            return OperationResult.failed(DataFieldName.RECORD_ID, "The service package ID: " +
+                    servicePackageID + " is not an UUID. Please try again.");
+        }
+
+        // Validate price logic
+        OperationResult priceValidation = DataValidator.validatePrice(servicePackageDTO.getPackageBasePrice());
+        if (!priceValidation.isValid()) {
+            return priceValidation;
+        }
+
+        // Begin updating service package record procedure in service class
+        RecordWriter updateServicePackagePrice = new ServicePackagePriceUpdate(servicePackageRepo, servicePackageDTO);
+        return updateServicePackagePrice.execute();
     }
 
     public OperationResult deleteServicePackage(String servicePkgId) {

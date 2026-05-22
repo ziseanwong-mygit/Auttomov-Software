@@ -1,10 +1,13 @@
 package main.java.backend.model;
 
+import main.java.backend.util.DateTimeStringFormatter;
 import main.java.enums.data.AppointmentStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Appointment {
 
@@ -16,14 +19,16 @@ public class Appointment {
     private String appointmentDescription;
     private ServicePackage servicePackage;
     private LocalDate serviceDate;
-    private LocalTime serviceTime;
-    private StaffAccount assignedTechnician;
+    private LocalTime serviceStartTime;
+    private LocalTime serviceEndTime;
+    private List<StaffAccount> technicianList;
     private AppointmentStatus appointmentStatus;
 
     public Appointment(String appointmentID, String appointmentOrderNo, LocalDateTime appointmentCreationTime,
                        LocalDateTime appointmentUpdateTime, String appointmentTitle, String appointmentDescription,
-                       ServicePackage servicePackage, LocalDate serviceDate, LocalTime serviceTime,
-                       StaffAccount assignedTechnician, AppointmentStatus appointmentStatus) {
+                       ServicePackage servicePackage, LocalDate serviceDate, LocalTime serviceStartTime,
+                       LocalTime serviceEndTime, List<StaffAccount> technicianList,
+                       AppointmentStatus appointmentStatus) {
 
         this.appointmentID = appointmentID;
         this.appointmentOrderNo = appointmentOrderNo;
@@ -33,8 +38,9 @@ public class Appointment {
         this.appointmentDescription = appointmentDescription;
         this.servicePackage = servicePackage;
         this.serviceDate = serviceDate;
-        this.serviceTime = serviceTime;
-        this.assignedTechnician = assignedTechnician;
+        this.serviceStartTime = serviceStartTime;
+        this.serviceEndTime = serviceEndTime;
+        this.technicianList = technicianList;
         this.appointmentStatus = appointmentStatus;
     }
 
@@ -70,12 +76,16 @@ public class Appointment {
         return serviceDate;
     }
 
-    public LocalTime getServiceTime() {
-        return serviceTime;
+    public LocalTime getServiceStartTime() {
+        return serviceStartTime;
     }
 
-    public StaffAccount getAssignedTechnician() {
-        return assignedTechnician;
+    public LocalTime getServiceEndTime() {
+        return serviceEndTime;
+    }
+
+    public List<StaffAccount> getTechnicianList() {
+        return technicianList;
     }
 
     public AppointmentStatus getAppointmentStatus() {
@@ -102,12 +112,16 @@ public class Appointment {
         this.serviceDate = serviceDate;
     }
 
-    public void setServiceTime(LocalTime serviceTime){
-        this.serviceTime = serviceTime;
+    public void setServiceStartTime(LocalTime serviceStartTime){
+        this.serviceStartTime = serviceStartTime;
     }
 
-    public void setAssignedTechnician(StaffAccount assignedTechnician) {
-        this.assignedTechnician = assignedTechnician;
+    public void setServiceEndTime(LocalTime serviceEndTime){
+        this.serviceEndTime = serviceEndTime;
+    }
+
+    public void setTechnicianList(List<StaffAccount> technicianList) {
+        this.technicianList = technicianList;
     }
 
     public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
@@ -120,16 +134,26 @@ public class Appointment {
      */
     @Override
     public String toString() {
+
+        // Get the service activity and vehicle part names and concatenate them into a comma-separated value string
+        String technicianListLine = technicianList.stream()
+                .map(account -> account.getFirstName() + " " + account.getLastName())
+                .collect(Collectors.joining(", "));
+
+        // Format the appointment creation and update time to yyyyMMddHHmmss format (e.g., 2026-05-01 12:34:56)
+        String creationTime = DateTimeStringFormatter.formatDateTime(appointmentCreationTime);
+        String updateTime = DateTimeStringFormatter.formatDateTime(appointmentUpdateTime);
+
         return "Appointment ID: " + appointmentID +
-                "\nAppointment Order No: " + appointmentOrderNo +
-                "\nAppointment Creation Date: " + appointmentCreationTime +
-                "\nAppointment Update Date: " + appointmentUpdateTime +
-                "\nAppointment Title: " + appointmentTitle +
-                "\nAppointment Description: " + appointmentDescription +
+                "\nOrder No: " + appointmentOrderNo +
+                "\nCreation Date: " + creationTime +
+                "\nUpdate Date: " + updateTime +
+                "\nTitle: " + appointmentTitle +
+                "\nDescription: " + appointmentDescription +
                 "\nService Package: " + servicePackage.getServicePackageName() +
                 "\nService Date: " + serviceDate +
-                "\nService Time: " + serviceTime +
-                "\nAssigned Technician: " + assignedTechnician.getFirstName() + " " + assignedTechnician.getLastName() +
+                "\nService Time: " + serviceStartTime +
+                "\nAssigned Technicians: " + technicianListLine +
                 "\nAppointment Status: " + appointmentStatus.getAppointmentStatus() +
                 "\n";
     }

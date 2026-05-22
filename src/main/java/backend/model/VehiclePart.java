@@ -93,14 +93,14 @@ public class VehiclePart {
     @Override
     public String toString() {
         return "Vehicle Part ID: " + vehiclePartID +
-                "\nVehicle Part Name: " + vehiclePartName +
-                "\nVehicle Part Description: " +
+                "\nName: " + vehiclePartName +
+                "\nDescription: " +
                 (vehiclePartDescription != null ? vehiclePartDescription : "(no description)") +
-                "\nVehicle Part Type: " + vehiclePartType +
-                "\nVehicle Part Brand: " + vehiclePartBrand +
-                "\nVehicle Part Specification: " + vehiclePartSpec +
-                "\nVehicle Part Price: RM" + DataTypeConverter.convertDoubleToString(vehiclePartPrice) +
-                "\nVehicle Part Quantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity) +
+                "\nType: " + vehiclePartType +
+                "\nBrand: " + vehiclePartBrand +
+                "\nSpecification: " + vehiclePartSpec +
+                "\nPrice: RM" + DataTypeConverter.convertDoubleToString(vehiclePartPrice) +
+                "\nQuantity: " + DataTypeConverter.convertIntToString(vehiclePartQuantity) +
                 "\n";
     }
 }

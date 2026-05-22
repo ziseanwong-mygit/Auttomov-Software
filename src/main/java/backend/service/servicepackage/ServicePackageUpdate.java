@@ -105,8 +105,8 @@ public class ServicePackageUpdate implements RecordWriter {
         }
 
         // Get the new list of service activities and vehicle parts for comparison
-        List<String > newServiceActList = new ArrayList<>();
-        List<String > newVehiclePartList = new ArrayList<>();
+        List<String> newServiceActList = new ArrayList<>();
+        List<String> newVehiclePartList = new ArrayList<>();
         for (ServiceActivity serviceAct : this.newServiceActList) {
             newServiceActList.add(serviceAct.getServiceActivityID());
         }

@@ -1,12 +1,9 @@
 package main.java;
 
-import main.java.backend.util.RecordNoGenerator;
-
 public class MainClass {
 
     public static void main(String[] args) {
 
-        System.out.println(RecordNoGenerator.generateRecordNo());
 
     }
 }
@@ -28,6 +25,18 @@ public class MainClass {
                 "Yi Ying", "pengy89@gmail.com", "0123764785",
                 "pengYy78y#", "pengYy78y#", JobPosition.TECHNICIAN,
                 EmploymentStatus.FULL_TIME, "Tyre maintenance and repair");
+        AccountController accountController = new AccountController();
+        OperationResult result = accountController.createAccount(staffAccountDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        StaffAccountDTO staffAccountDTO = new StaffAccountDTO("891120143921", Role.STAFF, "Choong",
+                "Man Lee", "choongML01@gmail.com", "0128238928",
+                "cHoongMlee98$", "cHoongMlee98$", JobPosition.TECHNICIAN,
+                EmploymentStatus.FULL_TIME, "Oil change and maintenance");
         AccountController accountController = new AccountController();
         OperationResult result = accountController.createAccount(staffAccountDTO);
         if (result.isValid()) {
@@ -254,7 +263,48 @@ public class MainClass {
         }*/
 
 
+/*        LocalDate date1 = LocalDate.parse("2026-05-23");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+        LocalTime time1 = LocalTime.parse("10:15 PM", formatter);
 
+        AppointmentDTO appointmentDTO = new AppointmentDTO("Appointment Test1",
+                "This is for testing1.", "14a564e4-d21c-4b21-a456-732e27c6a839",
+                date1, time1 );
+        AppointmentController appointmentController = new AppointmentController();
+        OperationResult result = appointmentController.createAppointment(appointmentDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+        /*LocalDate date1 = LocalDate.parse("2026-05-24");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+        LocalTime time1 = LocalTime.parse("12:28 PM", formatter);
+
+        AppointmentDTO appointmentDTO = new AppointmentDTO("e8af637f-273b-494c-b860-7a0d017687c0",
+                "AppointmentTest11", "This is testing 1.", "14a564e4-d21c-4b21-a456-732e27c6a839",
+                date1, time1, AppointmentStatus.PENDING);
+        AppointmentController appointmentController = new AppointmentController();
+        OperationResult result = appointmentController.updateAppointment(appointmentDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        List<String> technicianIDs = List.of("93000ad9-d745-4e13-8a84-4b59afcc7439",
+                "6e643dc8-a9bd-4d21-bc2b-b182b8bba6c8");
+
+        AppointmentDTO appointmentDTO = new AppointmentDTO("e8af637f-273b-494c-b860-7a0d017687c0",
+                technicianIDs);
+        AppointmentController appointmentController = new AppointmentController();
+        OperationResult result = appointmentController.assignTechnicianToAppointment(appointmentDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
 
 
 

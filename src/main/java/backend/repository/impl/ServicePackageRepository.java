@@ -160,9 +160,11 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
             vehiclePartList = vehiclePartRepository.getRecordsByIds(vehiclePartIds);
         }
 
-        // Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
-        // Example: ID, Name, Desc, Type, [A0001, A0002], [B0001, B0002], 20.00, 1 ->
-        // ID, Name, Desc, Type, , 20.00, 1
+        /*
+        Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
+        Example: ID, Name, Desc, Type, [A0001, A0002], [B0001, B0002], 20.00, 1 ->
+        ID, Name, Desc, Type, , 20.00, 1
+        */
         String strippedLine = line.replaceAll("\\[.*?]", "")
                 .replaceAll(",\\s*,", ",");
 

@@ -6,6 +6,7 @@ import main.java.records.PasswordHash;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class DataTypeConverter {
 
@@ -39,7 +40,8 @@ public class DataTypeConverter {
     }
 
     public static LocalDateTime convertStringToLocalDateTime(String str) {
-        return LocalDateTime.parse(str);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(str, dateTimeFormatter);
     }
 
     public static Role convertStringToRole(String str) {

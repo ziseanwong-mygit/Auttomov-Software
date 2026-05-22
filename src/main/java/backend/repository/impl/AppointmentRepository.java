@@ -1,9 +1,11 @@
 package main.java.backend.repository.impl;
 
 import main.java.backend.model.Appointment;
+import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.AbstractRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.util.CSVFormatter;
+import main.java.backend.util.DataStructureOrganizer;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.data.AppointmentStatus;
 import main.java.enums.system.TextFilePath;
@@ -141,19 +143,44 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                 .toList();
     }
 
+    public List<Appointment> getRecordsByTechnician(StaffAccount technician) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getTechnicianList().contains(technician))
+                .toList();
+    }
+
     /**
      * Used for retrieving records from the text file
-     * Appointment CSV format (11 columns): appointmentID, appointmentOrderNo, appointmentCreationDate,
+     * Appointment CSV format (12 columns): appointmentID, appointmentOrderNo, appointmentCreationDate,
      * appointmentUpdateDate, appointmentTitle, appointmentDescription, servicePackage, serviceDate,
-     * serviceTime, assignedTechnician, appointmentStatus
+     * serviceStartTime, serviceEndTime, technicianList, appointmentStatus
      */
     @Override
     protected Appointment parseRecord(String line) {
-        // Get the service package and staff account repository instances to fetch the respetive objects
+        // Get the service package and staff account repository instances to fetch the respective objects
         ServicePackageRepository servicePackageRepository = ServicePackageRepository.getInstance();
         StaffAccountRepository staffAccountRepository = StaffAccountRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        // Extract the technician bracket list from the raw line before any splitting begins
+        // Occurrence = 0 means the first and only bracket list
+        List<String> technicianIds = DataStructureOrganizer.extractBracketList(line, 0);
+
+        List<StaffAccount> technicianList = new ArrayList<>();
+        if (!technicianIds.isEmpty()) {
+            technicianList = staffAccountRepository.getRecordsByIds(technicianIds);
+        }
+
+        /*
+        Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
+        Example:
+        ID, OrderNo, CreationTime, ..., ServiceEndTime, [A0001, A0002], Status ->
+        ID, OrderNo, CreationTime, ..., ServiceEndTime, , Status
+        */
+        String strippedLine = line.replaceAll("\\[.*?]", "")
+                .replaceAll(",\\s*,", ",");
+
+        // Without the bracket lists, split the line into an array of columns
+        String[] columns = strippedLine.split(",\\s*");
 
         return new Appointment(
                 columns[0],
@@ -165,7 +192,8 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                 servicePackageRepository.getRecordById(columns[6]), // Fetch the service package object here
                 DataTypeConverter.convertStringToLocalDate(columns[7]),
                 DataTypeConverter.convertStringToLocalTime(columns[8]),
-                staffAccountRepository.getRecordById(columns[9]),
+                DataTypeConverter.convertStringToLocalTime(columns[9]),
+                technicianList,
                 DataTypeConverter.convertStringToAppointmentStatus(columns[10])
         );
     }

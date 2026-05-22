@@ -107,13 +107,13 @@ public class ServicePackage {
                 .collect(Collectors.joining(", "));
 
         return "Service Package ID: " + servicePackageID +
-                "\nService Package Name: " + servicePackageName +
-                "\nService Package Description: " +
+                "\nName: " + servicePackageName +
+                "\nDescription: " +
                 (servicePackageDescription != null ? servicePackageDescription : "(no description)") +
-                "\nService Package Type: " + servicePackageType.getServicePkgType() +
+                "\nPackage Type: " + servicePackageType.getServicePkgType() +
                 "\nService Activities: " + serviceActListLine +
                 "\nVehicle Parts: " + vehiclePartListLine +
-                "\nPackage Base Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
+                "\nBase Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
                 "\nService Duration: " + serviceDuration + " hour(s)" +
                 "\n";
     }

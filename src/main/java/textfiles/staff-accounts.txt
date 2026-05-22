@@ -1,2 +1,3 @@
 9e016d45-28c3-429d-845a-20e23dbfca04, 2026-04-24, 950417149172, Staff, Henry, Chong Weng, henryCW88@gmail.com, 0128287342, bnDTSDet8gQ7ou2LqujIfg==:wINiX5zsHyI/j8LZMwx1Qw==, Active, Counter staff, 2026-04-24, Full time
 93000ad9-d745-4e13-8a84-4b59afcc7439, 2026-05-07, 980705148272, Staff, Peng, Yi Ying, pengy88@gmail.com, 0123764785, N6E8/dd6vLvBQ70BnFrgKA==:xu8ClUqW5iQ4A1qBgHPUnQ==, Active, Technician, 2026-05-07, Full time, Tyre maintenance and repair
+6e643dc8-a9bd-4d21-bc2b-b182b8bba6c8, 2026-05-23, 891120143921, Staff, Choong, Man Lee, choongML01@gmail.com, 0128238928, iJUWAVSBRUBxJBrtcqEKJA==:zlCmt2qPbj3mt7jGmwHCJA==, Pending, Technician, 2026-05-23, Full time, Oil change and maintenance

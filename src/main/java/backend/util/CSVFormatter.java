@@ -102,19 +102,55 @@ public class CSVFormatter {
 
     public static String toCsvFormat(Appointment appointment) {
 
+        // Format the appointment creation and update time to yyyyMMddHHmmss format (e.g., 2026-05-01 12:34:56)
+        String creationTime = DateTimeStringFormatter.formatDateTime(appointment.getAppointmentCreationTime());
+        String updateTime = DateTimeStringFormatter.formatDateTime(appointment.getAppointmentUpdateTime());
+
         String appointmentDescription = appointment.getAppointmentDescription();
+        List<StaffAccount> technicianList = appointment.getTechnicianList();
+
+        // If the technician list is not null,
+        // get all the technician account IDs and concatenate them into a comma-separated value string
+        String technicianListLine = "";
+        if (technicianList != null) {
+            technicianListLine = technicianList.stream()
+                    .map(StaffAccount::getAccountID)
+                    .collect(Collectors.joining(", "));
+        }
+
 
         return String.join(", ",
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
-                appointment.getAppointmentCreationTime().toString(),
-                appointment.getAppointmentUpdateTime().toString(),
+                creationTime,
+                updateTime,
                 appointment.getAppointmentTitle(),
                 appointmentDescription != null ? appointmentDescription : "",
                 appointment.getServicePackage().getServicePackageID(), // Get the service package ID from the object
                 appointment.getServiceDate().toString(),
-                appointment.getServiceTime().toString(),
+                appointment.getServiceStartTime().toString(),
+                appointment.getServiceEndTime().toString(),
+                "[" + technicianListLine + "]",
                 appointment.getAppointmentStatus().getAppointmentStatus()
+        );
+
+    }
+
+    public static String toCsvFormat(AppointmentComment appointmentComment) {
+
+        // Format the comment creation and update time to yyyyMMddHHmmss format (e.g., 2026-05-01 12:34:56)
+        String creationTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentCreationTime());
+        String updateTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentUpdateTime());
+
+        // Get the customer account ID from the comment author
+        String customerID = appointmentComment.getCommentAuthor().getAccountID();
+
+        return String.join(", ",
+                appointmentComment.getCommentID(),
+                creationTime,
+                updateTime,
+                customerID,
+                appointmentComment.getCommentContent()
         );
 
     }

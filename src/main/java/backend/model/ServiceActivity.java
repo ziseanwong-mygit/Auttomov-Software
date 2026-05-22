@@ -59,10 +59,10 @@ public class ServiceActivity {
     @Override
     public String toString() {
         return "Service Activity ID: " + serviceActivityID +
-                "\nService Activity Name: " + serviceActivityName +
-                "\nService Activity Description: " +
+                "\nName: " + serviceActivityName +
+                "\nDescription: " +
                 (serviceActivityDescription != null ? serviceActivityDescription : "(no description)") +
-                "\nService Activity Price: $" + DataTypeConverter.convertDoubleToString(serviceActivityPrice) +
+                "\nPrice: RM" + DataTypeConverter.convertDoubleToString(serviceActivityPrice) +
                 "\n";
     }
 }

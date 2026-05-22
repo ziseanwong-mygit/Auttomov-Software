@@ -5,14 +5,25 @@ package main.java.enums.system;
  * Or to determine which type of data to validate its format or length
  */
 public enum DataFieldName {
-    RECORD_ID,
-    USER_ID,
-    EMAIL_ADDRESS,
-    PHONE_NUMBER,
-    PASSWORD,
-    PRICE,
-    QUANTITY,
-    SERVICE_ACTIVITY,
-    VEHICLE_PART,
-    SERVICE_PACKAGE,
+    RECORD_ID("Record ID"),
+    USER_ID("User ID"),
+    EMAIL_ADDRESS("Email Address"),
+    PHONE_NUMBER("Phone Number"),
+    PASSWORD("Password"),
+    PRICE("Price"),
+    QUANTITY("Quantity"),
+    SERVICE_ACTIVITY("Service Activity"),
+    VEHICLE_PART( "Vehicle Part"),
+    SERVICE_PACKAGE("Service Package"),
+    TECHNICIAN_ID("Technician ID"),;
+
+    private final String fieldName;
+
+    DataFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public String getDataFieldName() {
+        return fieldName;
+    }
 }

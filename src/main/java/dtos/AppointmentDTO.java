@@ -4,6 +4,7 @@ import main.java.enums.data.AppointmentStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class AppointmentDTO {
 
@@ -12,43 +13,39 @@ public class AppointmentDTO {
     private String appointmentDescription;
     private String servicePackageID;
     private LocalDate serviceDate;
-    private LocalTime serviceTime;
-    private String technicianID;
+    private LocalTime serviceStartTime;
+    private List<String> technicianIDs;
     private AppointmentStatus appointmentStatus;
 
     /**
      * For creating a new appointment
      */
     public AppointmentDTO(String appointmentTitle, String appointmentDescription, String servicePackageID,
-                          LocalDate serviceDate, LocalTime serviceTime) {
+                          LocalDate serviceDate, LocalTime serviceStartTime) {
         this.appointmentTitle = appointmentTitle;
         this.appointmentDescription = appointmentDescription;
-        this.serviceDate = serviceDate;
-        this.serviceTime = serviceTime;
         this.servicePackageID = servicePackageID;
+        this.serviceDate = serviceDate;
+        this.serviceStartTime = serviceStartTime;
     }
 
     /**
      * For updating an existing appointment's details
      */
     public AppointmentDTO(String appointmentID, String appointmentTitle, String appointmentDescription,
-                          String servicePackageID, LocalDate serviceDate, LocalTime serviceTime,
+                          String servicePackageID, LocalDate serviceDate, LocalTime serviceStartTime,
                           AppointmentStatus appointmentStatus) {
+        this(appointmentTitle, appointmentDescription, servicePackageID, serviceDate, serviceStartTime);
         this.appointmentID = appointmentID;
-        this.appointmentTitle = appointmentTitle;
-        this.appointmentDescription = appointmentDescription;
-        this.serviceDate = serviceDate;
-        this.serviceTime = serviceTime;
-        this.servicePackageID = servicePackageID;
         this.appointmentStatus = appointmentStatus;
     }
 
     /**
      * For assigning a technician to an existing appointment
      */
-    public AppointmentDTO(String appointmentID, String technicianID) {
+    public AppointmentDTO(String appointmentID, List<String> technicianIDs) {
         this.appointmentID = appointmentID;
-        this.technicianID = technicianID;
+        this.technicianIDs = technicianIDs;
     }
 
     /**
@@ -79,12 +76,12 @@ public class AppointmentDTO {
         return serviceDate;
     }
 
-    public LocalTime getServiceTime() {
-        return serviceTime;
+    public LocalTime getServiceStartTime() {
+        return serviceStartTime;
     }
 
-    public String getTechnicianID() {
-        return technicianID;
+    public List<String> getTechnicianIDs() {
+        return technicianIDs;
     }
 
     public AppointmentStatus getAppointmentStatus() {
