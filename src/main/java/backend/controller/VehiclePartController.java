@@ -1,6 +1,7 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.VehiclePart;
+import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
@@ -21,8 +22,9 @@ import java.util.Optional;
 
 public class VehiclePartController {
 
-    // Singleton instance of the repository
+    // Singleton instances of the repositories
     private final VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+    private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
 
     public OperationResult createVehiclePart(VehiclePartDTO vehiclePartDTO) {
 
@@ -95,7 +97,7 @@ public class VehiclePartController {
         }
 
         // Begin deleting vehicle part record procedure in service class
-        RecordWriter deleteVehiclePart = new VehiclePartDeletion(vehiclePartRepo, vehiclePartId);
+        RecordWriter deleteVehiclePart = new VehiclePartDeletion(vehiclePartRepo, servicePackageRepo, vehiclePartId);
         return deleteVehiclePart.execute();
     }
 

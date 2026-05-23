@@ -2,6 +2,7 @@ package main.java.backend.service.appointment;
 
 import main.java.backend.model.Appointment;
 import main.java.backend.model.ServicePackage;
+import main.java.backend.model.UserAccount;
 import main.java.backend.repository.impl.AppointmentRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.AppointmentDTO;
@@ -16,13 +17,15 @@ public class AppointmentUpdate implements RecordWriter {
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentDTO appointmentDTO;
-    private final ServicePackage existingServicePkg;
+    private final UserAccount existingCustomer;
+    private final ServicePackage existingPackage;
 
     public AppointmentUpdate(AppointmentRepository appointmentRepository, AppointmentDTO appointmentDTO,
-                             ServicePackage existingServicePkg) {
+                             UserAccount existingCustomer, ServicePackage existingPackage) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentDTO = appointmentDTO;
-        this.existingServicePkg = existingServicePkg;
+        this.existingCustomer = existingCustomer;
+        this.existingPackage = existingPackage;
     }
 
     @Override
@@ -64,8 +67,11 @@ public class AppointmentUpdate implements RecordWriter {
         appointmentFields.add(new FieldComparison<>("description", 
                 existingAppointment.getAppointmentDescription(), appointmentDTO.getAppointmentDescription(),
                 null));
+        appointmentFields.add(new FieldComparison<>("customerAccount",
+                existingAppointment.getCustomerAccount().getAccountID(), existingCustomer.getAccountID(),
+                null));
         appointmentFields.add(new FieldComparison<>("servicePackage", 
-                existingAppointment.getServicePackage().getServicePackageID(), existingServicePkg.getServicePackageID(),
+                existingAppointment.getServicePackage().getServicePackageID(), existingPackage.getServicePackageID(),
                 null));
         appointmentFields.add(new FieldComparison<>("serviceDate", 
                 existingAppointment.getServiceDate(), appointmentDTO.getServiceDate(), null));
@@ -94,7 +100,8 @@ public class AppointmentUpdate implements RecordWriter {
                 case "title" -> existingAppointment.setAppointmentTitle(appointmentDTO.getAppointmentTitle());
                 case "description" -> existingAppointment.setAppointmentDescription(
                         appointmentDTO.getAppointmentDescription());
-                case "servicePackage" -> existingAppointment.setServicePackage(existingServicePkg);
+                case "customerAccount" -> existingAppointment.setCustomerAccount(existingCustomer);
+                case "servicePackage" -> existingAppointment.setServicePackage(existingPackage);
                 case "serviceDate" -> existingAppointment.setServiceDate(appointmentDTO.getServiceDate());
                 case "serviceTime" -> existingAppointment.setServiceStartTime(appointmentDTO.getServiceStartTime());
                 case "appointmentStatus" -> existingAppointment.setAppointmentStatus(

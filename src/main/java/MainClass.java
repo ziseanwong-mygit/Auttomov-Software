@@ -1,10 +1,34 @@
 package main.java;
 
+import main.java.backend.controller.ServicePackageController;
+import main.java.backend.model.ServicePackage;
+
+import java.util.List;
+import java.util.Optional;
+
 public class MainClass {
 
     public static void main(String[] args) {
 
+/*        AppointmentController appointmentController = new AppointmentController();
+        Optional<List<Appointment>> appointments = appointmentController.retrieveAllAppointments();
+        if (appointments.isPresent()) {
+            List<Appointment> appointmentsList = appointments.get();
+            for (Appointment appointment : appointmentsList) {
+                System.out.println(appointment);
+            }
+        } else {
+            System.out.println("No appointments found.");
+        }*/
 
+        ServicePackageController servicePackageController = new ServicePackageController();
+        Optional<List<ServicePackage>> servicePackages = servicePackageController.retrieveAllServicePackages();
+        if (servicePackages.isPresent()) {
+            List<ServicePackage> servicePackagesList = servicePackages.get();
+            for (ServicePackage servicePackage : servicePackagesList) {
+                System.out.println(servicePackage);
+            }
+        }
     }
 }
 

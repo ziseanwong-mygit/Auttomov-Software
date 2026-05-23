@@ -80,7 +80,7 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(appointmentCommentById.get(commentID));
+        removeRecordFromMap(appointmentCommentById.get(commentID));
         addRecordIntoMap(commentToUpdate);
 
         return OperationResult.success(
@@ -91,11 +91,11 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
     @Override
     public OperationResult deleteRecord(AppointmentComment commentToDelete) {
 
-        String serviceActID = commentToDelete.getCommentID();
+        String commentID = commentToDelete.getCommentID();
 
-        // Map the target comment object by its ID
+        // Map Optional.empty() by its ID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
-                serviceActID, _ -> Optional.empty()
+                commentID, _ -> Optional.empty()
         );
 
         // Rewrite the file to delete the target record
@@ -105,11 +105,37 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(commentToDelete);
+        removeRecordFromMap(commentToDelete);
 
         return OperationResult.success(
-                "The comment with ID " + serviceActID + " has been deleted successfully. "
+                "The comment with ID " + commentID + " has been deleted successfully. "
                         + "Please check the records to verify its deletion.");
+    }
+
+    public OperationResult bulkDeleteRecord(List<AppointmentComment> commentsToDelete) {
+
+        // Build a map to store Optional.empty() mapped by each comment ID
+        // Optional.empty() indicates that the record should be deleted in the logic
+        Map<String, Function<String, Optional<String>>> modifier = new HashMap<>();
+
+        // Map Optional.empty() by its ID
+        for (AppointmentComment comment : commentsToDelete) {
+            modifier.put(comment.getCommentID(), _ -> Optional.empty());
+        }
+
+        // Single file rewrite removes all comments simultaneously
+        OperationResult result = rewriteFile(modifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Remove all the deleted record from the maps to apply the latest changes
+        for (AppointmentComment comment : commentsToDelete) {
+            removeRecordFromMap(comment);
+        }
+
+        return OperationResult.success(
+                commentsToDelete.size() + " comment(s) have been deleted successfully.");
     }
 
     @Override
@@ -124,7 +150,7 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
 
     @Override
     public List<AppointmentComment> getRecordsByIds(List<String> commentIds) {
-        // Filter the service activity objects by their IDs
+        // Filter the appointment comment objects by their IDs
         return appointmentCommentById.values().stream()
                 .filter(comment -> commentIds.contains(comment.getCommentID()))
                 .toList();
@@ -179,7 +205,7 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
      * Remove the old/deleted service activity from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(AppointmentComment comment) {
+    protected void removeRecordFromMap(AppointmentComment comment) {
 
         // End the method early if the service activity is not provided
         if (comment == null) {

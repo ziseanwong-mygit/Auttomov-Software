@@ -2,6 +2,7 @@ package main.java.backend.controller;
 
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.repository.impl.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.serviceactivity.ServiceActivityCreation;
@@ -21,8 +22,9 @@ import java.util.Optional;
 
 public class ServiceActivityController {
 
-    // Singleton instance of the repository
+    // Singleton instances of the repositories
     private final ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
+    private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
 
     public OperationResult createServiceActivity(ServiceActivityDTO serviceActivityDTO) {
 
@@ -85,7 +87,8 @@ public class ServiceActivityController {
         }
 
         // Begin deleting service activity record procedure in service class
-        RecordWriter deleteServiceActivity = new ServiceActivityDeletion(serviceActivityRepo, serviceActId);
+        RecordWriter deleteServiceActivity = new ServiceActivityDeletion(
+                serviceActivityRepo, servicePackageRepo, serviceActId);
         return deleteServiceActivity.execute();
     }
 

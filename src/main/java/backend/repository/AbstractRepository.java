@@ -43,7 +43,7 @@ public abstract class AbstractRepository<T> implements CrudRepository<T> {
     protected abstract void addRecordIntoMap(T record);
 
     /**
-     * Remove the old/deleted vehicle part from all lookup maps
+     * Remove the old/deleted record from all lookup maps
      */
-    protected abstract void removeRecordIntoMap(T record);
+    protected abstract void removeRecordFromMap(T record);
 }

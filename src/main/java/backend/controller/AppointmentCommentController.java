@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class AppointmentCommentController {
 
-    // Singleton instance of the repository
+    // Singleton instances of the repositories
     private final AppointmentCommentRepository appointmentCommentRepo = AppointmentCommentRepository.getInstance();
     private final AppointmentRepository appointmentRepo = AppointmentRepository.getInstance();
     private final CustomerAccountRepository customerAccountRepo = CustomerAccountRepository.getInstance();
@@ -38,23 +38,23 @@ public class AppointmentCommentController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
-        // Check if the appointment ID is a valid UUID
-        String appointmentID = appointmentCommentDTO.getAppointmentID();
-        if (!DataValidator.validateRecordId(appointmentID).isValid()) {
-            return OperationResult.failed("The appointment ID: " + appointmentID +
-                    " is not an UUID. Please try again.");
+        // Validate appointment ID
+        String appointmentId = appointmentCommentDTO.getAppointmentID();
+        OperationResult appointmentIdVerification = validateAuthorId(appointmentId);
+        if (!appointmentIdVerification.isValid()) {
+            return appointmentIdVerification;
         }
 
-        // Check if the customer account ID is a valid UUID
-        String customerAccountID = appointmentCommentDTO.getCommentAuthorID();
-        if (!DataValidator.validateRecordId(customerAccountID).isValid()) {
-            return OperationResult.failed("The customer account ID: " + customerAccountID +
-                    " is not an UUID. Please try again.");
+        // Validate author (customer account) ID
+        String customerAccountId = appointmentCommentDTO.getCommentAuthorID();
+        OperationResult customerIdVerification = validateAuthorId(customerAccountId);
+        if (!customerIdVerification.isValid()) {
+            return customerIdVerification;
         }
 
         // Retrieve the appointment and customer account records with the respective IDs from the repositories
-        Appointment appointment = appointmentRepo.getRecordById(appointmentID);
-        UserAccount customerAcc = customerAccountRepo.getRecordById(customerAccountID);
+        Appointment appointment = appointmentRepo.getRecordById(appointmentId);
+        UserAccount customerAcc = customerAccountRepo.getRecordById(customerAccountId);
 
         // Begin creating appointment comment record procedure in service class
         RecordWriter createAppointmentComment = new AppointmentCommentCreation(
@@ -113,20 +113,28 @@ public class AppointmentCommentController {
         return retrieveAllComments.getAllRecords();
     }
 
-    public Optional<AppointmentComment> retrieveApptCommentById(String servicePkgId) {
+    public Optional<AppointmentComment> retrieveApptCommentById(String commentId) {
 
         // Begin retrieving appointment comment record by ID procedure in service class
         RecordReader<AppointmentComment> retrieveCommentById =
                 new AppointmentCommentRetrieval(appointmentCommentRepo);
-        return retrieveCommentById.getRecordById(servicePkgId);
+        return retrieveCommentById.getRecordById(commentId);
     }
 
-    public Optional<List<AppointmentComment>> retrieveApptCommentsByIds(List<String> appointmentIds) {
+    public Optional<List<AppointmentComment>> retrieveApptCommentsByIds(List<String> commentIds) {
 
         // Begin retrieving multiple appointment comment records by IDs procedure in service class
         RecordReader<AppointmentComment> retrieveCommentsByIds =
                 new AppointmentCommentRetrieval(appointmentCommentRepo);
-        return retrieveCommentsByIds.getRecordsByIds(appointmentIds);
+        return retrieveCommentsByIds.getRecordsByIds(commentIds);
+    }
+
+    public Optional<List<AppointmentComment>> retrieveApptCommentsByApptId(String appointmentId) {
+
+        // Begin retrieving multiple appointment comment records by appointment ID procedure in service class
+        AppointmentCommentRetrieval retrieveCommentsByApptId =
+                new AppointmentCommentRetrieval(appointmentCommentRepo);
+        return retrieveCommentsByApptId.getRecordsByAppointmentId(appointmentId);
     }
 
     /**
@@ -172,7 +180,8 @@ public class AppointmentCommentController {
     }
 
     /**
-     * Check if there are any null or empty values of required fields in the given DTO
+     * Check if there are any null or empty values of required fields in the given DTO,
+     * excluding appointment and author IDs
      * Used for creating and updating records
      */
     private OperationResult validateNullValues(AppointmentCommentDTO appointmentCommentDTO,
@@ -185,14 +194,62 @@ public class AppointmentCommentController {
             commentValues.add(appointmentCommentDTO.getCommentID());
         }
 
-        // If the operation is creating a new record, add the appointment ID and customer account ID to the list
-        if (operationType == OperationType.CREATE) {
-            commentValues.add(appointmentCommentDTO.getAppointmentID());
-            commentValues.add(appointmentCommentDTO.getCommentAuthorID());
-        }
-
         commentValues.add(appointmentCommentDTO.getCommentContent());
 
         return NullValidator.isAllValuesNull(commentValues);
+    }
+
+    /**
+     * Full validation of the appointment ID in checking nullity, format, and linking record
+     */
+    public OperationResult validateAppointmentId(String appointmentId) {
+
+        // 1. Check if the appointment ID is null or blank
+        if (appointmentId == null || appointmentId.isBlank()) {
+            return OperationResult.failed(DataFieldName.APPOINTMENT_ID,
+                    "The appointment ID must be provided. Please try again.");
+        }
+
+        // 2. Check if the appointment ID in UUID format
+        if (!DataValidator.validateRecordId(appointmentId).isValid()) {
+            return OperationResult.failed(DataFieldName.APPOINTMENT_ID,
+                    "The appointment ID: " + appointmentId + " is not an UUID. Please try again.");
+        }
+
+        // 3. Check if the appointment ID exists in the repository
+        if (appointmentRepo.getRecordById(appointmentId) == null) {
+            return OperationResult.failed(DataFieldName.APPOINTMENT_ID,
+                    "The appointment with ID " + appointmentId + " does not exist in the records.");
+        }
+
+        // If all validations pass, return success
+        return OperationResult.success();
+    }
+
+    /**
+     * Full validation of the author (customer account) ID in checking nullity, format, and linking record
+     */
+    private OperationResult validateAuthorId(String customerId) {
+
+        // 1. Check if the customer account ID is null or blank
+        if (customerId == null || customerId.isBlank()) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account ID must be provided. Please try again.");
+        }
+
+        // 2. Check if the customer account ID in UUID format
+        if (!DataValidator.validateRecordId(customerId).isValid()) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account ID: " + customerId + " is not an UUID. Please try again.");
+        }
+
+        // 3. Check if the customer account ID exists in the repository
+        if (customerAccountRepo.getRecordById(customerId) == null) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account with ID " + customerId + " does not exist in the records.");
+        }
+
+        // If all validations pass, return success
+        return OperationResult.success();
     }
 }

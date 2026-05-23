@@ -34,7 +34,7 @@ public class AccountController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(userAccountDTO, OperationType.CREATE);
         if (!nullValidation.isValid()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
+
         }
 
         // Check if all values have the correct format/standard

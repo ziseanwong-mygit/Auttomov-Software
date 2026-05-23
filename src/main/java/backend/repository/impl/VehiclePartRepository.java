@@ -81,7 +81,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(vehiclePartById.get(vehiclePartID));
+        removeRecordFromMap(vehiclePartById.get(vehiclePartID));
         addRecordIntoMap(vehPartToUpdate);
 
         return OperationResult.success(
@@ -106,7 +106,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(vehPartToDelete);
+        removeRecordFromMap(vehPartToDelete);
 
         return OperationResult.success(
                 "The vehicle part with ID " + vehiclePartID + " has been deleted successfully. "
@@ -171,7 +171,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
      * Remove the old/deleted vehicle part from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(VehiclePart vehiclePart) {
+    protected void removeRecordFromMap(VehiclePart vehiclePart) {
 
         // End the method early if the vehicle part is not provided
         if (vehiclePart == null) {

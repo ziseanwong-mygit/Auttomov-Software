@@ -2,6 +2,7 @@ package main.java.backend.service.appointment;
 
 import main.java.backend.model.Appointment;
 import main.java.backend.model.ServicePackage;
+import main.java.backend.model.UserAccount;
 import main.java.backend.repository.impl.AppointmentRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
@@ -18,12 +19,14 @@ public class AppointmentCreation implements RecordWriter {
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentDTO appointmentDTO;
+    private final UserAccount existingCustomer;
     private final ServicePackage existingPackage;
 
     public AppointmentCreation(AppointmentRepository appointmentRepository, AppointmentDTO appointmentDTO,
-                               ServicePackage existingPackage) {
+                               UserAccount existingCustomer, ServicePackage existingPackage) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentDTO = appointmentDTO;
+        this.existingCustomer = existingCustomer;
         this.existingPackage = existingPackage;
     }
 
@@ -59,7 +62,7 @@ public class AppointmentCreation implements RecordWriter {
         // When creating a new appointment, the technician is not assigned yet, so it is set to null
         // Also set the appointment status to PENDING by default
         return new Appointment(appointmentId, appointmentOrderNo, currentDateTime, currentDateTime,
-                appointmentTitle, appointmentDescription, existingPackage, serviceDate, serviceStartTime,
-                serviceEndTime, null, AppointmentStatus.PENDING);
+                appointmentTitle, appointmentDescription, existingCustomer, existingPackage, serviceDate,
+                serviceStartTime, serviceEndTime, null, AppointmentStatus.PENDING);
     }
 }

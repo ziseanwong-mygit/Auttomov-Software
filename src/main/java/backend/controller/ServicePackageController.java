@@ -3,6 +3,7 @@ package main.java.backend.controller;
 import main.java.backend.model.ServiceActivity;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
+import main.java.backend.repository.impl.AppointmentRepository;
 import main.java.backend.repository.impl.ServiceActivityRepository;
 import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.repository.impl.VehiclePartRepository;
@@ -26,6 +27,7 @@ public class ServicePackageController {
     private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
     private final ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
     private final VehiclePartRepository vehiclePartRepo = VehiclePartRepository.getInstance();
+    private final AppointmentRepository appointmentRepo = AppointmentRepository.getInstance();
 
     public OperationResult createServicePackage(ServicePackageDTO servicePackageDTO) {
 
@@ -138,7 +140,8 @@ public class ServicePackageController {
         }
 
         // Begin deleting service package record procedure in service class
-        RecordWriter deleteServicePackage = new ServicePackageDeletion(servicePackageRepo, servicePkgId);
+        RecordWriter deleteServicePackage = new ServicePackageDeletion(
+                servicePackageRepo, appointmentRepo, servicePkgId);
         return deleteServicePackage.execute();
     }
 
@@ -244,55 +247,56 @@ public class ServicePackageController {
 
     /**
      * Full validation for service activity and vehicle part IDs in checking nullity, format, and linking records
+     * One or more service activities must be added into a package, but vehicle parts are optional
      */
     private OperationResult validateReferencedIds(ServicePackageDTO servicePackageDTO) {
 
-        // 1. Check if both service activity and vehicle part lists are empty; if so, return an error message
-        if (servicePackageDTO.getServiceActivityIDs() == null && servicePackageDTO.getVehiclePartIDs() == null ) {
-            return OperationResult.failed("Both service activity and vehicle part list cannot be empty. " +
-                    "Please fill in at least one of them.");
+        // 1. Check if the service activity list is empty; if so, return an error message
+        if (servicePackageDTO.getServiceActivityIDs() == null) {
+            return OperationResult.failed("The service activity list cannot be empty. Please try again.");
         }
 
-        /*
-            For each loop:
-            2. Check if one of the IDs is null or empty; if so, return an error message
-            3. Then check if the ID is a valid UUID; if not, return an error message
-            4. Finally, check if the record exists with the ID
-         */
+        // 2. Check if the service activity IDs are not null, in valid format and linked to existing records
         for (String activityId : servicePackageDTO.getServiceActivityIDs()) {
 
             if (activityId == null || activityId.isBlank() ) {
-                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY_ID,
                         "One of the service activity IDs is null or empty. Please try again.");
 
             }
 
             if (!DataValidator.validateRecordId(activityId).isValid()) {
-                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY_ID,
                         "The service activity ID: " + activityId + " is not an UUID. Please try again.");
             }
 
             if (serviceActivityRepo.getRecordById(activityId) == null) {
-                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY_ID,
                         "The service activity with ID " + activityId + " does not exist in the records.");
             }
 
         }
-        for (String partId : servicePackageDTO.getVehiclePartIDs()) {
 
-            if (partId == null || partId.isBlank() ) {
-                return OperationResult.failed("One of the vehicle part IDs is null or empty. Please try again.");
+        // 3. If there are vehicle parts added into the list,
+        //    check if the vehicle part IDs are not null, in valid format and linked to existing records
+        if (servicePackageDTO.getVehiclePartIDs() != null && !servicePackageDTO.getVehiclePartIDs().isEmpty()) {
+            for (String partId : servicePackageDTO.getVehiclePartIDs()) {
 
-            }
+                if (partId == null || partId.isBlank() ) {
+                    return OperationResult.failed(DataFieldName.VEHICLE_PART_ID,
+                            "One of the vehicle part IDs is null or empty. Please try again.");
 
-            if (!DataValidator.validateRecordId(partId).isValid()) {
-                return OperationResult.failed(DataFieldName.VEHICLE_PART,
-                        "The vehicle part ID: " + partId + " is not an UUID. Please try again.");
-            }
+                }
 
-            if (vehiclePartRepo.getRecordById(partId) == null) {
-                return OperationResult.failed(DataFieldName.VEHICLE_PART,
-                        "The vehicle part with ID " + partId + " does not exist in the records.");
+                if (!DataValidator.validateRecordId(partId).isValid()) {
+                    return OperationResult.failed(DataFieldName.VEHICLE_PART_ID,
+                            "The vehicle part ID: " + partId + " is not an UUID. Please try again.");
+                }
+
+                if (vehiclePartRepo.getRecordById(partId) == null) {
+                    return OperationResult.failed(DataFieldName.VEHICLE_PART_ID,
+                            "The vehicle part with ID " + partId + " does not exist in the records.");
+                }
             }
         }
 

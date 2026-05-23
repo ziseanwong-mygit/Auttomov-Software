@@ -81,7 +81,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(serviceActivityById.get(serviceActID));
+        removeRecordFromMap(serviceActivityById.get(serviceActID));
         addRecordIntoMap(serviceActToUpdate);
 
         return OperationResult.success(
@@ -106,7 +106,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(serviceActToDelete);
+        removeRecordFromMap(serviceActToDelete);
 
         return OperationResult.success(
                 "The service activity with ID " + serviceActID + " has been deleted successfully. "
@@ -167,7 +167,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
      * Remove the old/deleted service activity from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(ServiceActivity serviceActivity) {
+    protected void removeRecordFromMap(ServiceActivity serviceActivity) {
 
         // End the method early if the service activity is not provided
         if (serviceActivity == null) {

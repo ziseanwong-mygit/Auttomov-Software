@@ -3,8 +3,12 @@ package main.java.backend.controller;
 import main.java.backend.model.Appointment;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.StaffAccount;
+import main.java.backend.model.UserAccount;
+import main.java.backend.repository.impl.AppointmentCommentRepository;
+import main.java.backend.repository.impl.AppointmentFeedbackRepository;
 import main.java.backend.repository.impl.AppointmentRepository;
 import main.java.backend.repository.impl.ServicePackageRepository;
+import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
@@ -13,6 +17,7 @@ import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.AppointmentDTO;
 import main.java.enums.data.AppointmentStatus;
+import main.java.enums.data.JobPosition;
 import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
@@ -27,7 +32,10 @@ public class AppointmentController {
     // Singleton instances of the repositories
     private final AppointmentRepository appointmentRepo = AppointmentRepository.getInstance();
     private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
+    private final CustomerAccountRepository customerAccountRepo = CustomerAccountRepository.getInstance();
     private final StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
+    private final AppointmentCommentRepository appointmentCommentRepo = AppointmentCommentRepository.getInstance();
+    private final AppointmentFeedbackRepository appointmentFeedbackRepo = AppointmentFeedbackRepository.getInstance();
 
     public OperationResult createAppointment(AppointmentDTO appointmentDTO) {
 
@@ -37,6 +45,13 @@ public class AppointmentController {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
+        // Validate customer account ID
+        String customerAccountId = appointmentDTO.getCustomerAccountID();
+        OperationResult customerIdVerification = validateCustomerId(customerAccountId);
+        if (!customerIdVerification.isValid()) {
+            return customerIdVerification;
+        }
+
         // Validate service package ID
         String servicePackageId = appointmentDTO.getServicePackageID();
         OperationResult pkgIdVerification = validateServicePackageId(servicePackageId);
@@ -44,11 +59,13 @@ public class AppointmentController {
             return pkgIdVerification;
         }
 
-        // Retrieve the service package record with the input ID from the repository
+        // Retrieve the customer account and service package records with the respective IDs from the repository
+        UserAccount customerAcc = customerAccountRepo.getRecordById(customerAccountId);
         ServicePackage servicePackage = servicePackageRepo.getRecordById(servicePackageId);
 
         // Begin creating appointment record procedure in service class
-        RecordWriter createAppointment = new AppointmentCreation(appointmentRepo, appointmentDTO, servicePackage);
+        RecordWriter createAppointment = new AppointmentCreation(
+                appointmentRepo, appointmentDTO, customerAcc, servicePackage);
         return createAppointment.execute();
     }
 
@@ -66,6 +83,13 @@ public class AppointmentController {
                     appointmentDTO.getAppointmentID() + " is not an UUID. Please try again.");
         }
 
+        // Validate customer account ID
+        String customerAccountId = appointmentDTO.getCustomerAccountID();
+        OperationResult customerIdVerification = validateCustomerId(customerAccountId);
+        if (!customerIdVerification.isValid()) {
+            return customerIdVerification;
+        }
+
         // Validate service package ID
         String servicePackageId = appointmentDTO.getServicePackageID();
         OperationResult pkgIdVerification = validateServicePackageId(servicePackageId);
@@ -73,11 +97,13 @@ public class AppointmentController {
             return pkgIdVerification;
         }
 
-        // Retrieve the service package record with the input ID from the repository
+        // Retrieve the customer account and service package records with the respective IDs from the repository
+        UserAccount customerAcc = customerAccountRepo.getRecordById(customerAccountId);
         ServicePackage servicePackage = servicePackageRepo.getRecordById(servicePackageId);
 
         // Begin updating appointment record procedure in service class
-        RecordWriter updateAppointment = new AppointmentUpdate(appointmentRepo, appointmentDTO, servicePackage);
+        RecordWriter updateAppointment = new AppointmentUpdate(
+                appointmentRepo, appointmentDTO, customerAcc, servicePackage);
         return updateAppointment.execute();
     }
 
@@ -97,7 +123,7 @@ public class AppointmentController {
         }
 
         // Validate all technician account IDs
-        OperationResult techIdVerification = validateTechnicianId(technicianIDList);
+        OperationResult techIdVerification = validateTechnicianIds(technicianIDList);
         if (!techIdVerification.isValid()) {
             return techIdVerification;
         }
@@ -158,7 +184,8 @@ public class AppointmentController {
         }
 
         // Begin deleting service package record procedure in service class
-        RecordWriter deleteAppointment = new AppointmentDeletion(appointmentRepo, appointmentId);
+        RecordWriter deleteAppointment = new AppointmentDeletion(
+                appointmentRepo, appointmentCommentRepo, appointmentFeedbackRepo, appointmentId);
         return deleteAppointment.execute();
     }
 
@@ -282,7 +309,6 @@ public class AppointmentController {
         }
 
         appointmentValues.add(appointmentDTO.getAppointmentTitle());
-        appointmentValues.add(appointmentDTO.getAppointmentDescription());
         appointmentValues.add(appointmentDTO.getServiceDate());
         appointmentValues.add(appointmentDTO.getServiceStartTime());
 
@@ -296,20 +322,47 @@ public class AppointmentController {
 
         // 1. Check if the service package ID is null or blank
         if (servicePackageId == null || servicePackageId.isBlank()) {
-            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE,
+            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE_ID,
                     "The service package ID must be provided. Please try again.");
         }
 
         // 2. Check if the service package ID in UUID format
         if (!DataValidator.validateRecordId(servicePackageId).isValid()) {
-            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE,
+            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE_ID,
                     "The service package ID: " + servicePackageId + " is not an UUID. Please try again.");
         }
 
         // 3. Check if the service package ID exists in the repository
         if (servicePackageRepo.getRecordById(servicePackageId) == null) {
-            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE,
+            return OperationResult.failed(DataFieldName.SERVICE_PACKAGE_ID,
                     "The service package with ID " + servicePackageId + " does not exist in the records.");
+        }
+
+        // If all validations pass, return success
+        return OperationResult.success();
+    }
+
+    /**
+     * Full validation of the customer account ID in checking nullity, format, and linking record
+     */
+    private OperationResult validateCustomerId(String customerId) {
+
+        // 1. Check if the customer account ID is null or blank
+        if (customerId == null || customerId.isBlank()) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account ID must be provided. Please try again.");
+        }
+
+        // 2. Check if the customer account ID in UUID format
+        if (!DataValidator.validateRecordId(customerId).isValid()) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account ID: " + customerId + " is not an UUID. Please try again.");
+        }
+
+        // 3. Check if the customer account ID exists in the repository
+        if (customerAccountRepo.getRecordById(customerId) == null) {
+            return OperationResult.failed(DataFieldName.CUSTOMER_ID,
+                    "The customer account with ID " + customerId + " does not exist in the records.");
         }
 
         // If all validations pass, return success
@@ -319,7 +372,7 @@ public class AppointmentController {
     /**
      * Full validation of the technician account ID in checking nullity, format, and linking record
      */
-    private OperationResult validateTechnicianId(List<String> technicianIdList) {
+    private OperationResult validateTechnicianIds(List<String> technicianIdList) {
 
         // 1. Check if the technician ID list is null or not; if so, return an error message
         if (technicianIdList == null) {
@@ -341,10 +394,17 @@ public class AppointmentController {
                                 " is not an UUID. Please try again.");
             }
 
-            if (staffAccountRepo.getRecordById(technicianId) == null) {
-                return OperationResult.failed(DataFieldName.SERVICE_ACTIVITY,
+            StaffAccount technicianAcc = staffAccountRepo.getRecordById(technicianId);
+            if (technicianAcc == null) {
+                return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
                         "The technician account with ID " + technicianId +
                                 " does not exist in the records.");
+            }
+
+            if (technicianAcc.getJobPosition() != JobPosition.TECHNICIAN) {
+                return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
+                        "The staff account with ID " + technicianId +
+                                " is not a technician. Please assign with an actual technician.");
             }
 
         }

@@ -16,26 +16,24 @@ public class AppointmentCommentCreation implements RecordWriter {
     private final AppointmentCommentRepository appointmentCommentRepository;
     private final AppointmentCommentDTO appointmentCommentDTO;
     private final Appointment existingAppointment;
-    private final UserAccount existingCustomerAcc;
+    private final UserAccount existingCustomer;
 
     public AppointmentCommentCreation(AppointmentCommentRepository appointmentCommentRepository,
                                       AppointmentCommentDTO appointmentCommentDTO, Appointment existingAppointment,
-                                      UserAccount existingCustomerAcc) {
+                                      UserAccount existingCustomer) {
         this.appointmentCommentRepository = appointmentCommentRepository;
         this.appointmentCommentDTO = appointmentCommentDTO;
         this.existingAppointment = existingAppointment;
-        this.existingCustomerAcc = existingCustomerAcc;
+        this.existingCustomer = existingCustomer;
     }
 
     @Override
     public OperationResult execute() {
-
         // Create a new comment object
         AppointmentComment newComment = populateApptCommentDetails();
 
         // Save the comment into the file
         return appointmentCommentRepository.createRecord(newComment);
-
     }
 
     /**
@@ -51,7 +49,7 @@ public class AppointmentCommentCreation implements RecordWriter {
 
         // Return the new object here
         return new AppointmentComment(commentId, currentDateTime, currentDateTime, existingAppointment,
-                existingCustomerAcc, appointmentCommentDTO.getCommentContent());
+                existingCustomer, appointmentCommentDTO.getCommentContent());
     }
 
 }

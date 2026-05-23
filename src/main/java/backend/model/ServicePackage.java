@@ -92,7 +92,7 @@ public class ServicePackage {
 
     /**
      * Return a human-readable string representation of the object.
-     * Used for debugging and logging.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
@@ -111,8 +111,10 @@ public class ServicePackage {
                 "\nDescription: " +
                 (servicePackageDescription != null ? servicePackageDescription : "(no description)") +
                 "\nPackage Type: " + servicePackageType.getServicePkgType() +
-                "\nService Activities: " + serviceActListLine +
-                "\nVehicle Parts: " + vehiclePartListLine +
+                "\nService Activities: " +
+                (serviceActListLine.isBlank() ? "(no service activities)" : serviceActListLine) +
+                "\nVehicle Parts: " +
+                (vehiclePartListLine.isBlank() ? "(no vehicle parts)" : vehiclePartListLine) +
                 "\nBase Price: RM" + DataTypeConverter.convertDoubleToString(packageBasePrice) +
                 "\nService Duration: " + serviceDuration + " hour(s)" +
                 "\n";

@@ -79,14 +79,19 @@ public class CSVFormatter {
         List<ServiceActivity> serviceActivityList = servicePackage.getServiceActivityList();
         List<VehiclePart> vehiclePartList = servicePackage.getVehiclePartList();
 
-        // Get the service activity and vehicle part IDs and concatenate them into a comma-separated value string
+        // Get the service activity IDs and concatenate them into a comma-separated value string
         String serviceActListLine = serviceActivityList.stream()
                 .map(ServiceActivity::getServiceActivityID)
                 .collect(Collectors.joining(", "));
 
-        String vehiclePartListLine = vehiclePartList.stream()
-                .map(VehiclePart::getVehiclePartID)
-                .collect(Collectors.joining(", "));
+        // If there are vehicle parts in the package,
+        // get the vehicle part IDs and concatenate them into a comma-separated value string
+        String vehiclePartListLine = "";
+        if (servicePackage.getVehiclePartList() != null && !servicePackage.getVehiclePartList().isEmpty()) {
+            vehiclePartListLine = vehiclePartList.stream()
+                    .map(VehiclePart::getVehiclePartID)
+                    .collect(Collectors.joining(", "));
+        }
 
         return String.join(", ",
                 servicePackage.getServicePackageID(),
@@ -118,7 +123,6 @@ public class CSVFormatter {
                     .collect(Collectors.joining(", "));
         }
 
-
         return String.join(", ",
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
@@ -126,6 +130,7 @@ public class CSVFormatter {
                 updateTime,
                 appointment.getAppointmentTitle(),
                 appointmentDescription != null ? appointmentDescription : "",
+                appointment.getCustomerAccount().getAccountID(), // Get the customer account ID from the object
                 appointment.getServicePackage().getServicePackageID(), // Get the service package ID from the object
                 appointment.getServiceDate().toString(),
                 appointment.getServiceStartTime().toString(),
@@ -142,17 +147,30 @@ public class CSVFormatter {
         String creationTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentCreationTime());
         String updateTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentUpdateTime());
 
-        // Get the customer account ID from the comment author
-        String customerID = appointmentComment.getCommentAuthor().getAccountID();
-
         return String.join(", ",
                 appointmentComment.getCommentID(),
                 creationTime,
                 updateTime,
-                customerID,
+                appointmentComment.getAppointment().getAppointmentID(),
+                appointmentComment.getCommentAuthor().getAccountID(),
                 appointmentComment.getCommentContent()
         );
+    }
 
+    public static String toCsvFormat(AppointmentFeedback appointmentFeedback) {
+
+        // Format the comment creation and update time to yyyyMMddHHmmss format (e.g., 2026-05-01 12:34:56)
+        String creationTime = DateTimeStringFormatter.formatDateTime(appointmentFeedback.getFeedbackCreationTime());
+        String updateTime = DateTimeStringFormatter.formatDateTime(appointmentFeedback.getFeedbackUpdateTime());
+
+        return String.join(", ",
+                appointmentFeedback.getFeedbackID(),
+                creationTime,
+                updateTime,
+                appointmentFeedback.getAppointment().getAppointmentID(),
+                appointmentFeedback.getFeedbackAuthor().getAccountID(),
+                appointmentFeedback.getFeedbackContent()
+        );
     }
 
     /**

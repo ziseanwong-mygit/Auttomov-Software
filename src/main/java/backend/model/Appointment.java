@@ -17,6 +17,7 @@ public class Appointment {
     private LocalDateTime appointmentUpdateTime;
     private String appointmentTitle;
     private String appointmentDescription;
+    private UserAccount customerAccount;
     private ServicePackage servicePackage;
     private LocalDate serviceDate;
     private LocalTime serviceStartTime;
@@ -26,8 +27,8 @@ public class Appointment {
 
     public Appointment(String appointmentID, String appointmentOrderNo, LocalDateTime appointmentCreationTime,
                        LocalDateTime appointmentUpdateTime, String appointmentTitle, String appointmentDescription,
-                       ServicePackage servicePackage, LocalDate serviceDate, LocalTime serviceStartTime,
-                       LocalTime serviceEndTime, List<StaffAccount> technicianList,
+                       UserAccount customerAccount, ServicePackage servicePackage, LocalDate serviceDate,
+                       LocalTime serviceStartTime, LocalTime serviceEndTime, List<StaffAccount> technicianList,
                        AppointmentStatus appointmentStatus) {
 
         this.appointmentID = appointmentID;
@@ -36,6 +37,7 @@ public class Appointment {
         this.appointmentUpdateTime = appointmentUpdateTime;
         this.appointmentTitle = appointmentTitle;
         this.appointmentDescription = appointmentDescription;
+        this.customerAccount = customerAccount;
         this.servicePackage = servicePackage;
         this.serviceDate = serviceDate;
         this.serviceStartTime = serviceStartTime;
@@ -66,6 +68,10 @@ public class Appointment {
 
     public String getAppointmentDescription() {
         return appointmentDescription;
+    }
+
+    public UserAccount getCustomerAccount() {
+        return customerAccount;
     }
 
     public ServicePackage getServicePackage() {
@@ -104,6 +110,10 @@ public class Appointment {
         this.appointmentDescription = appointmentDescription;
     }
 
+    public void setCustomerAccount(UserAccount customerAccount){
+        this.customerAccount = customerAccount;
+    }
+
     public void setServicePackage(ServicePackage servicePackage){
         this.servicePackage = servicePackage;
     }
@@ -129,8 +139,8 @@ public class Appointment {
     }
 
     /**
-     * Gather all data into one single line, with each value separated by commas
-     * To ease the process of writing new record into the file
+     * Return a human-readable string representation of the object.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {
@@ -144,16 +154,23 @@ public class Appointment {
         String creationTime = DateTimeStringFormatter.formatDateTime(appointmentCreationTime);
         String updateTime = DateTimeStringFormatter.formatDateTime(appointmentUpdateTime);
 
+        // If the service package is null, it means that the service package has been deleted from the file;
+        // when viewing completed, canceled or incomplete appointments, the service package is not displayed
         return "Appointment ID: " + appointmentID +
                 "\nOrder No: " + appointmentOrderNo +
                 "\nCreation Date: " + creationTime +
                 "\nUpdate Date: " + updateTime +
                 "\nTitle: " + appointmentTitle +
-                "\nDescription: " + appointmentDescription +
-                "\nService Package: " + servicePackage.getServicePackageName() +
+                "\nDescription: " +
+                (appointmentDescription != null ? appointmentDescription : "(no description)") +
+                "\nCustomer: " + customerAccount.getFirstName() + " " + customerAccount.getLastName() +
+                "\nService Package: " +
+                (servicePackage != null ? servicePackage.getServicePackageName() :
+                        "(service package unavailable/deleted)") +
                 "\nService Date: " + serviceDate +
                 "\nService Time: " + serviceStartTime +
-                "\nAssigned Technicians: " + technicianListLine +
+                "\nAssigned Technicians: " +
+                (technicianListLine.isBlank() ? "(no technician assigned)" : technicianListLine) +
                 "\nAppointment Status: " + appointmentStatus.getAppointmentStatus() +
                 "\n";
     }

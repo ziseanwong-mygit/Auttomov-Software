@@ -1,8 +1,10 @@
 package main.java.backend.repository.impl;
 
 import main.java.backend.model.Appointment;
+import main.java.backend.model.ServicePackage;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.AbstractRepository;
+import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataStructureOrganizer;
@@ -86,7 +88,7 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(appointmentById.get(appointmentID));
+        removeRecordFromMap(appointmentById.get(appointmentID));
         addRecordIntoMap(appointmentToUpdate);
 
         return OperationResult.success(
@@ -94,12 +96,43 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                         + "Please check the details to ensure the changes are applied.");
     }
 
+    /**
+     * Update all the appointment records at once
+     * Used when deleting service package, which will affect all appointments that use them
+     */
+    public OperationResult bulkUpdateRecord(List<Appointment> appointmentsToUpdate) {
+
+        // Build a map to store the CSV line of newly updated appointment by its ID
+        Map<String, Function<String, Optional<String>>> modifier = new HashMap<>();
+
+        // For each appointment to update, create a modifier entry
+        for (Appointment appointment : appointmentsToUpdate) {
+            String appointmentId = appointment.getAppointmentID();
+            modifier.put(appointmentId, _ -> Optional.of(CSVFormatter.toCsvFormat(appointment)));
+        }
+
+        // Single file rewrite covers all appointments simultaneously
+        OperationResult result = rewriteFile(modifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Replace all the old records with the updated ones to apply the latest changes
+        for (Appointment appointment : appointmentsToUpdate) {
+            removeRecordFromMap(appointmentById.get(appointment.getAppointmentID()));
+            addRecordIntoMap(appointment);
+        }
+
+        return OperationResult.success(
+                appointmentsToUpdate.size() + " appointment(s) are updated successfully.");
+    }
+
     @Override
     public OperationResult deleteRecord(Appointment appointmentToDelete) {
 
         String appointmentID = appointmentToDelete.getAppointmentID();
 
-        // Map the target appointment object by its ID
+        // Map Optional.empty() by its ID
         Map<String, Function<String, Optional<String>>> modifier = Map.of(
                 appointmentID, _ -> Optional.empty()
         );
@@ -111,7 +144,7 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(appointmentToDelete);
+        removeRecordFromMap(appointmentToDelete);
 
         return OperationResult.success(
                 "The appointment with ID " + appointmentID + " has been deleted successfully. "
@@ -143,6 +176,9 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                 .toList();
     }
 
+    /**
+     * Used when comparing the technician's appointment date time range with the target appointment's date time range
+     */
     public List<Appointment> getRecordsByTechnician(StaffAccount technician) {
         return appointmentById.values().stream()
                 .filter(appointment -> appointment.getTechnicianList().contains(technician))
@@ -150,14 +186,25 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
     }
 
     /**
+     * Used when deleting the service package that is being used by appointments
+     */
+    public List<Appointment> getRecordsByServicePackage(ServicePackage servicePackage) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getServicePackage().equals(servicePackage))
+                .toList();
+    }
+
+    /**
      * Used for retrieving records from the text file
      * Appointment CSV format (12 columns): appointmentID, appointmentOrderNo, appointmentCreationDate,
-     * appointmentUpdateDate, appointmentTitle, appointmentDescription, servicePackage, serviceDate,
+     * appointmentUpdateDate, appointmentTitle, appointmentDescription, customerAccount, servicePackage, serviceDate,
      * serviceStartTime, serviceEndTime, technicianList, appointmentStatus
      */
     @Override
     protected Appointment parseRecord(String line) {
-        // Get the service package and staff account repository instances to fetch the respective objects
+
+        // Get the repository instances to fetch the respective objects
+        CustomerAccountRepository customerAccountRepository = CustomerAccountRepository.getInstance();
         ServicePackageRepository servicePackageRepository = ServicePackageRepository.getInstance();
         StaffAccountRepository staffAccountRepository = StaffAccountRepository.getInstance();
 
@@ -174,10 +221,9 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
         Example:
         ID, OrderNo, CreationTime, ..., ServiceEndTime, [A0001, A0002], Status ->
-        ID, OrderNo, CreationTime, ..., ServiceEndTime, , Status
+        ID, OrderNo, CreationTime, ..., ServiceEndTime, Status
         */
-        String strippedLine = line.replaceAll("\\[.*?]", "")
-                .replaceAll(",\\s*,", ",");
+        String strippedLine = line.replaceAll(",\\s*\\[.*?]", "");
 
         // Without the bracket lists, split the line into an array of columns
         String[] columns = strippedLine.split(",\\s*");
@@ -189,12 +235,13 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                 DataTypeConverter.convertStringToLocalDateTime(columns[3]),
                 columns[4],
                 columns[5].isBlank() ? null : columns[5], // If description is empty, set it to null
-                servicePackageRepository.getRecordById(columns[6]), // Fetch the service package object here
-                DataTypeConverter.convertStringToLocalDate(columns[7]),
-                DataTypeConverter.convertStringToLocalTime(columns[8]),
+                customerAccountRepository.getRecordById(columns[6]),
+                servicePackageRepository.getRecordById(columns[7]), // Fetch the service package object here
+                DataTypeConverter.convertStringToLocalDate(columns[8]),
                 DataTypeConverter.convertStringToLocalTime(columns[9]),
+                DataTypeConverter.convertStringToLocalTime(columns[10]),
                 technicianList,
-                DataTypeConverter.convertStringToAppointmentStatus(columns[10])
+                DataTypeConverter.convertStringToAppointmentStatus(columns[11])
         );
     }
 
@@ -216,7 +263,7 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
      * Remove the old/deleted appointment from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(Appointment appointment) {
+    protected void removeRecordFromMap(Appointment appointment) {
 
         // End the method early if the appointment is not provided
         if (appointment == null) {

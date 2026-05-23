@@ -125,7 +125,7 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(accountByAccId.get(accountId));
+        removeRecordFromMap(accountByAccId.get(accountId));
         addRecordIntoMap(accToUpdate);
 
         return OperationResult.success(
@@ -150,7 +150,7 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(accToDelete);
+        removeRecordFromMap(accToDelete);
 
         return OperationResult.success(
                 "The account with ID " + accountId + " has been deleted successfully. "
@@ -227,7 +227,7 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
      * Remove the old/deleted account from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(T account) {
+    protected void removeRecordFromMap(T account) {
 
         // End the method early if the account is not provided
         if (account == null) {

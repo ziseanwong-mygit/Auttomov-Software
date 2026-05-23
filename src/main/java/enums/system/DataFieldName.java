@@ -12,10 +12,12 @@ public enum DataFieldName {
     PASSWORD("Password"),
     PRICE("Price"),
     QUANTITY("Quantity"),
-    SERVICE_ACTIVITY("Service Activity"),
-    VEHICLE_PART( "Vehicle Part"),
-    SERVICE_PACKAGE("Service Package"),
-    TECHNICIAN_ID("Technician ID"),;
+    SERVICE_ACTIVITY_ID("Service Activity"),
+    VEHICLE_PART_ID( "Vehicle Part"),
+    SERVICE_PACKAGE_ID("Service Package"),
+    TECHNICIAN_ID("Technician ID"),
+    CUSTOMER_ID("Customer ID"),
+    APPOINTMENT_ID("Appointment ID"),;
 
     private final String fieldName;
 

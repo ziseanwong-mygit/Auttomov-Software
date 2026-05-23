@@ -85,12 +85,43 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         }
 
         // Replace the old record with the updated one to apply the latest changes
-        removeRecordIntoMap(servicePackageById.get(servicePkgID));
+        removeRecordFromMap(servicePackageById.get(servicePkgID));
         addRecordIntoMap(servicePkgToUpdate);
 
         return OperationResult.success(
                 "The service package with ID " + servicePkgID + " has been updated successfully. "
                         + "Please check the details to ensure the changes are applied.");
+    }
+
+    /**
+     * Update all the service package records at once
+     * Used when deleting service activity or vehicle part, which will affect all service packages that use them
+     */
+    public OperationResult bulkUpdateRecord(List<ServicePackage> packagesToUpdate) {
+
+        // Build a map to store the CSV line of newly updated package by its ID
+        Map<String, Function<String, Optional<String>>> modifier = new HashMap<>();
+
+        // For each package to update, create a modifier entry
+        for (ServicePackage pkg : packagesToUpdate) {
+            String pkgId = pkg.getServicePackageID();
+            modifier.put(pkgId, _ -> Optional.of(CSVFormatter.toCsvFormat(pkg)));
+        }
+
+        // Single file rewrite covers all packages simultaneously
+        OperationResult result = rewriteFile(modifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Replace all the old records with the updated ones to apply the latest changes
+        for (ServicePackage pkg : packagesToUpdate) {
+            removeRecordFromMap(servicePackageById.get(pkg.getServicePackageID()));
+            addRecordIntoMap(pkg);
+        }
+
+        return OperationResult.success(
+                packagesToUpdate.size() + " service package(s) are updated successfully.");
     }
 
     @Override
@@ -110,7 +141,7 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         }
 
         // Remove the deleted record from the maps to apply the latest changes
-        removeRecordIntoMap(servicePkgToDelete);
+        removeRecordFromMap(servicePkgToDelete);
 
         return OperationResult.success(
                 "The service package with ID " + servicePkgID + " has been deleted successfully. "
@@ -132,6 +163,24 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         // Filter the service package objects by their IDs
         return servicePackageById.values().stream()
                 .filter(servicePkg -> servicePkgIds.contains(servicePkg.getServicePackageID()))
+                .toList();
+    }
+
+    /**
+     * Used when deleting the service activity that is being used by service packages
+     */
+    public List<ServicePackage> getRecordsByServiceActivity(ServiceActivity serviceActivity) {
+        return servicePackageById.values().stream()
+                .filter(servicePkg -> servicePkg.getServiceActivityList().contains(serviceActivity))
+                .toList();
+    }
+
+    /**
+     * Used when deleting the vehicle part that is being used by service packages
+     */
+    public List<ServicePackage> getRecordsByVehiclePart(VehiclePart vehiclePart) {
+        return servicePackageById.values().stream()
+                .filter(servicePkg -> servicePkg.getVehiclePartList().contains(vehiclePart))
                 .toList();
     }
 
@@ -163,10 +212,9 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         /*
         Remove the bracket lists from the line entirely, leaving only the simple comma-separated fields
         Example: ID, Name, Desc, Type, [A0001, A0002], [B0001, B0002], 20.00, 1 ->
-        ID, Name, Desc, Type, , 20.00, 1
+        ID, Name, Desc, Type, 20.00, 1
         */
-        String strippedLine = line.replaceAll("\\[.*?]", "")
-                .replaceAll(",\\s*,", ",");
+        String strippedLine = line.replaceAll(",\\s*\\[.*?]", "");
 
         // Without the bracket lists, split the line into an array of columns
         String[] columns = strippedLine.split(",\\s*");
@@ -178,8 +226,8 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
                 DataTypeConverter.convertStringToServicePackageType(columns[3]),
                 serviceActivityList,
                 vehiclePartList,
-                Double.parseDouble(columns[5]),
-                Integer.parseInt(columns[6])
+                Double.parseDouble(columns[4]),
+                Integer.parseInt(columns[5])
         );
     }
 
@@ -201,7 +249,7 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
      * Remove the old/deleted service package from all lookup maps
      */
     @Override
-    protected void removeRecordIntoMap(ServicePackage servicePackage) {
+    protected void removeRecordFromMap(ServicePackage servicePackage) {
 
         // End the method early if the service package is not provided
         if (servicePackage == null) {

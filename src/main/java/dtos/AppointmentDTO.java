@@ -11,6 +11,7 @@ public class AppointmentDTO {
     private String appointmentID;
     private String appointmentTitle;
     private String appointmentDescription;
+    private String customerAccountID;
     private String servicePackageID;
     private LocalDate serviceDate;
     private LocalTime serviceStartTime;
@@ -20,10 +21,11 @@ public class AppointmentDTO {
     /**
      * For creating a new appointment
      */
-    public AppointmentDTO(String appointmentTitle, String appointmentDescription, String servicePackageID,
-                          LocalDate serviceDate, LocalTime serviceStartTime) {
+    public AppointmentDTO(String appointmentTitle, String appointmentDescription, String customerAccountID,
+                          String servicePackageID, LocalDate serviceDate, LocalTime serviceStartTime) {
         this.appointmentTitle = appointmentTitle;
         this.appointmentDescription = appointmentDescription;
+        this.customerAccountID = customerAccountID;
         this.servicePackageID = servicePackageID;
         this.serviceDate = serviceDate;
         this.serviceStartTime = serviceStartTime;
@@ -33,9 +35,10 @@ public class AppointmentDTO {
      * For updating an existing appointment's details
      */
     public AppointmentDTO(String appointmentID, String appointmentTitle, String appointmentDescription,
-                          String servicePackageID, LocalDate serviceDate, LocalTime serviceStartTime,
-                          AppointmentStatus appointmentStatus) {
-        this(appointmentTitle, appointmentDescription, servicePackageID, serviceDate, serviceStartTime);
+                          String customerAccountID, String servicePackageID, LocalDate serviceDate,
+                          LocalTime serviceStartTime, AppointmentStatus appointmentStatus) {
+        this(appointmentTitle, appointmentDescription, customerAccountID, servicePackageID,
+                serviceDate, serviceStartTime);
         this.appointmentID = appointmentID;
         this.appointmentStatus = appointmentStatus;
     }
@@ -66,6 +69,10 @@ public class AppointmentDTO {
 
     public String getAppointmentDescription() {
         return appointmentDescription;
+    }
+
+    public String getCustomerAccountID() {
+        return customerAccountID;
     }
 
     public String getServicePackageID() {
