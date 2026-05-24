@@ -71,4 +71,20 @@ public class DataTypeConverter {
     public static AppointmentStatus convertStringToAppointmentStatus(String str) {
         return AppointmentStatus.getApptStatusByValue(str);
     }
+
+    public static InvoiceStatus convertStringToInvoiceStatus(String str) {
+        return InvoiceStatus.getInvoiceStatusByValue(str);
+    }
+
+    public static PaymentMethod convertStringToPaymentMethod(String str) {
+        return PaymentMethod.getPaymentMethodByValue(str);
+    }
+
+    public static PaymentStatus convertStringToPaymentStatus(String str) {
+        return PaymentStatus.getPaymentStatusByValue(str);
+    }
+
+    public static ReportType convertStringToReportType(String str) {
+        return ReportType.getReportTypeByValue(str);
+    }
 }

@@ -11,7 +11,9 @@ public enum TextFilePath {
     APPOINTMENT_FEEDBACK_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/appointment-feedback.txt"),
     INVOICE_RECORDS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/invoice-records.txt"),
     PAYMENT_RECORDS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/payment-records.txt"),
-    RECEIPT_RECORDS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/receipt-records.txt");
+    RECEIPT_RECORDS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/receipt-records.txt"),
+    RECORDS_REPORTS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/records-reports.txt"),
+    SALES_REPORTS_FILE_PATH("../APUASC-Auttomov/src/main/java/textfiles/sales-reports.txt");
 
     private final String textFilePath;
 

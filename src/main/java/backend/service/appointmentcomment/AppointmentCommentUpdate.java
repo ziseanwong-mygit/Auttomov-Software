@@ -7,6 +7,8 @@ import main.java.dtos.AppointmentCommentDTO;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
+import java.time.LocalDateTime;
+
 public class AppointmentCommentUpdate implements RecordWriter {
 
     private final AppointmentCommentRepository appointmentCommentRepository;
@@ -40,6 +42,7 @@ public class AppointmentCommentUpdate implements RecordWriter {
         }
 
         // Set the new content into the existing comment record
+        existingComment.setCommentUpdateTime(LocalDateTime.now());
         existingComment.setCommentContent(appointmentCommentDTO.getCommentContent());
 
         return appointmentCommentRepository.updateRecord(existingComment);

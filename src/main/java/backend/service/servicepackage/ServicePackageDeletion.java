@@ -55,9 +55,9 @@ public class ServicePackageDeletion implements RecordWriter {
 
         // Update all the appointments in the text file at once
         if (!appointmentsToUpdate.isEmpty()) {
-            OperationResult packageUpdateResult = appointmentRepository.bulkUpdateRecord(appointmentsToUpdate);
+            OperationResult appointmentUpdateResult = appointmentRepository.bulkUpdateRecord(appointmentsToUpdate);
 
-            if (!packageUpdateResult.isValid()) {
+            if (!appointmentUpdateResult.isValid()) {
                 return OperationResult.failed("Failed to update appointments linked to service package ID "
                         + servicePkgID + ". Deletion process has stopped here.");
             }

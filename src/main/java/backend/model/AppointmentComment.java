@@ -10,7 +10,7 @@ public class AppointmentComment {
     private final LocalDateTime commentCreationTime;
     private LocalDateTime commentUpdateTime;
     private final Appointment appointment;
-    private final UserAccount commentAuthor;
+    private UserAccount commentAuthor;
     private String commentContent;
 
     public AppointmentComment(String commentID, LocalDateTime commentCreationTime, LocalDateTime commentUpdateTime,
@@ -51,13 +51,17 @@ public class AppointmentComment {
         this.commentUpdateTime = commentUpdateTime;
     }
 
+    public void setCommentAuthor(UserAccount commentAuthor) {
+        this.commentAuthor = commentAuthor;
+    }
+
     public void setCommentContent(String commentContent) {
         this.commentContent = commentContent;
     }
 
     /**
-     * Gather all data into one single line, with each value separated by commas
-     * To ease the process of writing new record into the file
+     * Return a human-readable string representation of the object.
+     * Used for logging, debugging, testing, or printing overall information.
      */
     @Override
     public String toString() {

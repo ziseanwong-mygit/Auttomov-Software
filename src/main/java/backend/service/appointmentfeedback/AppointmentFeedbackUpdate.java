@@ -7,6 +7,8 @@ import main.java.dtos.AppointmentFeedbackDTO;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
+import java.time.LocalDateTime;
+
 public class AppointmentFeedbackUpdate implements RecordWriter {
 
     private final AppointmentFeedbackRepository appointmentFeedbackRepository;
@@ -40,6 +42,7 @@ public class AppointmentFeedbackUpdate implements RecordWriter {
         }
 
         // Set the new content into the existing feedback record
+        existingFeedback.setFeedbackUpdateTime(LocalDateTime.now());
         existingFeedback.setFeedbackContent(appointmentFeedbackDTO.getFeedbackContent());
 
         return appointmentFeedbackRepository.updateRecord(existingFeedback);

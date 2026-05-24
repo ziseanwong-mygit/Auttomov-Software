@@ -15,6 +15,7 @@ import main.java.backend.service.appointmentfeedback.AppointmentFeedbackUpdate;
 import main.java.backend.util.DataValidator;
 import main.java.backend.util.NullValidator;
 import main.java.dtos.AppointmentFeedbackDTO;
+import main.java.enums.data.JobPosition;
 import main.java.enums.system.DataFieldName;
 import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
@@ -249,9 +250,18 @@ public class AppointmentFeedbackController {
         }
 
         // 3. Check if the technician account ID exists in the repository
-        if (staffAccountRepo.getRecordById(technicianId) == null) {
+        StaffAccount technicianAcc = staffAccountRepo.getRecordById(technicianId);
+        if (technicianAcc == null) {
             return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
-                    "The technician account with ID " + technicianId + " does not exist in the records.");
+                    "The technician account with ID " + technicianId +
+                            " does not exist in the records.");
+        }
+
+        // 4. Check if the account is a technician
+        if (technicianAcc.getJobPosition() != JobPosition.TECHNICIAN) {
+            return OperationResult.failed(DataFieldName.TECHNICIAN_ID,
+                    "The staff account with ID " + technicianId +
+                            " is not a technician. Only technicians can create appointment feedback.");
         }
 
         // If all validations pass, return success

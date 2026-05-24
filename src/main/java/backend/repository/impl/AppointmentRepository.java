@@ -3,6 +3,7 @@ package main.java.backend.repository.impl;
 import main.java.backend.model.Appointment;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.StaffAccount;
+import main.java.backend.model.UserAccount;
 import main.java.backend.repository.AbstractRepository;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
@@ -10,6 +11,7 @@ import main.java.backend.util.CSVFormatter;
 import main.java.backend.util.DataStructureOrganizer;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.data.AppointmentStatus;
+import main.java.enums.data.ServicePackageType;
 import main.java.enums.system.TextFilePath;
 import main.java.records.OperationResult;
 
@@ -169,8 +171,63 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
                 .toList();
     }
 
+    public Appointment getRecordByApptOrderNo(String appointmentOrderNo) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getAppointmentOrderNo().equals(appointmentOrderNo))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Get the completed appointments based on the given service month
+     * Used for generating reports
+     */
+    public List<Appointment> getCompletedRecordsByServiceMonth(int serviceMonth) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getServiceDate().getMonthValue() == serviceMonth &&
+                appointment.getAppointmentStatus().equals(AppointmentStatus.COMPLETED))
+                .toList();
+    }
+
+    /**
+     * Get the completed appointments based on the given service year
+     * Used for generating reports
+     */
+    public List<Appointment> getCompletedRecordsByServiceYear(int serviceYear) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getServiceDate().getYear() == serviceYear &&
+                        appointment.getAppointmentStatus().equals(AppointmentStatus.COMPLETED))
+                .toList();
+    }
+
+    /**
+     * Get all the completed appointments
+     * Used for generating reports
+     */
+    public List<Appointment> getAllCompletedRecords() {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getAppointmentStatus().equals(AppointmentStatus.COMPLETED))
+                .toList();
+    }
+
+    /**
+     * Get the completed appointments based on the given service type (normal/major)
+     * Used for generating reports
+     */
+    public List<Appointment> getCompletedRecordsByServiceType(ServicePackageType serviceType) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getServicePackage().getServicePackageType().equals(serviceType) &&
+                        appointment.getAppointmentStatus().equals(AppointmentStatus.COMPLETED))
+                .toList();
+    }
+
+    public List<Appointment> getRecordsByCustomer(UserAccount customer) {
+        return appointmentById.values().stream()
+                .filter(appointment -> appointment.getCustomerAccount().equals(customer))
+                .toList();
+    }
+
     public List<Appointment> getRecordsByApptStatus(AppointmentStatus appointmentStatus) {
-        // Filter the appointment objects by the appointment status
         return appointmentById.values().stream()
                 .filter(appointment -> appointment.getAppointmentStatus().equals(appointmentStatus))
                 .toList();

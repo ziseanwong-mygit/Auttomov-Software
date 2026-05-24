@@ -63,6 +63,20 @@ public class AppointmentRetrieval implements RecordReader<Appointment> {
     }
 
     /**
+     * Read and return a single appointment based on the given order number
+     */
+    public Optional<Appointment> getRecordByApptOrderNo(String apptOrderNo) {
+
+        Appointment existingAppointment = appointmentRepository.getRecordByApptOrderNo(apptOrderNo);
+
+        if (existingAppointment == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(existingAppointment);
+    }
+
+    /**
      * Read and return multiple appointments based on the given appointment status
      * Used for filtering appointments by status
      */

@@ -1,5 +1,7 @@
 package main.java.backend.model;
 
+import main.java.backend.util.DateTimeStringFormatter;
+
 import java.time.LocalDateTime;
 
 public class AppointmentFeedback {
@@ -8,7 +10,7 @@ public class AppointmentFeedback {
     private final LocalDateTime feedbackCreationTime;
     private LocalDateTime feedbackUpdateTime;
     private final Appointment appointment;
-    private final StaffAccount feedbackAuthor;
+    private StaffAccount feedbackAuthor;
     private String feedbackContent;
 
     public AppointmentFeedback(String feedbackID, LocalDateTime feedbackCreationTime, LocalDateTime feedbackUpdateTime,
@@ -49,7 +51,37 @@ public class AppointmentFeedback {
         this.feedbackUpdateTime = feedbackUpdateTime;
     }
 
+    public void setFeedbackAuthor(StaffAccount feedbackAuthor) {
+        this.feedbackAuthor = feedbackAuthor;
+    }
+
     public void setFeedbackContent(String feedbackContent) {
         this.feedbackContent = feedbackContent;
+    }
+
+    /**
+     * Return a human-readable string representation of the object.
+     * Used for logging, debugging, testing, or printing overall information.
+     */
+    @Override
+    public String toString() {
+
+        // Format the feedback creation and update time to yyyyMMddHHmmss format (e.g., 2026-05-01 12:34:56)
+        String creationTime = DateTimeStringFormatter.formatDateTime(feedbackCreationTime);
+        String updateTime = DateTimeStringFormatter.formatDateTime(feedbackUpdateTime);
+
+        // Get the author's first and last name
+        String authorName = feedbackAuthor.getFirstName() + " " + feedbackAuthor.getLastName();
+
+        // Get the appointment title
+        String appointmentTitle = appointment.getAppointmentTitle();
+
+        return "Feedback ID: " + feedbackID +
+                "\nCreation Date: " + creationTime +
+                "\nUpdate Date: " + updateTime +
+                "\nAppointment: " + appointmentTitle +
+                "\nAuthor: " + authorName +
+                "\nContent: " + feedbackContent;
+
     }
 }

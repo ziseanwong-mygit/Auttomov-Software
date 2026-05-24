@@ -123,6 +123,18 @@ public class CSVFormatter {
                     .collect(Collectors.joining(", "));
         }
 
+        // If the service package still exists (not deleted), get the service package ID
+        String servicePackageID = "";
+        if (appointment.getServicePackage() != null) {
+            servicePackageID = appointment.getServicePackage().getServicePackageID();
+        }
+
+        // If the customer account still exists (not deleted), get the customer account ID
+        String customerAccountID = "";
+        if (appointment.getCustomerAccount() != null) {
+            customerAccountID = appointment.getCustomerAccount().getAccountID();
+        }
+
         return String.join(", ",
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
@@ -130,8 +142,8 @@ public class CSVFormatter {
                 updateTime,
                 appointment.getAppointmentTitle(),
                 appointmentDescription != null ? appointmentDescription : "",
-                appointment.getCustomerAccount().getAccountID(), // Get the customer account ID from the object
-                appointment.getServicePackage().getServicePackageID(), // Get the service package ID from the object
+                customerAccountID,
+                servicePackageID,
                 appointment.getServiceDate().toString(),
                 appointment.getServiceStartTime().toString(),
                 appointment.getServiceEndTime().toString(),
@@ -147,12 +159,18 @@ public class CSVFormatter {
         String creationTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentCreationTime());
         String updateTime = DateTimeStringFormatter.formatDateTime(appointmentComment.getCommentUpdateTime());
 
+        // If the author account (customer) still exists (not deleted), get the author account ID
+        String authorAccountID = "";
+        if (appointmentComment.getCommentAuthor() != null) {
+            authorAccountID = appointmentComment.getCommentAuthor().getAccountID();
+        }
+
         return String.join(", ",
                 appointmentComment.getCommentID(),
                 creationTime,
                 updateTime,
                 appointmentComment.getAppointment().getAppointmentID(),
-                appointmentComment.getCommentAuthor().getAccountID(),
+                authorAccountID,
                 appointmentComment.getCommentContent()
         );
     }
@@ -163,14 +181,148 @@ public class CSVFormatter {
         String creationTime = DateTimeStringFormatter.formatDateTime(appointmentFeedback.getFeedbackCreationTime());
         String updateTime = DateTimeStringFormatter.formatDateTime(appointmentFeedback.getFeedbackUpdateTime());
 
+        // If the author account (technician) still exists (not deleted), get the author account ID
+        String authorAccountID = "";
+        if (appointmentFeedback.getFeedbackAuthor() != null) {
+            authorAccountID = appointmentFeedback.getFeedbackAuthor().getAccountID();
+        }
+
         return String.join(", ",
                 appointmentFeedback.getFeedbackID(),
                 creationTime,
                 updateTime,
                 appointmentFeedback.getAppointment().getAppointmentID(),
-                appointmentFeedback.getFeedbackAuthor().getAccountID(),
+                authorAccountID,
                 appointmentFeedback.getFeedbackContent()
         );
+    }
+
+    public static String toCsvFormat(Invoice invoice) {
+
+        // If the appointment still exists (not deleted), get the appointment ID
+        String appointmentID = "";
+        if (invoice.getAppointment() != null) {
+            appointmentID = invoice.getAppointment().getAppointmentID();
+        }
+
+        // If the invoice issuer (staff) still exists (not deleted), get the invoice issuer ID
+        String issuerAccountID = "";
+        if (invoice.getInvoiceIssuer() != null) {
+            issuerAccountID = invoice.getInvoiceIssuer().getAccountID();
+        }
+
+        return String.join(", ",
+                invoice.getInvoiceID(),
+                invoice.getInvoiceDocNo(),
+                invoice.getInvoiceCreationDate().toString(),
+                issuerAccountID,
+                appointmentID,
+                DataTypeConverter.convertDoubleToString(invoice.getSubtotalAmount()),
+                DataTypeConverter.convertDoubleToString(invoice.getServiceTaxAmount()),
+                DataTypeConverter.convertDoubleToString(invoice.getAdditionalFeeAmount()),
+                DataTypeConverter.convertDoubleToString(invoice.getTotalAmount()),
+                invoice.getInvoiceNote(),
+                invoice.getInvoiceStatus().getInvoiceStatus()
+        );
+    }
+
+    public static String toCsvFormat(PaymentRecord paymentRecord) {
+
+        // If the payer account (customer) still exists (not deleted), get the payer ID
+        String payerAccountID = "";
+        if (paymentRecord.getPayerAccount() != null) {
+            payerAccountID = paymentRecord.getPayerAccount().getAccountID();
+        }
+
+        return String.join(", ",
+                paymentRecord.getPaymentRecordID(),
+                paymentRecord.getPaymentRecordNo(),
+                paymentRecord.getPaymentDate().toString(),
+                paymentRecord.getInvoice().getInvoiceID(),
+                payerAccountID,
+                DataTypeConverter.convertDoubleToString(paymentRecord.getPaymentAmount()),
+                paymentRecord.getPaymentMethod().getPaymentMethod(),
+                paymentRecord.getPaymentRecordNote(),
+                paymentRecord.getPaymentStatus().getPaymentStatus()
+        );
+    }
+
+    public static String toCsvFormat(Receipt receipt) {
+
+        // If the receipt issuer (staff) still exists (not deleted), get the receipt issuer ID
+        String issuerAccountID = "";
+        if (receipt.getReceiptIssuer() != null) {
+            issuerAccountID = receipt.getReceiptIssuer().getAccountID();
+        }
+
+        return String.join(", ",
+                receipt.getReceiptID(),
+                receipt.getReceiptDocNo(),
+                receipt.getReceiptCreationDate().toString(),
+                issuerAccountID,
+                receipt.getInvoice().getInvoiceID(),
+                receipt.getPaymentRecord().getPaymentRecordID(),
+                receipt.getReceiptNote()
+        );
+    }
+
+    public static String toCsvFormat(RecordsReport recordsReport) {
+
+        // If the manager account still exists (not deleted), get the manager ID
+        String managerAccountID = "";
+        if (recordsReport.getManagerAccount() != null) {
+            managerAccountID = recordsReport.getManagerAccount().getAccountID();
+        }
+
+        return String.join(",",
+                recordsReport.getReportID(),
+                recordsReport.getReportDocNo(),
+                recordsReport.getReportCreationDate().toString(),
+                recordsReport.getReportType().getReportType(),
+                managerAccountID,
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomers()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalTechnicians()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCounterStaffs()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalManagers()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalServiceActivities()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalVehicleParts()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalServicePackages()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalAppointments()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersByThisMonth()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersByThisYear()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersLeftByThisMonth()),
+                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersLeftByThisYear())
+        );
+    }
+
+    public static String toCsvFormat(SalesReport salesReport) {
+
+        // If the manager account still exists (not deleted), get the manager ID
+        String managerAccountID = "";
+        if (salesReport.getManagerAccount() != null) {
+            managerAccountID = salesReport.getManagerAccount().getAccountID();
+        }
+
+        return String.join(",",
+                salesReport.getReportID(),
+                salesReport.getReportDocNo(),
+                salesReport.getReportCreationDate().toString(),
+                salesReport.getReportType().getReportType(),
+                managerAccountID,
+                DataTypeConverter.convertIntToString(salesReport.getTotalNormalServicesDone()),
+                DataTypeConverter.convertIntToString(salesReport.getTotalMajorServicesDone()),
+                DataTypeConverter.convertIntToString(salesReport.getTotalAllServicesDone()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalNormalServiceSales()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalMajorServiceSales()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalAllServiceSales()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalSalesByThisMonth()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalSalesByThisYear()),
+                DataTypeConverter.convertDoubleToString(salesReport.getTotalSalesByLifetime()),
+                DataTypeConverter.convertDoubleToString(salesReport.getAverageSalesByThisMonth()),
+                DataTypeConverter.convertDoubleToString(salesReport.getAverageSalesByThisYear()),
+                DataTypeConverter.convertDoubleToString(salesReport.getAverageSalesByLifetime())
+        );
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package main.java.backend.repository.impl;
 
 import main.java.backend.model.AppointmentFeedback;
+import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.AbstractRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.util.CSVFormatter;
@@ -88,6 +89,37 @@ public class AppointmentFeedbackRepository extends AbstractRepository<Appointmen
                         + "Please check the details to ensure the changes are applied.");
     }
 
+    /**
+     * Update all the appointment feedback records at once
+     * Used when deleting a staff account, which will affect all feedbacks that use them
+     */
+    public OperationResult bulkUpdateRecord(List<AppointmentFeedback> feedbacksToUpdate) {
+
+        // Build a map to store the CSV line of newly updated feedback by its ID
+        Map<String, Function<String, Optional<String>>> modifier = new HashMap<>();
+
+        // For each feedback to update, create a modifier entry
+        for (AppointmentFeedback feedback : feedbacksToUpdate) {
+            String feedbackId = feedback.getFeedbackID();
+            modifier.put(feedbackId, _ -> Optional.of(CSVFormatter.toCsvFormat(feedback)));
+        }
+
+        // Single file rewrite covers all feedbacks simultaneously
+        OperationResult result = rewriteFile(modifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Replace all the old records with the updated ones to apply the latest changes
+        for (AppointmentFeedback feedback : feedbacksToUpdate) {
+            removeRecordFromMap(appointmentFeedbackById.get(feedback.getFeedbackID()));
+            addRecordIntoMap(feedback);
+        }
+
+        return OperationResult.success(
+                feedbacksToUpdate.size() + " feedback(s) are updated successfully.");
+    }
+
     @Override
     public OperationResult deleteRecord(AppointmentFeedback feedbackToDelete) {
 
@@ -153,6 +185,12 @@ public class AppointmentFeedbackRepository extends AbstractRepository<Appointmen
         // Filter the appointment feedback objects by their IDs
         return appointmentFeedbackById.values().stream()
                 .filter(feedback -> feedbackIds.contains(feedback.getFeedbackID()))
+                .toList();
+    }
+
+    public List<AppointmentFeedback> getRecordsFromFeedbackAuthor(StaffAccount feedbackAuthor) {
+        return appointmentFeedbackById.values().stream()
+                .filter(feedback -> feedback.getFeedbackAuthor().equals(feedbackAuthor))
                 .toList();
     }
 

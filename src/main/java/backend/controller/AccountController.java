@@ -1,6 +1,7 @@
 package main.java.backend.controller;
 
 import main.java.backend.model.UserAccount;
+import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
@@ -28,6 +29,17 @@ public class AccountController {
     // Singleton instances of the repositories
     private final CustomerAccountRepository customerAccountRepo = CustomerAccountRepository.getInstance();
     private final StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
+    private final AppointmentRepository appointmentRepo = AppointmentRepository.getInstance();
+    private final AppointmentCommentRepository appointmentCommentRepo =
+            AppointmentCommentRepository.getInstance();
+    private final PaymentRecordRepository paymentRecordRepo = PaymentRecordRepository.getInstance();
+    private final AppointmentFeedbackRepository appointmentFeedbackRepo =
+            AppointmentFeedbackRepository.getInstance();
+    private final InvoiceRepository invoiceRepo = InvoiceRepository.getInstance();
+    private final ReceiptRepository receiptRepo = ReceiptRepository.getInstance();
+    private final RecordsReportRepository recordsReportRepo = RecordsReportRepository.getInstance();
+    private final SalesReportRepository salesReportRepo = SalesReportRepository.getInstance();
+    private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
 
     public OperationResult createAccount(UserAccountDTO userAccountDTO) {
 
@@ -195,7 +207,9 @@ public class AccountController {
         AccountRepository<? extends UserAccount> accountRepo = resolveAccRepo(userRole);
 
         // Begin deleting account record procedure in service class
-        RecordWriter deleteAccount = new AccountDeletion(accountRepo, accountID);
+        RecordWriter deleteAccount = new AccountDeletion(accountRepo, appointmentRepo, appointmentCommentRepo,
+                appointmentFeedbackRepo, invoiceRepo, paymentRecordRepo, receiptRepo, recordsReportRepo,
+                salesReportRepo, accountID);
         return deleteAccount.execute();
     }
 

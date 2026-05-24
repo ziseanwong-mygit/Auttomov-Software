@@ -4,8 +4,6 @@ import main.java.backend.model.UserAccount;
 import main.java.backend.util.DataTypeConverter;
 import main.java.enums.system.TextFilePath;
 
-// TODO: Need to adapt to Swing/AWT interface in all catch exception parts
-
 /**
  * This repository class follows the singleton pattern to declare a single instance
  */

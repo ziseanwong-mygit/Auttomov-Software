@@ -17,7 +17,10 @@ public enum DataFieldName {
     SERVICE_PACKAGE_ID("Service Package"),
     TECHNICIAN_ID("Technician ID"),
     CUSTOMER_ID("Customer ID"),
-    APPOINTMENT_ID("Appointment ID"),;
+    APPOINTMENT_ID("Appointment ID"),
+    STAFF_ID("Staff ID"),
+    INVOICE_ID("Invoice ID"),
+    PAYMENT_RECORD_ID("Payment Record ID");
 
     private final String fieldName;
 

@@ -40,7 +40,7 @@ public class AppointmentCommentController {
 
         // Validate appointment ID
         String appointmentId = appointmentCommentDTO.getAppointmentID();
-        OperationResult appointmentIdVerification = validateAuthorId(appointmentId);
+        OperationResult appointmentIdVerification = validateAppointmentId(appointmentId);
         if (!appointmentIdVerification.isValid()) {
             return appointmentIdVerification;
         }

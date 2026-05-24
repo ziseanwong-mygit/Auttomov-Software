@@ -4,10 +4,7 @@ import main.java.backend.model.Appointment;
 import main.java.backend.model.ServicePackage;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.model.UserAccount;
-import main.java.backend.repository.impl.AppointmentCommentRepository;
-import main.java.backend.repository.impl.AppointmentFeedbackRepository;
-import main.java.backend.repository.impl.AppointmentRepository;
-import main.java.backend.repository.impl.ServicePackageRepository;
+import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
 import main.java.backend.service.RecordReader;
@@ -36,6 +33,7 @@ public class AppointmentController {
     private final StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
     private final AppointmentCommentRepository appointmentCommentRepo = AppointmentCommentRepository.getInstance();
     private final AppointmentFeedbackRepository appointmentFeedbackRepo = AppointmentFeedbackRepository.getInstance();
+    private final InvoiceRepository invoiceRepo = InvoiceRepository.getInstance();
 
     public OperationResult createAppointment(AppointmentDTO appointmentDTO) {
 
@@ -185,7 +183,7 @@ public class AppointmentController {
 
         // Begin deleting service package record procedure in service class
         RecordWriter deleteAppointment = new AppointmentDeletion(
-                appointmentRepo, appointmentCommentRepo, appointmentFeedbackRepo, appointmentId);
+                appointmentRepo, appointmentCommentRepo, appointmentFeedbackRepo, invoiceRepo, appointmentId);
         return deleteAppointment.execute();
     }
 
@@ -212,6 +210,13 @@ public class AppointmentController {
         // Begin retrieving multiple appointment records by IDs procedure in service class
         RecordReader<Appointment> retrieveAppointmentsByIds = new AppointmentRetrieval(appointmentRepo);
         return retrieveAppointmentsByIds.getRecordsByIds(appointmentIds);
+    }
+
+    public Optional<Appointment> retrieveAppointmentByApptOrderNo(String appointmentOrderNo) {
+
+        // Begin retrieving appointment record by order number procedure in service class
+        AppointmentRetrieval retrieveAppointmentByApptOrderNo = new AppointmentRetrieval(appointmentRepo);
+        return retrieveAppointmentByApptOrderNo.getRecordByApptOrderNo(appointmentOrderNo);
     }
 
     public Optional<List<Appointment>> retrieveAppointmentsByApptStatus(AppointmentStatus appointmentStatus) {

@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 
-// TODO: Need to adapt to Swing/AWT interface in all catch exception parts
-
 public abstract class AccountRepository<T extends UserAccount> extends AbstractRepository<T> {
 
     private final Map<String, T> accountByAccId = new HashMap<>();
@@ -191,6 +189,50 @@ public abstract class AccountRepository<T extends UserAccount> extends AbstractR
     public List<T> getRecordsByEmails(List<String> emails) {
         return accountByEmail.values().stream()
                 .filter(acc -> emails.contains(acc.getEmailAddress()))
+                .toList();
+    }
+
+    /**
+     * Get the active account records created in a specific month
+     * Used for generating reports
+     */
+    public List<T> getActiveRecordsByCreationMonth(int creationMonth) {
+        return accountByAccId.values().stream()
+                .filter(acc -> acc.getAccountCreationDate().getMonthValue() == creationMonth &&
+                        acc.getAccountStatus().equals(AccountStatus.ACTIVE))
+                .toList();
+    }
+
+    /**
+     * Get the active account records created in a specific year
+     * Used for generating reports
+     */
+    public List<T> getActiveRecordsByCreationYear(int creationYear) {
+        return accountByAccId.values().stream()
+                .filter(acc -> acc.getAccountCreationDate().getYear() == creationYear &&
+                        acc.getAccountStatus().equals(AccountStatus.ACTIVE))
+                .toList();
+    }
+
+    /**
+     * Get the inactive account records created in a specific month
+     * Used for generating reports
+     */
+    public List<T> getInactiveRecordsByCreationMonth(int creationMonth) {
+        return accountByAccId.values().stream()
+                .filter(acc -> acc.getAccountCreationDate().getMonthValue() == creationMonth &&
+                        acc.getAccountStatus().equals(AccountStatus.INACTIVE))
+                .toList();
+    }
+
+    /**
+     * Get the inactive account records created in a specific year
+     * Used for generating reports
+     */
+    public List<T> getInactiveRecordsByCreationYear(int creationYear) {
+        return accountByAccId.values().stream()
+                .filter(acc -> acc.getAccountCreationDate().getYear() == creationYear &&
+                        acc.getAccountStatus().equals(AccountStatus.INACTIVE))
                 .toList();
     }
 

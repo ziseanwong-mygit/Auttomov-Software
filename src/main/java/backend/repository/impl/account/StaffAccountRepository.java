@@ -2,9 +2,10 @@ package main.java.backend.repository.impl.account;
 
 import main.java.backend.model.StaffAccount;
 import main.java.backend.util.DataTypeConverter;
+import main.java.enums.data.JobPosition;
 import main.java.enums.system.TextFilePath;
 
-// TODO: Need to adapt to Swing/AWT interface in all catch exception parts
+import java.util.List;
 
 /**
  * This repository class follows the singleton pattern to declare a single instance when the application starts.
@@ -68,5 +69,15 @@ public class StaffAccountRepository extends AccountRepository<StaffAccount> {
                 DataTypeConverter.convertStringToEmpStatus(columns[12]),
                 specialization
         );
+    }
+
+    /**
+     * Get the staff account records by job position
+     * Used for generating reports
+     */
+    public List<StaffAccount> getRecordsByJobPosition(JobPosition jobPosition) {
+        return getAllRecords().stream()
+                .filter(staff -> staff.getJobPosition().equals(jobPosition))
+                .toList();
     }
 }

@@ -3,9 +3,11 @@ package main.java.backend.service.appointment;
 import main.java.backend.model.Appointment;
 import main.java.backend.model.AppointmentComment;
 import main.java.backend.model.AppointmentFeedback;
+import main.java.backend.model.Invoice;
 import main.java.backend.repository.impl.AppointmentCommentRepository;
 import main.java.backend.repository.impl.AppointmentFeedbackRepository;
 import main.java.backend.repository.impl.AppointmentRepository;
+import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.records.OperationResult;
 
@@ -16,14 +18,17 @@ public class AppointmentDeletion implements RecordWriter {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentCommentRepository appointmentCommentRepository;
     private final AppointmentFeedbackRepository appointmentFeedbackRepository;
+    private final InvoiceRepository invoiceRepository;
     private final String appointmentID;
 
     public AppointmentDeletion(AppointmentRepository appointmentRepository,
                                AppointmentCommentRepository appointmentCommentRepository,
-                               AppointmentFeedbackRepository appointmentFeedbackRepository, String appointmentID) {
+                               AppointmentFeedbackRepository appointmentFeedbackRepository,
+                               InvoiceRepository invoiceRepository, String appointmentID) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentCommentRepository = appointmentCommentRepository;
         this.appointmentFeedbackRepository = appointmentFeedbackRepository;
+        this.invoiceRepository = invoiceRepository;
         this.appointmentID = appointmentID;
     }
 
@@ -54,6 +59,24 @@ public class AppointmentDeletion implements RecordWriter {
             if (!feedbackDeletion.isValid()) {
                 return OperationResult.failed("Failed to delete feedbacks for the appointment " + appointmentID
                                 + ". Deletion process has stopped here.");
+            }
+        }
+
+        // Get all the invoices that are associated with the appointment
+        List<Invoice> involvedInvoices = invoiceRepository.getRecordsByAppointmentId(appointmentID);
+
+        // For each invoice, set the appointment to null to remove the reference to the appointment
+        List<Invoice> invoicesToUpdate = involvedInvoices.stream()
+                .peek(invoice -> invoice.setAppointment(null))
+                .toList();
+
+        // Update all the invoices in the text file at once
+        if (!invoicesToUpdate.isEmpty()) {
+            OperationResult packageUpdateResult = invoiceRepository.bulkUpdateRecord(invoicesToUpdate);
+
+            if (!packageUpdateResult.isValid()) {
+                return OperationResult.failed("Failed to update invoices linked to appointment ID "
+                        + appointmentID + ". Deletion process has stopped.");
             }
         }
 

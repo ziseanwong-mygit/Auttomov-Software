@@ -1,6 +1,7 @@
 package main.java.backend.repository.impl;
 
 import main.java.backend.model.AppointmentComment;
+import main.java.backend.model.UserAccount;
 import main.java.backend.repository.AbstractRepository;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.util.CSVFormatter;
@@ -88,6 +89,37 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
                         + "Please check the details to ensure the changes are applied.");
     }
 
+    /**
+     * Update all the appointment comment records at once
+     * Used when deleting a customer account, which will affect all comments that use them
+     */
+    public OperationResult bulkUpdateRecord(List<AppointmentComment> commentsToUpdate) {
+
+        // Build a map to store the CSV line of newly updated comment by its ID
+        Map<String, Function<String, Optional<String>>> modifier = new HashMap<>();
+
+        // For each comment to update, create a modifier entry
+        for (AppointmentComment comment : commentsToUpdate) {
+            String commentId = comment.getCommentID();
+            modifier.put(commentId, _ -> Optional.of(CSVFormatter.toCsvFormat(comment)));
+        }
+
+        // Single file rewrite covers all comments simultaneously
+        OperationResult result = rewriteFile(modifier);
+        if (!result.isValid()) {
+            return result;
+        }
+
+        // Replace all the old records with the updated ones to apply the latest changes
+        for (AppointmentComment comment : commentsToUpdate) {
+            removeRecordFromMap(appointmentCommentById.get(comment.getCommentID()));
+            addRecordIntoMap(comment);
+        }
+
+        return OperationResult.success(
+                commentsToUpdate.size() + " comment(s) are updated successfully.");
+    }
+
     @Override
     public OperationResult deleteRecord(AppointmentComment commentToDelete) {
 
@@ -153,6 +185,12 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
         // Filter the appointment comment objects by their IDs
         return appointmentCommentById.values().stream()
                 .filter(comment -> commentIds.contains(comment.getCommentID()))
+                .toList();
+    }
+
+    public List<AppointmentComment> getRecordsByCommentAuthor(UserAccount commentAuthor) {
+        return appointmentCommentById.values().stream()
+                .filter(comment -> comment.getCommentAuthor().equals(commentAuthor))
                 .toList();
     }
 
