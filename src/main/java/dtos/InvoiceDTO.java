@@ -1,12 +1,15 @@
 package main.java.dtos;
 
+import main.java.enums.data.InvoiceStatus;
+
 public class InvoiceDTO {
 
     private String invoiceID;
     private String staffAccountID;
     private String appointmentID;
-    private final double additionalFeeAmount;
-    private final String invoiceNote;
+    private double additionalFeeAmount;
+    private String invoiceNote;
+    private InvoiceStatus invoiceStatus;
 
     /**
      * For creating a new invoice
@@ -27,6 +30,14 @@ public class InvoiceDTO {
         this.invoiceNote = invoiceNote;
     }
 
+    /**
+     * For cancelling invoices or marking invoice as complete when payment is made
+     */
+    public InvoiceDTO(String invoiceID, InvoiceStatus invoiceStatus) {
+        this.invoiceID = invoiceID;
+        this.invoiceStatus = invoiceStatus;
+    }
+
     public String getInvoiceID() {
         return invoiceID;
     }
@@ -45,5 +56,9 @@ public class InvoiceDTO {
 
     public String getInvoiceNote() {
         return invoiceNote;
+    }
+
+    public InvoiceStatus getInvoiceStatus() {
+        return invoiceStatus;
     }
 }

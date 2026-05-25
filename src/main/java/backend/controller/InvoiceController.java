@@ -95,11 +95,14 @@ public class InvoiceController {
         return updateInvoice.execute();
     }
 
-    public OperationResult cancelInvoice(String invoiceId) {
+    public OperationResult updateInvoiceStatus(InvoiceDTO invoiceDTO) {
+
+        String invoiceId = invoiceDTO.getInvoiceID();
 
         // Check if the inputs are null or empty
-        if (invoiceId == null || invoiceId.isBlank()) {
-            return OperationResult.failed("The invoice ID must be provided to cancel an invoice. Please try again.");
+        if (invoiceId == null || invoiceId.isBlank() || invoiceDTO.getInvoiceStatus() == null) {
+            return OperationResult.failed("The invoice ID and status must be provided to " +
+                    "update its status or cancel it. Please try again.");
         }
 
         // Check if the invoice ID is in UUID format
@@ -109,7 +112,7 @@ public class InvoiceController {
         }
 
         // Begin cancelling invoice record procedure in service class
-        RecordWriter cancelInvoice = new InvoiceCancellation(invoiceRepo, invoiceId);
+        RecordWriter cancelInvoice = new InvoiceStatusUpdate(invoiceRepo, invoiceDTO);
         return cancelInvoice.execute();
     }
 

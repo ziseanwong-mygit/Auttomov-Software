@@ -3,21 +3,24 @@ package main.java.backend.service.invoice;
 import main.java.backend.model.Invoice;
 import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.service.RecordWriter;
+import main.java.dtos.InvoiceDTO;
 import main.java.enums.data.InvoiceStatus;
 import main.java.records.OperationResult;
 
-public class InvoiceCancellation implements RecordWriter {
+public class InvoiceStatusUpdate implements RecordWriter {
 
     private final InvoiceRepository invoiceRepository;
-    private final String invoiceID;
+    private final InvoiceDTO invoiceDTO;
 
-    public InvoiceCancellation(InvoiceRepository invoiceRepository, String invoiceID) {
+    public InvoiceStatusUpdate(InvoiceRepository invoiceRepository, InvoiceDTO invoiceDTO) {
         this.invoiceRepository = invoiceRepository;
-        this.invoiceID = invoiceID;
+        this.invoiceDTO = invoiceDTO;
     }
 
     @Override
     public OperationResult execute() {
+
+        String invoiceID = invoiceDTO.getInvoiceID();
 
         // Check if the invoice exists with the given ID
         Invoice existingInvoice = invoiceRepository.getRecordById(invoiceID);
