@@ -26,6 +26,14 @@ public class InvoiceCancellation implements RecordWriter {
                     " does not exist in the system.");
         }
 
+        // Verify status logic to ensure the update is valid
+        if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.PAID)) {
+            return OperationResult.failed("The invoice with ID: " + invoiceID +
+                    "cannot be cancelled because it has already been paid by the customer.");
+        } else if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
+            return OperationResult.failed("The invoice with ID: " + invoiceID + " has already been cancelled.");
+        }
+
         // Apply updates only to changed fields
         existingInvoice.setInvoiceStatus(InvoiceStatus.CANCELLED);
 

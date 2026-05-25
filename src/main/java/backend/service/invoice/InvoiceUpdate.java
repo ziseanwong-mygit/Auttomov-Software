@@ -4,6 +4,7 @@ import main.java.backend.model.Invoice;
 import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.InvoiceDTO;
+import main.java.enums.data.InvoiceStatus;
 import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
@@ -23,11 +24,21 @@ public class InvoiceUpdate implements RecordWriter {
     @Override
     public OperationResult execute() {
 
+        String invoiceID = invoiceDTO.getInvoiceID();
+
         // Check if the invoice exists with the given ID
-        Invoice existingInvoice = invoiceRepository.getRecordById(invoiceDTO.getInvoiceID());
+        Invoice existingInvoice = invoiceRepository.getRecordById(invoiceID);
         if (existingInvoice == null) {
-            return OperationResult.failed("The invoice with ID: " + invoiceDTO.getInvoiceID() +
-                    " does not exist in the system.");
+            return OperationResult.failed("The invoice with ID: " + invoiceID + " does not exist in the system.");
+        }
+
+        // Verify status logic to ensure the update is valid
+        if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.PAID)) {
+            return OperationResult.failed("The invoice with ID: " + invoiceID +
+                    "cannot be updated because it has already been paid by the customer.");
+        } else if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
+            return OperationResult.failed("The invoice with ID: " + invoiceID +
+                    "cannot be updated because it has already been cancelled.");
         }
 
         // Get the list of fields that are changed
@@ -35,8 +46,7 @@ public class InvoiceUpdate implements RecordWriter {
 
         // If nothing changed at all across both kinds
         if (changedFields.isEmpty()) {
-            return OperationResult.failed(
-                    "No fields have been changed. Please update one or more fields.");
+            return OperationResult.failed("No fields have been changed. Please update one or more fields.");
         }
 
         // Apply updates only to changed fields

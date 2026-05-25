@@ -9,7 +9,7 @@ import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
 /**
- * Used for updating the status of an appointment record only for the staff's convenience
+ * Used for marking appointments as complete/incomplete (technician) and cancelling appointments (counter staff)
  */
 public class AppointmentStatusUpdate implements RecordWriter {
 
@@ -24,11 +24,40 @@ public class AppointmentStatusUpdate implements RecordWriter {
     @Override
     public OperationResult execute() {
 
+        String appointmentID = appointmentDTO.getAppointmentID();
+        AppointmentStatus inputStatus = appointmentDTO.getAppointmentStatus();
+
         // Check if the appointment exists with the given ID
-        Appointment existingAppointment = appointmentRepository.getRecordById(appointmentDTO.getAppointmentID());
+        Appointment existingAppointment = appointmentRepository.getRecordById(appointmentID);
         if (existingAppointment == null) {
-            return OperationResult.failed("The appointment with ID: " + appointmentDTO.getAppointmentID() +
+            return OperationResult.failed("The appointment with ID: " + appointmentID +
                     " does not exist in the system.");
+        }
+
+        AppointmentStatus currentStatus = existingAppointment.getAppointmentStatus();
+
+        // If the appointment has been canceled, return an error message
+        if (currentStatus.equals(AppointmentStatus.CANCELLED)) {
+            return OperationResult.failed("The appointment with ID: " + appointmentID +
+                    "cannot be updated with new status because it has already been cancelled.");
+        }
+
+        // Appointments with completed/incomplete status cannot be marked as PENDING
+        if (inputStatus.equals(AppointmentStatus.PENDING)) {
+            if (currentStatus.equals(AppointmentStatus.COMPLETED) ||
+                    currentStatus.equals(AppointmentStatus.INCOMPLETE)) {
+                return OperationResult.failed("The appointment with ID: " + appointmentID +
+                        "cannot be updated with pending status because it has already " +
+                        "been marked as complete/incomplete.");
+            }
+        }
+
+        // If the appointment is in progress, it cannot be canceled
+        if (inputStatus.equals(AppointmentStatus.CANCELLED)) {
+            if (currentStatus.equals(AppointmentStatus.IN_PROGRESS)) {
+                return OperationResult.failed("The appointment with ID: " + appointmentID +
+                        "cannot be cancelled because it is currently working in progress.");
+            }
         }
 
         // Check if the input status is different from the current status
