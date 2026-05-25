@@ -1,28 +1,28 @@
 package main.java.backend.service.recordsreport;
 
-import main.java.backend.model.RecordsReport;
-import main.java.backend.repository.impl.RecordsReportRepository;
+import main.java.backend.model.DataReport;
+import main.java.backend.repository.impl.report.DataReportRepository;
 import main.java.backend.service.RecordReader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RecordsReportRetrieval implements RecordReader<RecordsReport> {
+public class RecordsReportRetrieval implements RecordReader<DataReport> {
 
-    private final RecordsReportRepository recordsReportRepository;
+    private final DataReportRepository dataReportRepository;
 
-    public RecordsReportRetrieval(RecordsReportRepository recordsReportRepository) {
-        this.recordsReportRepository = recordsReportRepository;
+    public RecordsReportRetrieval(DataReportRepository dataReportRepository) {
+        this.dataReportRepository = dataReportRepository;
     }
 
     /**
      * Read and return all records reports from the repository
      */
     @Override
-    public Optional<List<RecordsReport>> getAllRecords() {
+    public Optional<List<DataReport>> getAllRecords() {
 
-        List<RecordsReport> existingReports = new ArrayList<>(recordsReportRepository.getAllRecords());
+        List<DataReport> existingReports = new ArrayList<>(dataReportRepository.getAllRecords());
 
         if (existingReports.isEmpty()) {
             return Optional.empty();
@@ -35,9 +35,9 @@ public class RecordsReportRetrieval implements RecordReader<RecordsReport> {
      * Read and return a single records report based on the given ID
      */
     @Override
-    public Optional<RecordsReport> getRecordById(String reportId) {
+    public Optional<DataReport> getRecordById(String reportId) {
 
-        RecordsReport existingReport = recordsReportRepository.getRecordById(reportId);
+        DataReport existingReport = dataReportRepository.getRecordById(reportId);
 
         if (existingReport == null) {
             return Optional.empty();
@@ -50,9 +50,9 @@ public class RecordsReportRetrieval implements RecordReader<RecordsReport> {
      * Read and return multiple records reports based on the given IDs
      */
     @Override
-    public Optional<List<RecordsReport>> getRecordsByIds(List<String> reportIds) {
+    public Optional<List<DataReport>> getRecordsByIds(List<String> reportIds) {
 
-        List<RecordsReport> existingReports = recordsReportRepository.getRecordsByIds(reportIds);
+        List<DataReport> existingReports = dataReportRepository.getRecordsByIds(reportIds);
 
         if (existingReports.isEmpty()) {
             return Optional.empty();
@@ -64,9 +64,9 @@ public class RecordsReportRetrieval implements RecordReader<RecordsReport> {
     /**
      * Read and return a single records report based on the given document number
      */
-    public Optional<RecordsReport> getRecordByReportDocNo(String reportDocNo) {
+    public Optional<DataReport> getRecordByReportDocNo(String reportDocNo) {
 
-        RecordsReport existingReport = recordsReportRepository.getRecordByReportDocNo(reportDocNo);
+        DataReport existingReport = dataReportRepository.getRecordByReportDocNo(reportDocNo);
 
         if (existingReport == null) {
             return Optional.empty();

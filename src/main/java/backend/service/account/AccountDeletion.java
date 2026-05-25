@@ -3,6 +3,8 @@ package main.java.backend.service.account;
 import main.java.backend.model.*;
 import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.AccountRepository;
+import main.java.backend.repository.impl.report.DataReportRepository;
+import main.java.backend.repository.impl.report.SalesReportRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.enums.data.JobPosition;
 import main.java.records.OperationResult;
@@ -20,7 +22,7 @@ public class AccountDeletion implements RecordWriter {
     private final AppointmentFeedbackRepository appointmentFeedbackRepository;
     private final InvoiceRepository invoiceRepository;
     private final ReceiptRepository receiptRepository;
-    private final RecordsReportRepository recordsReportRepository;
+    private final DataReportRepository dataReportRepository;
     private final SalesReportRepository salesReportRepository;
     private final String accountID;
 
@@ -29,7 +31,7 @@ public class AccountDeletion implements RecordWriter {
                            AppointmentCommentRepository appointmentCommentRepository,
                            AppointmentFeedbackRepository appointmentFeedbackRepository,
                            InvoiceRepository invoiceRepository, PaymentRecordRepository paymentRecordRepository,
-                           ReceiptRepository receiptRepository, RecordsReportRepository recordsReportRepository,
+                           ReceiptRepository receiptRepository, DataReportRepository dataReportRepository,
                            SalesReportRepository salesReportRepository, String accountID) {
         this.accountRepository = accountRepository;
         this.appointmentRepository = appointmentRepository;
@@ -38,7 +40,7 @@ public class AccountDeletion implements RecordWriter {
         this.invoiceRepository = invoiceRepository;
         this.paymentRecordRepository = paymentRecordRepository;
         this.receiptRepository = receiptRepository;
-        this.recordsReportRepository = recordsReportRepository;
+        this.dataReportRepository = dataReportRepository;
         this.salesReportRepository = salesReportRepository;
         this.accountID = accountID;
     }
@@ -101,7 +103,10 @@ public class AccountDeletion implements RecordWriter {
                 }
                 if (!receiptsToUpdate.isEmpty()) {
                     OperationResult receiptUpdateResult = receiptRepository.bulkUpdateRecord(receiptsToUpdate);
-                    if (!receiptUpdateResult.isValid()) {}
+                    if (!receiptUpdateResult.isValid()) {
+                        return OperationResult.failed("Failed to update receipts linked to the account ID "
+                                + existingAcc.getAccountID() + ". Deletion process has stopped here.");
+                    }
                 }
             }
 
@@ -141,19 +146,19 @@ public class AccountDeletion implements RecordWriter {
             }
 
             if (staffAcc.getJobPosition() == JobPosition.MANAGER) {
-                List<RecordsReport> recordsReports = recordsReportRepository.getRecordsByManager(staffAcc);
+                List<DataReport> dataReports = dataReportRepository.getRecordsByManager(staffAcc);
                 List<SalesReport> salesReports = salesReportRepository.getRecordsByManager(staffAcc);
 
-                List<RecordsReport> recordsReportsToUpdate = recordsReports.stream()
+                List<DataReport> dataReportsToUpdate = dataReports.stream()
                         .peek(report -> report.setManagerAccount(null))
                         .toList();
                 List<SalesReport> salesReportsToUpdate = salesReports.stream()
                         .peek(report -> report.setManagerAccount(null))
                         .toList();
 
-                if (!recordsReportsToUpdate.isEmpty()) {
-                    OperationResult reportUpdateResult = recordsReportRepository
-                            .bulkUpdateRecord(recordsReportsToUpdate);
+                if (!dataReportsToUpdate.isEmpty()) {
+                    OperationResult reportUpdateResult = dataReportRepository
+                            .bulkUpdateRecord(dataReportsToUpdate);
                     if (!reportUpdateResult.isValid()) {
                         return OperationResult.failed("Failed to update records reports linked to the account ID "
                                 + existingAcc.getAccountID() + ". Deletion process has stopped here.");

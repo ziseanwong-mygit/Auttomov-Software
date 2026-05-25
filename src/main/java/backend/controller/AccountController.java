@@ -5,6 +5,8 @@ import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.AccountRepository;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
+import main.java.backend.repository.impl.report.DataReportRepository;
+import main.java.backend.repository.impl.report.SalesReportRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.account.*;
@@ -37,7 +39,7 @@ public class AccountController {
             AppointmentFeedbackRepository.getInstance();
     private final InvoiceRepository invoiceRepo = InvoiceRepository.getInstance();
     private final ReceiptRepository receiptRepo = ReceiptRepository.getInstance();
-    private final RecordsReportRepository recordsReportRepo = RecordsReportRepository.getInstance();
+    private final DataReportRepository recordsReportRepo = DataReportRepository.getInstance();
     private final SalesReportRepository salesReportRepo = SalesReportRepository.getInstance();
     private final ServicePackageRepository servicePackageRepo = ServicePackageRepository.getInstance();
 
@@ -46,7 +48,7 @@ public class AccountController {
         // Check if there are any null or empty values in the list
         OperationResult nullValidation = validateNullValues(userAccountDTO, OperationType.CREATE);
         if (!nullValidation.isValid()) {
-
+            return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
 
         // Check if all values have the correct format/standard

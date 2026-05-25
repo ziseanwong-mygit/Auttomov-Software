@@ -1,7 +1,7 @@
 package main.java.enums.data;
 
 public enum ReportType {
-    RECORDS_REPORT("Records report"),
+    DATA_REPORT("Data report"),
     SALES_REPORT("Sales report");
 
     private final String reportType;

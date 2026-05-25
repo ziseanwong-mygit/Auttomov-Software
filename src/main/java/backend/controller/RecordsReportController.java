@@ -1,10 +1,11 @@
 package main.java.backend.controller;
 
-import main.java.backend.model.RecordsReport;
+import main.java.backend.model.DataReport;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
+import main.java.backend.repository.impl.report.DataReportRepository;
 import main.java.backend.service.RecordReader;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.service.recordsreport.RecordsReportCreation;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class RecordsReportController {
 
     // Singleton instances of the repositories
-    private final RecordsReportRepository recordsReportRepo = RecordsReportRepository.getInstance();
+    private final DataReportRepository recordsReportRepo = DataReportRepository.getInstance();
     private final CustomerAccountRepository customerAccountRepo = CustomerAccountRepository.getInstance();
     private final StaffAccountRepository staffAccountRepo = StaffAccountRepository.getInstance();
     private final ServiceActivityRepository serviceActivityRepo = ServiceActivityRepository.getInstance();
@@ -69,28 +70,28 @@ public class RecordsReportController {
      * Optional class is used to determine whether the records are present or not
      * This is for frontend logic in displaying the result message for UI
      */
-    public Optional<List<RecordsReport>> retrieveAllRecordsReports() {
+    public Optional<List<DataReport>> retrieveAllRecordsReports() {
 
         // Begin retrieving all records reports procedures in service class
-        RecordReader<RecordsReport> retrieveAllRecordsReports = new RecordsReportRetrieval(recordsReportRepo);
+        RecordReader<DataReport> retrieveAllRecordsReports = new RecordsReportRetrieval(recordsReportRepo);
         return retrieveAllRecordsReports.getAllRecords();
     }
 
-    public Optional<RecordsReport> retrieveRecordsReportById(String reportId) {
+    public Optional<DataReport> retrieveRecordsReportById(String reportId) {
 
         // Begin retrieving records report by ID procedure in service class
-        RecordReader<RecordsReport> retrieveRecordsReportById = new RecordsReportRetrieval(recordsReportRepo);
+        RecordReader<DataReport> retrieveRecordsReportById = new RecordsReportRetrieval(recordsReportRepo);
         return retrieveRecordsReportById.getRecordById(reportId);
     }
 
-    public Optional<List<RecordsReport>> retrieveRecordsReportsByIds(List<String> invoiceIds) {
+    public Optional<List<DataReport>> retrieveRecordsReportsByIds(List<String> invoiceIds) {
 
         // Begin retrieving multiple records reports by IDs procedure in service class
-        RecordReader<RecordsReport> retrieveRecordsReportsByIds = new RecordsReportRetrieval(recordsReportRepo);
+        RecordReader<DataReport> retrieveRecordsReportsByIds = new RecordsReportRetrieval(recordsReportRepo);
         return retrieveRecordsReportsByIds.getRecordsByIds(invoiceIds);
     }
 
-    public Optional<RecordsReport> retrieveRecordsReportByReportDocNo(String reportDocNo) {
+    public Optional<DataReport> retrieveRecordsReportByReportDocNo(String reportDocNo) {
 
         // Begin retrieving records report by document number procedure in service class
         RecordsReportRetrieval retrieveRecordsReportByReportDocNo = new RecordsReportRetrieval(recordsReportRepo);

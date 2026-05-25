@@ -266,32 +266,32 @@ public class CSVFormatter {
         );
     }
 
-    public static String toCsvFormat(RecordsReport recordsReport) {
+    public static String toCsvFormat(DataReport dataReport) {
 
         // If the manager account still exists (not deleted), get the manager ID
         String managerAccountID = "";
-        if (recordsReport.getManagerAccount() != null) {
-            managerAccountID = recordsReport.getManagerAccount().getAccountID();
+        if (dataReport.getManagerAccount() != null) {
+            managerAccountID = dataReport.getManagerAccount().getAccountID();
         }
 
         return String.join(",",
-                recordsReport.getReportID(),
-                recordsReport.getReportDocNo(),
-                recordsReport.getReportCreationDate().toString(),
-                recordsReport.getReportType().getReportType(),
+                dataReport.getReportID(),
+                dataReport.getReportDocNo(),
+                dataReport.getReportCreationDate().toString(),
+                dataReport.getReportType().getReportType(),
                 managerAccountID,
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomers()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalTechnicians()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCounterStaffs()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalManagers()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalServiceActivities()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalVehicleParts()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalServicePackages()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalAppointments()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersByThisMonth()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersByThisYear()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersLeftByThisMonth()),
-                DataTypeConverter.convertIntToString(recordsReport.getTotalCustomersLeftByThisYear())
+                DataTypeConverter.convertIntToString(dataReport.getTotalCustomers()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalTechnicians()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalCounterStaffs()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalManagers()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalServiceActivities()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalVehicleParts()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalServicePackages()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalAppointments()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalCustomersByThisMonth()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalCustomersByThisYear()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalCustomersLeftByThisMonth()),
+                DataTypeConverter.convertIntToString(dataReport.getTotalCustomersLeftByThisYear())
         );
     }
 

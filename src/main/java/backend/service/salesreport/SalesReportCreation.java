@@ -3,7 +3,7 @@ package main.java.backend.service.salesreport;
 import main.java.backend.model.*;
 import main.java.backend.repository.impl.AppointmentRepository;
 import main.java.backend.repository.impl.InvoiceRepository;
-import main.java.backend.repository.impl.SalesReportRepository;
+import main.java.backend.repository.impl.report.SalesReportRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
 import main.java.enums.data.ReportType;

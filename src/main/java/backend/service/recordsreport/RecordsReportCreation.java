@@ -1,10 +1,11 @@
 package main.java.backend.service.recordsreport;
 
-import main.java.backend.model.RecordsReport;
+import main.java.backend.model.DataReport;
 import main.java.backend.model.StaffAccount;
 import main.java.backend.repository.impl.*;
 import main.java.backend.repository.impl.account.CustomerAccountRepository;
 import main.java.backend.repository.impl.account.StaffAccountRepository;
+import main.java.backend.repository.impl.report.DataReportRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
 import main.java.enums.data.JobPosition;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 public class RecordsReportCreation implements RecordWriter {
 
-    private final RecordsReportRepository recordsReportRepository;
+    private final DataReportRepository dataReportRepository;
     private final CustomerAccountRepository customerAccountRepository;
     private final StaffAccountRepository staffAccountRepository;
     private final ServiceActivityRepository serviceActivityRepository;
@@ -25,7 +26,7 @@ public class RecordsReportCreation implements RecordWriter {
     private final AppointmentRepository appointmentRepository;
     private final StaffAccount existingManager;
 
-    public RecordsReportCreation(RecordsReportRepository recordsReportRepository,
+    public RecordsReportCreation(DataReportRepository dataReportRepository,
                                  CustomerAccountRepository customerAccountRepository,
                                  StaffAccountRepository staffAccountRepository,
                                  ServiceActivityRepository serviceActivityRepository,
@@ -33,7 +34,7 @@ public class RecordsReportCreation implements RecordWriter {
                                  ServicePackageRepository servicePackageRepository,
                                  AppointmentRepository appointmentRepository,
                                  StaffAccount existingManager) {
-        this.recordsReportRepository = recordsReportRepository;
+        this.dataReportRepository = dataReportRepository;
         this.customerAccountRepository = customerAccountRepository;
         this.staffAccountRepository = staffAccountRepository;
         this.serviceActivityRepository = serviceActivityRepository;
@@ -47,13 +48,13 @@ public class RecordsReportCreation implements RecordWriter {
     public OperationResult execute() {
 
         // Create a new records report object
-        RecordsReport newReport = populateRecordsReportDetails();
+        DataReport newReport = populateRecordsReportDetails();
 
         // Save the records report into the file
-        return recordsReportRepository.createRecord(newReport);
+        return dataReportRepository.createRecord(newReport);
     }
 
-    private RecordsReport populateRecordsReportDetails() {
+    private DataReport populateRecordsReportDetails() {
 
         // Get the current month and year
         int currentMonth = LocalDate.now().getMonthValue();
@@ -81,7 +82,7 @@ public class RecordsReportCreation implements RecordWriter {
         int totalCustomersLeftByThisMonth = customerAccountRepository
                 .getInactiveRecordsByCreationMonth(currentMonth).size();
 
-        return new RecordsReport(reportId, reportDocNo, LocalDate.now(), ReportType.RECORDS_REPORT, existingManager,
+        return new DataReport(reportId, reportDocNo, LocalDate.now(), ReportType.DATA_REPORT, existingManager,
                 totalCustomers, totalTechnicians, totalCounterStaffs, totalManagers, totalServiceActivities,
                 totalVehicleParts, totalServicePackages, totalAppointments, totalCustomersByThisMonth,
                 totalCustomersByThisYear, totalCustomersLeftByThisMonth, totalCustomersLeftByThisYear);
