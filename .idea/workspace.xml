@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="" />
+    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Out production commit (ignore)">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APUASC-Auttomov.iml" beforeDir="false" afterPath="$PROJECT_DIR$/APUASC-Auttomov.iml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,61 +56,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.1126735960763445" />
-      <entry key="MS500" value="1.7978953535549222" />
-      <entry key="S2" value="4.651071856250219" />
-      <entry key="S5" value="10.028516334293924" />
-      <entry key="S10" value="16.793821676967553" />
-      <entry key="S30" value="28.840523941760786" />
-      <entry key="S60" value="34.290963809372805" />
-      <entry key="M2" value="38.25126230171828" />
-      <entry key="M5" value="43.62156183234353" />
-      <entry key="M10" value="47.72814009673765" />
-      <entry key="M15" value="49.788451369173764" />
-      <entry key="M30" value="54.669607344794045" />
-      <entry key="H1" value="76.00969178321168" />
-      <entry key="H2" value="137.7286371235088" />
-      <entry key="H4" value="239.3000164479728" />
-      <entry key="D1" value="464.92806297198723" />
-      <entry key="W1" value="532.4747288147236" />
+      <entry key="MS100" value="1.0470399572504987" />
+      <entry key="MS500" value="1.6482453130652233" />
+      <entry key="S2" value="3.5031782341025504" />
+      <entry key="S5" value="5.099389481359634" />
+      <entry key="S10" value="5.934229437883173" />
+      <entry key="S30" value="6.62018398074078" />
+      <entry key="S60" value="6.874966363632708" />
+      <entry key="M2" value="7.167991896862986" />
+      <entry key="M5" value="7.549927235997828" />
+      <entry key="M10" value="7.7480174788236456" />
+      <entry key="M15" value="7.825308594912737" />
+      <entry key="M30" value="7.913501984692953" />
+      <entry key="H1" value="8.635421603453608" />
+      <entry key="H2" value="21.02077157529975" />
+      <entry key="H4" value="81.63254920308192" />
+      <entry key="D1" value="390.0172232871421" />
+      <entry key="W1" value="525.7414885279928" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.2825827334510876E-41" />
-      <entry key="MS500" value="6.66391850802157E-9" />
-      <entry key="S2" value="0.011408768849381773" />
-      <entry key="S5" value="0.24143589639755011" />
-      <entry key="S10" value="0.6888931922533493" />
-      <entry key="S30" value="1.4368274889159909" />
-      <entry key="S60" value="2.067172255995406" />
-      <entry key="M2" value="3.419274008370298" />
-      <entry key="M5" value="6.882554638243385" />
-      <entry key="M10" value="9.820791200830502" />
-      <entry key="M15" value="11.266927440137454" />
-      <entry key="M30" value="13.686611658871923" />
-      <entry key="H1" value="19.10799341514055" />
-      <entry key="H2" value="32.423956217224664" />
-      <entry key="H4" value="54.13514903037095" />
-      <entry key="D1" value="103.3211436584896" />
-      <entry key="W1" value="118.22887664021306" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="3.102715748649328E-246" />
+      <entry key="S60" value="3.0377032688624494E-123" />
+      <entry key="M2" value="1.3107451078926145E-61" />
+      <entry key="M5" value="1.8671680355428626E-24" />
+      <entry key="M10" value="5.115208560417609E-12" />
+      <entry key="M15" value="7.293736611066755E-8" />
+      <entry key="M30" value="0.0011012051510744096" />
+      <entry key="H1" value="0.1713962152398177" />
+      <entry key="H2" value="3.0708533473864246" />
+      <entry key="H4" value="16.66003359664677" />
+      <entry key="D1" value="84.89627349936275" />
+      <entry key="W1" value="114.95762065380522" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.0097723860538346" />
-      <entry key="MS500" value="1.762639871702808" />
-      <entry key="S2" value="4.616471201343255" />
-      <entry key="S5" value="10.176988881032841" />
-      <entry key="S10" value="17.373492725522123" />
-      <entry key="S30" value="30.205066436476695" />
-      <entry key="S60" value="36.30586577324666" />
-      <entry key="M2" value="41.625761874699755" />
-      <entry key="M5" value="50.465358068382535" />
-      <entry key="M10" value="57.52020787475099" />
-      <entry key="M15" value="61.03304304675499" />
-      <entry key="M30" value="68.34190662866814" />
-      <entry key="H1" value="95.10595309177413" />
-      <entry key="H2" value="170.14072863993152" />
-      <entry key="H4" value="293.4243232802567" />
-      <entry key="D1" value="568.245554359645" />
-      <entry key="W1" value="650.7030039664288" />
+      <entry key="MS100" value="0.9781566971090946" />
+      <entry key="MS500" value="1.6283796145911145" />
+      <entry key="S2" value="3.490798082280226" />
+      <entry key="S5" value="5.091644166025685" />
+      <entry key="S10" value="5.92962190444758" />
+      <entry key="S30" value="6.618445578761052" />
+      <entry key="S60" value="6.87405115333421" />
+      <entry key="M2" value="7.167500024346395" />
+      <entry key="M5" value="7.54971085852166" />
+      <entry key="M10" value="7.747904058328103" />
+      <entry key="M15" value="7.825231683426779" />
+      <entry key="M30" value="7.914562800768413" />
+      <entry key="H1" value="8.80669276599913" />
+      <entry key="H2" value="24.09049126420355" />
+      <entry key="H4" value="98.28924113206942" />
+      <entry key="D1" value="474.9104949773889" />
+      <entry key="W1" value="640.698524216596" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -135,7 +138,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "jayvee",
+    "git-widget-placeholder": "seanwzs",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/DELL/Documents/OODJ Project/APUASC-Auttomov/src/main/java/dto",
@@ -246,7 +249,7 @@
       <workItem from="1779678898982" duration="23542000" />
       <workItem from="1779719469361" duration="4566000" />
       <workItem from="1779755228135" duration="1359000" />
-      <workItem from="1779758232324" duration="20632000" />
+      <workItem from="1779758232324" duration="21422000" />
     </task>
     <task id="LOCAL-00001" summary="Intialize commit">
       <option name="closed" value="true" />
@@ -544,7 +547,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779772181603</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Out production commit (ignore)">
+      <option name="closed" value="true" />
+      <created>1779796672636</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1779796672636</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -574,8 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Huge update for account management 2. Added AbstractRepository abstract class, RecordReader and RecordWriter interfaces for writing and reading files. Added data structure organizer and data type converter." />
-    <MESSAGE value="Service activities CRUD operations added. Added ListFieldComparison to compare lists changes." />
     <MESSAGE value="Vehicle Part CRUD operations added." />
     <MESSAGE value="Updated account retrieval to use RecordReader interface. Account and vehicle part controller classes are also updated." />
     <MESSAGE value="Renamed AccountStatusUpdate to StaffAccountStatusUpdate. Changed some code in StaffAccountStatusUpdate.java so only update on staff account." />
@@ -599,6 +608,8 @@
     <MESSAGE value="Renamed InvoiceCancellation.java to InvoiceStatusUpdate.java. InvoiceStatusUpdate now accepts DTO with InvoiceID and InvoiceStatus to either cancel the invoice or mark it as paid." />
     <MESSAGE value="Fixed incorrect file path in PaymentRecordRepository.java and ReceiptRepository.java. Fixed bug on validating appointmentID in AppointmentFeedbackController.java" />
     <MESSAGE value="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be." />
+    <MESSAGE value="temphere" />
+    <MESSAGE value="Out production commit (ignore)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Out production commit (ignore)" />
   </component>
 </project>
