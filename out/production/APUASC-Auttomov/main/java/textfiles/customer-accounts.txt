@@ -1,3 +1,5 @@
 c26b455e-178a-46f4-932e-af9c8061e730, 2026-04-24, 010404145678, Customer, Wong, Zi Sean, wongzisean444@gmail.com, 0123446464, gl5YJ/EKz9vo8cwWh4gx1A==:ZB3N6ONdasfJ71muEAi9Hw==, Active
 b3af5b58-337a-4766-bcb4-82c19c4b0453, 2026-04-24, 980506148294, Customer, Jeffrey, Kingston, jeffrey77@gmail.com, 0123848593, KmTThQ1Brx7Ctmb18QY0gg==:sHmkDQY7YbOCVqiwRp/aPg==, Active
 406bc747-9474-4dd8-b61a-fc4a9658ece6, 2026-05-08, 020603153820, Customer, Yung, Hoi An, yungHoiAn33@gmail.com, 0118382674, d1JKRLhlUDSF5AygBKCZ9g==:jHWiSmM3uVZdXX2lKL9o6w==, Active
+f112bcdc-79a4-4ef7-8d97-114b118e98bc, 2026-05-26, 980116092893, Customer, Ben, Teddyson, benteddy78@gmail.com, 0192873673, U4W2qfYsKYrNye8o/0Ibrw==:f6QbyJ6Nik2VrKpILVkVDg==, Active
+9776cdd6-e2ca-4f6e-8d89-19b5aefb4db7, 2026-05-26, 091010012908, Customer, Larry, Chuck, larrychuck67@email.com, 01899797766, ZHYPh5RfwahEjwquy49Jbw==:YjAp5RfOEymFE6UoZZPfew==, Active
