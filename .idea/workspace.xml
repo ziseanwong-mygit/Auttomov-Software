@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="164" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="seanwzs" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Swong-Gitzbos44&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Swong-Gitzbos44/OODJ-GroupAT.git&quot;,
+    &quot;accountId&quot;: &quot;6c1e2298-5185-4ea3-97b6-17e014b1d40b&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.1126735960763445" />
+      <entry key="MS500" value="1.7978953535549222" />
+      <entry key="S2" value="4.651071856250219" />
+      <entry key="S5" value="10.028516334293924" />
+      <entry key="S10" value="16.793821676967553" />
+      <entry key="S30" value="28.840523941760786" />
+      <entry key="S60" value="34.290963809372805" />
+      <entry key="M2" value="38.25126230171828" />
+      <entry key="M5" value="43.62156183234353" />
+      <entry key="M10" value="47.72814009673765" />
+      <entry key="M15" value="49.788451369173764" />
+      <entry key="M30" value="54.669607344794045" />
+      <entry key="H1" value="76.00969178321168" />
+      <entry key="H2" value="137.7286371235088" />
+      <entry key="H4" value="239.3000164479728" />
+      <entry key="D1" value="464.92806297198723" />
+      <entry key="W1" value="532.4747288147236" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.2825827334510876E-41" />
+      <entry key="MS500" value="6.66391850802157E-9" />
+      <entry key="S2" value="0.011408768849381773" />
+      <entry key="S5" value="0.24143589639755011" />
+      <entry key="S10" value="0.6888931922533493" />
+      <entry key="S30" value="1.4368274889159909" />
+      <entry key="S60" value="2.067172255995406" />
+      <entry key="M2" value="3.419274008370298" />
+      <entry key="M5" value="6.882554638243385" />
+      <entry key="M10" value="9.820791200830502" />
+      <entry key="M15" value="11.266927440137454" />
+      <entry key="M30" value="13.686611658871923" />
+      <entry key="H1" value="19.10799341514055" />
+      <entry key="H2" value="32.423956217224664" />
+      <entry key="H4" value="54.13514903037095" />
+      <entry key="D1" value="103.3211436584896" />
+      <entry key="W1" value="118.22887664021306" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.0097723860538346" />
+      <entry key="MS500" value="1.762639871702808" />
+      <entry key="S2" value="4.616471201343255" />
+      <entry key="S5" value="10.176988881032841" />
+      <entry key="S10" value="17.373492725522123" />
+      <entry key="S30" value="30.205066436476695" />
+      <entry key="S60" value="36.30586577324666" />
+      <entry key="M2" value="41.625761874699755" />
+      <entry key="M5" value="50.465358068382535" />
+      <entry key="M10" value="57.52020787475099" />
+      <entry key="M15" value="61.03304304675499" />
+      <entry key="M30" value="68.34190662866814" />
+      <entry key="H1" value="95.10595309177413" />
+      <entry key="H2" value="170.14072863993152" />
+      <entry key="H4" value="293.4243232802567" />
+      <entry key="D1" value="568.245554359645" />
+      <entry key="W1" value="650.7030039664288" />
+    </decayedShown>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3Bcczu8CFsL3AxSgPhQ503nYrMn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainClass.executor": "Run",
+    "Application.SignUpFunc.executor": "Run",
+    "Application.SignUpLogic.executor": "Run",
+    "Application.testSignUpLogic.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "jayvee",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/DELL/Documents/OODJ Project/APUASC-Auttomov/src/main/java/dto",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.import",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Documents\OODJ Project\APUASC-Auttomov\src\main\java\dto" />
+      <recent name="C:\Users\DELL\Documents\APU ASC Group AT\src\main\java\frontend" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="main.java.backend.controller" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="" />
+      <created>1774792068523</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774792068523</updated>
+      <workItem from="1774792069830" duration="11000" />
+      <workItem from="1774841131412" duration="3042000" />
+      <workItem from="1774925584514" duration="2623000" />
+      <workItem from="1775531711567" duration="1506000" />
+      <workItem from="1775541093536" duration="2584000" />
+      <workItem from="1775706913242" duration="2381000" />
+      <workItem from="1775726419887" duration="4110000" />
+      <workItem from="1775802798019" duration="4290000" />
+      <workItem from="1775837069101" duration="3278000" />
+      <workItem from="1775881647603" duration="19256000" />
+      <workItem from="1775966985678" duration="1823000" />
+      <workItem from="1775969437333" duration="9806000" />
+      <workItem from="1775998316475" duration="12628000" />
+      <workItem from="1776057105593" duration="851000" />
+      <workItem from="1776092225364" duration="637000" />
+      <workItem from="1776126549927" duration="3687000" />
+      <workItem from="1776133324464" duration="396000" />
+      <workItem from="1776133839500" duration="875000" />
+      <workItem from="1776144837226" duration="18502000" />
+      <workItem from="1776227657891" duration="29772000" />
+      <workItem from="1776269074910" duration="58000" />
+      <workItem from="1776269159368" duration="553000" />
+      <workItem from="1776269731267" duration="4372000" />
+      <workItem from="1776307122041" duration="6031000" />
+      <workItem from="1776408757527" duration="71000" />
+      <workItem from="1776412983846" duration="2478000" />
+      <workItem from="1777012705663" duration="389000" />
+      <workItem from="1777013201121" duration="13936000" />
+      <workItem from="1777033322380" duration="14934000" />
+      <workItem from="1777104816358" duration="7539000" />
+      <workItem from="1777132851605" duration="2405000" />
+      <workItem from="1777196294016" duration="6585000" />
+      <workItem from="1777211558336" duration="6431000" />
+      <workItem from="1777253985515" duration="2031000" />
+      <workItem from="1777273574000" duration="15011000" />
+      <workItem from="1777335753188" duration="945000" />
+      <workItem from="1777337423645" duration="4569000" />
+      <workItem from="1777355101334" duration="27926000" />
+      <workItem from="1777620456505" duration="641000" />
+      <workItem from="1777786451357" duration="13040000" />
+      <workItem from="1777813943344" duration="15238000" />
+      <workItem from="1777829543008" duration="925000" />
+      <workItem from="1777865243861" duration="1306000" />
+      <workItem from="1777875264594" duration="31493000" />
+      <workItem from="1777940721528" duration="1346000" />
+      <workItem from="1777943545177" duration="2898000" />
+      <workItem from="1777959565002" duration="25216000" />
+      <workItem from="1778085186512" duration="1194000" />
+      <workItem from="1778086434572" duration="1646000" />
+      <workItem from="1778127147823" duration="18680000" />
+      <workItem from="1778149684847" duration="22711000" />
+      <workItem from="1778201170191" duration="4531000" />
+      <workItem from="1778219613028" duration="3000" />
+      <workItem from="1778225803715" duration="18250000" />
+      <workItem from="1778430404721" duration="3283000" />
+      <workItem from="1778469849804" duration="684000" />
+      <workItem from="1778471249063" duration="10098000" />
+      <workItem from="1778667077014" duration="119000" />
+      <workItem from="1778672497921" duration="5000" />
+      <workItem from="1778721689407" duration="13695000" />
+      <workItem from="1779197326488" duration="12277000" />
+      <workItem from="1779235960041" duration="47266000" />
+      <workItem from="1779327603868" duration="41806000" />
+      <workItem from="1779414295002" duration="6367000" />
+      <workItem from="1779444063986" duration="26543000" />
+      <workItem from="1779513396081" duration="47201000" />
+      <workItem from="1779590240135" duration="821000" />
+      <workItem from="1779591216438" duration="10000" />
+      <workItem from="1779678898982" duration="23542000" />
+      <workItem from="1779719469361" duration="4566000" />
+      <workItem from="1779755228135" duration="1359000" />
+      <workItem from="1779758232324" duration="20632000" />
+    </task>
+    <task id="LOCAL-00001" summary="Intialize commit">
+      <option name="closed" value="true" />
+      <created>1776127644257</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1776127644257</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Initialize project structure and core components">
+      <option name="closed" value="true" />
+      <created>1776134111411</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776134111411</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Initialize project structure and core components">
+      <option name="closed" value="true" />
+      <created>1776134673937</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776134673937</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Account Sign Up logic v1">
+      <option name="closed" value="true" />
+      <created>1776268790232</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776268790232</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Delete files">
+      <option name="closed" value="true" />
+      <created>1776270092586</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776270092586</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Account login function v1&#10;&#10;If acc status is pending, denied or suspended, login is denied.">
+      <option name="closed" value="true" />
+      <created>1777023107016</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1777023107017</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Appointment &amp; Service POJOs, enum and text files&#10;&#10;Structure may change over time.">
+      <option name="closed" value="true" />
+      <created>1777284561734</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777284561734</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Account Update and Delete v1. Made changes on account login, enums and create account.&#10;&#10;Supports updating and deleting multiple records">
+      <option name="closed" value="true" />
+      <created>1777284653646</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1777284653646</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Updated service class and added service item and car component class. Fixed bug for account login.">
+      <option name="closed" value="true" />
+      <created>1777358002045</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1777358002045</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Updated CRUD operations for Account. Added new models &quot;VehicleService&quot;, &quot;VehicleComponent&quot; and &quot;ServiceItem&quot;. Updated project structure.">
+      <option name="closed" value="true" />
+      <created>1777620586837</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1777620586837</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Account CRUD operations and repositories update v2. Added interfaces for services and repositories.&#10;&#10;Interface is used to encapsulate implementations of classes, so each class can have unique implementation under same method">
+      <option name="closed" value="true" />
+      <created>1777819966930</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1777819966931</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Huge update for account management. Added controller classes, added repository interfaces and abstract classes. Changes in all account service classes. Added DTO classes.&#10;&#10;Please refer to MainClass for usage. Flow: DTO -&gt; Controller -&gt; OperationResult from controller.">
+      <option name="closed" value="true" />
+      <created>1778247817377</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1778247817378</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Huge update for account management 2. Added AbstractRepository abstract class, RecordReader and RecordWriter interfaces for writing and reading files. Added data structure organizer and data type converter.">
+      <option name="closed" value="true" />
+      <created>1779252809637</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252809638</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Service activities CRUD operations added. Added ListFieldComparison to compare lists changes.">
+      <option name="closed" value="true" />
+      <created>1779252878285</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252878285</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Vehicle Part CRUD operations added.">
+      <option name="closed" value="true" />
+      <created>1779252914390</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252914390</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Updated account retrieval to use RecordReader interface. Account and vehicle part controller classes are also updated.">
+      <option name="closed" value="true" />
+      <created>1779253636681</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1779253636681</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Renamed AccountStatusUpdate to StaffAccountStatusUpdate. Changed some code in StaffAccountStatusUpdate.java so only update on staff account.">
+      <option name="closed" value="true" />
+      <created>1779262019854</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1779262019854</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Updated CrudRepository with getRecordsWithIds(). Updated all repositories with getRecordsWithIds(). Updated read methods in all controller classes to return Optional&lt;&gt;.&#10;&#10;Examples of reading records included in MainClass.java. Scroll to the end.">
+      <option name="closed" value="true" />
+      <created>1779293239169</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1779293239169</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Service package model, controller, DTO, etc. are added, with latest features with previous commit.">
+      <option name="closed" value="true" />
+      <created>1779293301331</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1779293301331</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Updated ServicePackage model class with List&lt;String&gt; to List&lt;ServiceActivity&gt; and List&lt;VehiclePart&gt; to get and set the objects.&#10;&#10;This way is to let frontend easily list out all the activities and parts without needing to call the controller class to get records again.">
+      <option name="closed" value="true" />
+      <created>1779298463200</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1779298463200</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes.">
+      <option name="closed" value="true" />
+      <created>1779337099740</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1779337099741</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Moved classes to new packages. AccountDTO now does not accept UserRole, instead backend logic will handle the user role. Added RecordNoGenerator class.&#10;&#10;Only deleting and retrieving account records need user role as input for process">
+      <option name="closed" value="true" />
+      <created>1779352153649</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1779352153649</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Big update for controller classes - added validation for UUID values and repository instance and fetching existing records.&#10;&#10;Frontend flow:&#10;1. DTO&#10;2. Controller&#10;3. OperationResult/Optional&#10;&#10;Remark: need to have logic to check if OptionalResult has fieldNames or not">
+      <option name="closed" value="true" />
+      <created>1779377807320</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377807320</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Mini update on AccountPasswordUpdate.java">
+      <option name="closed" value="true" />
+      <created>1779377944570</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377944570</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added Appointment components, ready for program. Added RecordNoGenerator to generate random ID.">
+      <option name="closed" value="true" />
+      <created>1779377982758</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377982758</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added checking feature for assigning technicians to appointments, and getting list of available and unavailable technicians. Changes in Appointment model class, added end time. Also added new text files.">
+      <option name="closed" value="true" />
+      <created>1779473726431</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473726433</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Huge change to appointment controller class, and minor change to appointment creation service class (missed commit).">
+      <option name="closed" value="true" />
+      <created>1779473832959</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473832959</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Added AppointmentComment components.">
+      <option name="closed" value="true" />
+      <created>1779473870391</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473870391</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added new column to Appointment, CustomerAccount. Fixed parsing on repositories involving empty descriptions. Added record deletion handling to update/delete on other involved records.">
+      <option name="closed" value="true" />
+      <created>1779530774523</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1779530774523</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Added AppointmentFeedback components">
+      <option name="closed" value="true" />
+      <created>1779530796967</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1779530796967</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Changes on the existing components, such as logic for handling record deletion.">
+      <option name="closed" value="true" />
+      <created>1779590481720</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1779590481720</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added invoice, payment record, receipt and report components.">
+      <option name="closed" value="true" />
+      <created>1779590532578</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1779590532578</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added report components. RecordsReport changed to DataReport. DataReport and SalesReport are now subclasses of Report class.">
+      <option name="closed" value="true" />
+      <created>1779685126476</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1779685126476</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Removed ReportCalculation.java class file. Added update logic verification within appointment and invoice status updates.">
+      <option name="closed" value="true" />
+      <created>1779701520199</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1779701520199</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Renamed InvoiceCancellation.java to InvoiceStatusUpdate.java. InvoiceStatusUpdate now accepts DTO with InvoiceID and InvoiceStatus to either cancel the invoice or mark it as paid.">
+      <option name="closed" value="true" />
+      <created>1779702812917</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1779702812917</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Fixed incorrect file path in PaymentRecordRepository.java and ReceiptRepository.java. Fixed bug on validating appointmentID in AppointmentFeedbackController.java">
+      <option name="closed" value="true" />
+      <created>1779761784101</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1779761784102</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be.">
+      <option name="closed" value="true" />
+      <created>1779772181603</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1779772181603</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="seanwzs" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Huge update for account management 2. Added AbstractRepository abstract class, RecordReader and RecordWriter interfaces for writing and reading files. Added data structure organizer and data type converter." />
+    <MESSAGE value="Service activities CRUD operations added. Added ListFieldComparison to compare lists changes." />
+    <MESSAGE value="Vehicle Part CRUD operations added." />
+    <MESSAGE value="Updated account retrieval to use RecordReader interface. Account and vehicle part controller classes are also updated." />
+    <MESSAGE value="Renamed AccountStatusUpdate to StaffAccountStatusUpdate. Changed some code in StaffAccountStatusUpdate.java so only update on staff account." />
+    <MESSAGE value="Updated CrudRepository with getRecordsWithIds(). Updated all repositories with getRecordsWithIds(). Updated read methods in all controller classes to return Optional&lt;&gt;.&#10;&#10;Examples of reading records included in MainClass.java. Scroll to the end." />
+    <MESSAGE value="Service package model, controller, DTO, etc. are added, with latest features with previous commit." />
+    <MESSAGE value="Updated ServicePackage model class with List&lt;String&gt; to List&lt;ServiceActivity&gt; and List&lt;VehiclePart&gt; to get and set the objects.&#10;&#10;This way is to let frontend easily list out all the activities and parts without needing to call the controller class to get records again." />
+    <MESSAGE value="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes." />
+    <MESSAGE value="Moved classes to new packages. AccountDTO now does not accept UserRole, instead backend logic will handle the user role. Added RecordNoGenerator class.&#10;&#10;Only deleting and retrieving account records need user role as input for process" />
+    <MESSAGE value="Big update for controller classes - added validation for UUID values and repository instance and fetching existing records.&#10;&#10;Frontend flow:&#10;1. DTO&#10;2. Controller&#10;3. OperationResult/Optional&#10;&#10;Remark: need to have logic to check if OptionalResult has fieldNames or not" />
+    <MESSAGE value="Mini update on AccountPasswordUpdate.java" />
+    <MESSAGE value="Added Appointment components, ready for program. Added RecordNoGenerator to generate random ID." />
+    <MESSAGE value="Added checking feature for assigning technicians to appointments, and getting list of available and unavailable technicians. Changes in Appointment model class, added end time. Also added new text files." />
+    <MESSAGE value="Huge change to appointment controller class, and minor change to appointment creation service class (missed commit)." />
+    <MESSAGE value="Added AppointmentComment components." />
+    <MESSAGE value="Added new column to Appointment, CustomerAccount. Fixed parsing on repositories involving empty descriptions. Added record deletion handling to update/delete on other involved records." />
+    <MESSAGE value="Added AppointmentFeedback components" />
+    <MESSAGE value="Changes on the existing components, such as logic for handling record deletion." />
+    <MESSAGE value="Added invoice, payment record, receipt and report components." />
+    <MESSAGE value="Added report components. RecordsReport changed to DataReport. DataReport and SalesReport are now subclasses of Report class." />
+    <MESSAGE value="Removed ReportCalculation.java class file. Added update logic verification within appointment and invoice status updates." />
+    <MESSAGE value="Renamed InvoiceCancellation.java to InvoiceStatusUpdate.java. InvoiceStatusUpdate now accepts DTO with InvoiceID and InvoiceStatus to either cancel the invoice or mark it as paid." />
+    <MESSAGE value="Fixed incorrect file path in PaymentRecordRepository.java and ReceiptRepository.java. Fixed bug on validating appointmentID in AppointmentFeedbackController.java" />
+    <MESSAGE value="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be." />
+  </component>
+</project>
