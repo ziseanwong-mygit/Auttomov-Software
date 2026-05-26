@@ -1,6 +1,8 @@
 package main.java.backend.service.vehiclepart;
 
+import main.java.backend.model.ServicePackage;
 import main.java.backend.model.VehiclePart;
+import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.repository.impl.VehiclePartRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.VehiclePartDTO;
@@ -13,10 +15,14 @@ import java.util.List;
 public class VehiclePartUpdate implements RecordWriter {
     
     private final VehiclePartRepository vehiclePartRepository;
+    private final ServicePackageRepository servicePackageRepository;
     private final VehiclePartDTO vehiclePartDTO;
     
-    public VehiclePartUpdate(VehiclePartRepository vehiclePartRepository, VehiclePartDTO vehiclePartDTO) {
+    public VehiclePartUpdate(VehiclePartRepository vehiclePartRepository,
+                             ServicePackageRepository servicePackageRepository,
+                             VehiclePartDTO vehiclePartDTO) {
         this.vehiclePartRepository = vehiclePartRepository;
+        this.servicePackageRepository = servicePackageRepository;
         this.vehiclePartDTO = vehiclePartDTO;
     }
     
@@ -39,11 +45,49 @@ public class VehiclePartUpdate implements RecordWriter {
                     "Please update one or more fields.");
         }
 
+        // Get the old price of the vehicle part before setting the new price
+        double oldPrice = existingVehiclePart.getVehiclePartPrice();
+
         // Apply updates only to changed fields
         setChangedValues(changedFields, existingVehiclePart);
 
         // Begin updating vehicle part record in the repository
-        return vehiclePartRepository.updateRecord(existingVehiclePart);
+        OperationResult updateResult = vehiclePartRepository.updateRecord(existingVehiclePart);
+        if (!updateResult.isValid()) { // If the update fails, return the error message
+            return updateResult;
+        }
+
+        // Check if the vehicle part price has been updated
+        boolean isPriceUpdated = false;
+        for (FieldComparison<?> field : changedFields) {
+            if (field.fieldName().equals("price")) {
+                isPriceUpdated = true;
+            }
+        }
+
+        // If the price has been updated, update the service packages that involve this vehicle part
+        if (isPriceUpdated) {
+
+            // Accumulate all the service packages that are updated
+            List<ServicePackage> packagesToUpdate = new ArrayList<>();
+
+            // Get all the service packages that involve this vehicle part
+            List<ServicePackage> involvedPackages = servicePackageRepository
+                    .getRecordsByVehiclePart(existingVehiclePart);
+
+            // Price is updated here
+            for (ServicePackage pkg : involvedPackages) {
+                double newBasePrice = (pkg.getPackageBasePrice() - oldPrice) + vehiclePartDTO.getVehiclePartPrice();
+                pkg.setPackageBasePrice(newBasePrice);
+                packagesToUpdate.add(pkg);
+            }
+
+            // Update all the service packages in the text file at once
+            return servicePackageRepository.bulkUpdateRecord(packagesToUpdate);
+        }
+
+        // If no price update, return success
+        return OperationResult.success();
     }
 
     /**

@@ -5,6 +5,7 @@ import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.InvoiceDTO;
 import main.java.enums.data.InvoiceStatus;
+import main.java.records.FieldComparison;
 import main.java.records.OperationResult;
 
 public class InvoiceStatusUpdate implements RecordWriter {
@@ -20,25 +21,40 @@ public class InvoiceStatusUpdate implements RecordWriter {
     @Override
     public OperationResult execute() {
 
-        String invoiceID = invoiceDTO.getInvoiceID();
+        String inputInvId = invoiceDTO.getInvoiceID();
+        InvoiceStatus inputInvStatus = invoiceDTO.getInvoiceStatus();
 
         // Check if the invoice exists with the given ID
-        Invoice existingInvoice = invoiceRepository.getRecordById(invoiceID);
+        Invoice existingInvoice = invoiceRepository.getRecordById(inputInvId);
         if (existingInvoice == null) {
-            return OperationResult.failed("The invoice with ID: " + invoiceID +
+            return OperationResult.failed("The invoice with ID: " + inputInvId +
                     " does not exist in the system.");
         }
 
         // Verify status logic to ensure the update is valid
-        if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.PAID)) {
-            return OperationResult.failed("The invoice with ID: " + invoiceID +
-                    "cannot be cancelled because it has already been paid by the customer.");
-        } else if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
-            return OperationResult.failed("The invoice with ID: " + invoiceID + " has already been cancelled.");
+        if (inputInvStatus.equals(InvoiceStatus.PAID)) {
+            if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
+                return OperationResult.failed("The invoice with ID: " + inputInvId +
+                        " cannot be updated to paid status because it has already been cancelled.");
+            }
+        } else if (inputInvStatus.equals(InvoiceStatus.CANCELLED)) {
+            if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.PAID)) {
+                return OperationResult.failed("The invoice with ID: " + inputInvId +
+                        " cannot be updated to cancelled status because it has already been paid.");
+            }
+        }
+
+        // Check if the input status is different from the current status
+        FieldComparison<InvoiceStatus> statusChange = new FieldComparison<>(
+                "invoiceStatus", existingInvoice.getInvoiceStatus(), inputInvStatus, null);
+
+        if (!statusChange.isChanged()) {
+            return OperationResult.failed("The input status provided is the same as the " +
+                    "current status. Please set to a different status for update.");
         }
 
         // Apply updates only to changed fields
-        existingInvoice.setInvoiceStatus(InvoiceStatus.CANCELLED);
+        existingInvoice.setInvoiceStatus(inputInvStatus);
 
         // Begin updating invoice record in the repository
         return invoiceRepository.updateRecord(existingInvoice);

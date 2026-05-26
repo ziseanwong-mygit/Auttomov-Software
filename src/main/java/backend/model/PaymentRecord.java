@@ -87,7 +87,8 @@ public class PaymentRecord {
                         : "(payer unavailable/deleted)") +
                 "\nPayment Amount: RM" + paymentAmount +
                 "\nPayment Method: " + paymentMethod.getPaymentMethod() +
-                "\nPayment Record Note: " + paymentRecordNote +
+                "\nPayment Record Note: " +
+                (paymentRecordNote != null ? paymentRecordNote : "(no note)") +
                 "\nPayment Status: " + paymentStatus.getPaymentStatus() +
                 "\n";
     }

@@ -186,7 +186,7 @@ public class ReceiptRepository extends AbstractRepository<Receipt> {
         InvoiceRepository invoiceRepository = InvoiceRepository.getInstance();
         PaymentRecordRepository paymentRecordRepository = PaymentRecordRepository.getInstance();
 
-        String[] columns = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+        String[] columns = line.split(",\\s*", -1);
 
         return new Receipt(
                 columns[0],
@@ -195,7 +195,7 @@ public class ReceiptRepository extends AbstractRepository<Receipt> {
                 staffAccountRepository.getRecordById(columns[3]),
                 invoiceRepository.getRecordById(columns[4]),
                 paymentRecordRepository.getRecordById(columns[5]),
-                columns[6].isBlank() ? null : columns[6] // If receipt note is empty, set it to null
+                columns[6].isBlank() ? null : columns[6].strip() // If receipt note is empty, set it to null
         );
     }
 

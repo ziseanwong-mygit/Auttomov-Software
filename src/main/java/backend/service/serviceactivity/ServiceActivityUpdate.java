@@ -1,7 +1,9 @@
 package main.java.backend.service.serviceactivity;
 
 import main.java.backend.model.ServiceActivity;
+import main.java.backend.model.ServicePackage;
 import main.java.backend.repository.impl.ServiceActivityRepository;
+import main.java.backend.repository.impl.ServicePackageRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.dtos.ServiceActivityDTO;
 import main.java.records.FieldComparison;
@@ -13,11 +15,14 @@ import java.util.List;
 public class ServiceActivityUpdate implements RecordWriter {
 
     private final ServiceActivityRepository serviceActRepository;
+    private final ServicePackageRepository servicePackageRepository;
     private final ServiceActivityDTO serviceActivityDTO;
 
     public ServiceActivityUpdate(ServiceActivityRepository serviceActRepository,
-                                   ServiceActivityDTO serviceActivityDTO) {
+                                 ServicePackageRepository servicePackageRepository,
+                                 ServiceActivityDTO serviceActivityDTO) {
         this.serviceActRepository = serviceActRepository;
+        this.servicePackageRepository = servicePackageRepository;
         this.serviceActivityDTO = serviceActivityDTO;
     }
 
@@ -41,11 +46,50 @@ public class ServiceActivityUpdate implements RecordWriter {
                     "Please update one or more fields.");
         }
 
+        // Get the old price of the service activity before setting the new price
+        double oldPrice = existingServiceAct.getServiceActivityPrice();
+
         // Apply updates only to changed fields
         setChangedValues(changedFields, existingServiceAct);
 
         // Begin updating service activity record in the repository
-        return serviceActRepository.updateRecord(existingServiceAct);
+        OperationResult updateResult = serviceActRepository.updateRecord(existingServiceAct);
+        if (!updateResult.isValid()) { // If the update fails, return the error message
+            return updateResult;
+        }
+
+        // Check if the service activity price has been updated
+        boolean isPriceUpdated = false;
+        for (FieldComparison<?> field : changedFields) {
+            if (field.fieldName().equals("price")) {
+                isPriceUpdated = true;
+            }
+        }
+
+        // If the price has been updated, update the service packages that involve this service activity
+        if (isPriceUpdated) {
+
+            // Accumulate all the service packages that are updated
+            List<ServicePackage> packagesToUpdate = new ArrayList<>();
+
+            // Get all the service packages that involve this service activity
+            List<ServicePackage> involvedPackages = servicePackageRepository
+                    .getRecordsByServiceActivity(existingServiceAct);
+
+            // Price is updated here
+            for (ServicePackage pkg : involvedPackages) {
+                double newBasePrice = (pkg.getPackageBasePrice() - oldPrice) +
+                        serviceActivityDTO.getServiceActivityPrice();
+                pkg.setPackageBasePrice(newBasePrice);
+                packagesToUpdate.add(pkg);
+            }
+
+            // Update all the service packages in the text file at once
+            return servicePackageRepository.bulkUpdateRecord(packagesToUpdate);
+        }
+
+        // If no price update, return success
+        return OperationResult.success();
     }
 
     /**

@@ -78,7 +78,7 @@ public class VehiclePartController {
         }
 
         // Begin updating vehicle part record procedure in service class
-        RecordWriter updateVehiclePart = new VehiclePartUpdate(vehiclePartRepo, vehiclePartDTO);
+        RecordWriter updateVehiclePart = new VehiclePartUpdate(vehiclePartRepo, servicePackageRepo, vehiclePartDTO);
         return updateVehiclePart.execute();
     }
 

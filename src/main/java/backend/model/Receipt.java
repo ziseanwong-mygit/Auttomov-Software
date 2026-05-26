@@ -83,7 +83,7 @@ public class Receipt {
                         paymentRecord.getPayerAccount().getLastName() : "(payer unavailable/deleted)") +
                 "\nPayment Method: " + paymentRecord.getPaymentMethod().getPaymentMethod() +
                 "\nPayment Status: " + paymentRecord.getPaymentStatus().getPaymentStatus() +
-                "\nPayment Record Note: " + paymentRecord.getPaymentRecordNote() +
-                "\nReceipt Note: " + receiptNote;
+                "\nReceipt Note: " +
+                (receiptNote != null ? receiptNote : "(no note)");
     }
 }

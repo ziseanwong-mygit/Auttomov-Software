@@ -68,7 +68,8 @@ public class ServiceActivityController {
         }
 
         // Begin updating service activity record procedure in service class
-        RecordWriter updateServiceActivity = new ServiceActivityUpdate(serviceActivityRepo, serviceActivityDTO);
+        RecordWriter updateServiceActivity = new ServiceActivityUpdate(serviceActivityRepo,
+                servicePackageRepo, serviceActivityDTO);
         return updateServiceActivity.execute();
     }
 

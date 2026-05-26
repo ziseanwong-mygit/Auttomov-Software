@@ -111,9 +111,9 @@ public class InvoiceController {
                     invoiceId + " is not an UUID. Please try again.");
         }
 
-        // Begin cancelling invoice record procedure in service class
-        RecordWriter cancelInvoice = new InvoiceStatusUpdate(invoiceRepo, invoiceDTO);
-        return cancelInvoice.execute();
+        // Begin updating invoice status procedure in service class
+        RecordWriter updateInvoiceStatus = new InvoiceStatusUpdate(invoiceRepo, invoiceDTO);
+        return updateInvoiceStatus.execute();
     }
 
     public OperationResult deleteInvoice(String invoiceId) {

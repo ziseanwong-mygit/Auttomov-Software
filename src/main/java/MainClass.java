@@ -1,24 +1,12 @@
 package main.java;
 
-import main.java.backend.controller.PaymentRecordController;
-import main.java.backend.model.PaymentRecord;
-
-import java.util.List;
-import java.util.Optional;
-
 public class MainClass {
 
     public static void main(String[] args) {
 
-        PaymentRecordController paymentRecordController = new PaymentRecordController();
-        Optional<List<PaymentRecord>> paymentRecords = paymentRecordController.retrieveAllPaymentRecords();
-        if (paymentRecords.isPresent()) {
-            for (PaymentRecord paymentRecord : paymentRecords.get()) {
-                System.out.println(paymentRecord);
-            }
-        } else {
-            System.out.println("No records found.");
-        }
+/*        SwingUtilities.invokeLater(() -> {
+            new mainMenuUI().setVisible(true);
+        });*/
     }
 }
 
@@ -373,6 +361,47 @@ public class MainClass {
         } else {
             System.out.println(receiptResult.generalMessage() + "\n" + receiptResult.fieldErrors());
         }*/
+
+/*        PaymentRecordController paymentRecordController = new PaymentRecordController();
+        Optional<List<PaymentRecord>> paymentRecords = paymentRecordController.retrieveAllPaymentRecords();
+        if (paymentRecords.isPresent()) {
+            for (PaymentRecord paymentRecord : paymentRecords.get()) {
+                System.out.println(paymentRecord);
+            }
+        } else {
+            System.out.println("No records found.");
+        }*/
+
+/*        ServiceActivityDTO serviceActivityDTO = new ServiceActivityDTO("a9f320f7-1a1e-4ef0-b793-b41d5a3cd862",
+                "Tyre Balancing",
+                "Tyre balancing ensures even weight distribution across each wheel-and-tire assembly.",
+                60.00);
+        ServiceActivityController serviceActivityController = new ServiceActivityController();
+        OperationResult result = serviceActivityController.updateServiceActivity(serviceActivityDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+/*        VehiclePartDTO vehiclePartDTO = new VehiclePartDTO("18e5ee0a-3fd1-44f5-b673-6cde7bc131ca",
+                "Suzuki Engine 1500cc", "This is a good engine.",
+                "Engine", "Suzuki", "1500cc",
+                4000.00, 3);
+        VehiclePartController vehiclePartController = new VehiclePartController();
+        OperationResult result = vehiclePartController.updateVehiclePart(vehiclePartDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
+
+
+
+
+
+
+
 
 
 
