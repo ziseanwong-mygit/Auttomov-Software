@@ -7,6 +7,7 @@ import main.java.backend.repository.impl.PaymentRecordRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
 import main.java.dtos.PaymentRecordDTO;
+import main.java.enums.data.InvoiceStatus;
 import main.java.enums.data.PaymentMethod;
 import main.java.enums.data.PaymentStatus;
 import main.java.records.OperationResult;
@@ -31,6 +32,12 @@ public class PaymentRecordCreation implements RecordWriter {
 
     @Override
     public OperationResult execute() {
+
+        // If the invoice is canceled, the payment record cannot be made, thus returning an error message
+        if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
+            return OperationResult.failed("You cannot make payment for the invoice with ID: " +
+                    existingInvoice.getInvoiceID() + " because it has already been cancelled.");
+        }
 
         // Create a new payment record object
         PaymentRecord newPaymentRecord = populatePaymentRecordDetails();

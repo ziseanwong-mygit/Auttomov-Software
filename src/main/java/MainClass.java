@@ -1,9 +1,24 @@
 package main.java;
 
+import main.java.backend.controller.PaymentRecordController;
+import main.java.backend.model.PaymentRecord;
+
+import java.util.List;
+import java.util.Optional;
+
 public class MainClass {
 
     public static void main(String[] args) {
 
+        PaymentRecordController paymentRecordController = new PaymentRecordController();
+        Optional<List<PaymentRecord>> paymentRecords = paymentRecordController.retrieveAllPaymentRecords();
+        if (paymentRecords.isPresent()) {
+            for (PaymentRecord paymentRecord : paymentRecords.get()) {
+                System.out.println(paymentRecord);
+            }
+        } else {
+            System.out.println("No records found.");
+        }
     }
 }
 

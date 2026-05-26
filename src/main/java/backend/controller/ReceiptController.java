@@ -18,7 +18,6 @@ import main.java.backend.util.NullValidator;
 import main.java.dtos.ReceiptDTO;
 import main.java.enums.data.JobPosition;
 import main.java.enums.system.DataFieldName;
-import main.java.enums.system.OperationType;
 import main.java.records.OperationResult;
 
 import java.util.ArrayList;
@@ -34,12 +33,6 @@ public class ReceiptController {
     private final PaymentRecordRepository paymentRecordRepo = PaymentRecordRepository.getInstance();
 
     public OperationResult createReceipt(ReceiptDTO receiptDTO) {
-
-        // Check if there are any null or empty values in the list
-        OperationResult nullValidation = validateNullValues(receiptDTO, OperationType.CREATE);
-        if (!nullValidation.isValid()) {
-            return OperationResult.failed("All required fields must be filled in. Please try again.");
-        }
 
         // Validate staff account ID
         String staffAccountId = receiptDTO.getStaffAccountID();
@@ -75,7 +68,7 @@ public class ReceiptController {
     public OperationResult updateReceiptNote(ReceiptDTO receiptDTO) {
 
         // Check if there are any null or empty values in the list
-        OperationResult nullValidation = validateNullValues(receiptDTO, OperationType.UPDATE);
+        OperationResult nullValidation = validateNullValues(receiptDTO);
         if (!nullValidation.isValid()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }
@@ -186,17 +179,12 @@ public class ReceiptController {
     /**
      * Check if there are any null or empty values of required fields in the given DTO,
      * excluding staff account, invoice, and payment record IDs
-     * Used for creating and updating records
+     * Used for updating records
      */
-    private OperationResult validateNullValues(ReceiptDTO receiptDTO, OperationType operationType) {
+    private OperationResult validateNullValues(ReceiptDTO receiptDTO) {
         List<Object> receiptValues = new ArrayList<>();
 
-        // If the operation is updating record, add the ID to the list for null validation
-        if (operationType == OperationType.UPDATE) {
-            receiptValues.add(receiptDTO.getReceiptID());
-        }
-
-        receiptValues.add(receiptDTO.getReceiptNote());
+        receiptValues.add(receiptDTO.getReceiptID());
 
         return NullValidator.isAllValuesNull(receiptValues);
     }

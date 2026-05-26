@@ -7,6 +7,7 @@ import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
 import main.java.dtos.InvoiceDTO;
+import main.java.enums.data.AppointmentStatus;
 import main.java.enums.data.InvoiceStatus;
 import main.java.records.OperationResult;
 
@@ -30,6 +31,12 @@ public class InvoiceCreation implements RecordWriter {
 
     @Override
     public OperationResult execute() {
+
+        // If the appointment is canceled, invoice cannot be created, thus returning an error message
+        if (existingAppointment.getAppointmentStatus().equals(AppointmentStatus.CANCELLED)) {
+            return OperationResult.failed("You cannot create an invoice for the appointment: " +
+                    existingAppointment.getAppointmentID() + " because it already has been cancelled.");
+        }
 
         // Create a new invoice object
         Invoice newInvoice = populateInvoiceDetails();

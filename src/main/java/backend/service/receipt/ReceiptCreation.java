@@ -8,6 +8,8 @@ import main.java.backend.repository.impl.ReceiptRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
 import main.java.dtos.ReceiptDTO;
+import main.java.enums.data.InvoiceStatus;
+import main.java.enums.data.PaymentStatus;
 import main.java.records.OperationResult;
 
 import java.time.LocalDate;
@@ -32,6 +34,18 @@ public class ReceiptCreation implements RecordWriter {
 
     @Override
     public OperationResult execute() {
+
+        // If the invoice is canceled, the payment record cannot be made, thus returning an error message
+        if (existingInvoice.getInvoiceStatus().equals(InvoiceStatus.CANCELLED)) {
+            return OperationResult.failed("You cannot make payment for the invoice with ID: " +
+                    existingInvoice.getInvoiceID() + " because it has already been cancelled.");
+        }
+
+        // If the payment is unsuccessful, the receipt cannot be created, thus returning an error message
+        if (existingPaymentRecord.getPaymentStatus().equals(PaymentStatus.UNSUCCESSFUL)) {
+            return OperationResult.failed("You cannot generate receipt for the payment with ID: " +
+                    existingPaymentRecord.getPaymentRecordID() + " because it is unsuccessful.");
+        }
 
         // Create a new receipt object
         Receipt newReceipt = populateReceiptDetails();
