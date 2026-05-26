@@ -1,34 +1,9 @@
 package main.java;
 
-import main.java.backend.controller.ServicePackageController;
-import main.java.backend.model.ServicePackage;
-
-import java.util.List;
-import java.util.Optional;
-
 public class MainClass {
 
     public static void main(String[] args) {
 
-/*        AppointmentController appointmentController = new AppointmentController();
-        Optional<List<Appointment>> appointments = appointmentController.retrieveAllAppointments();
-        if (appointments.isPresent()) {
-            List<Appointment> appointmentsList = appointments.get();
-            for (Appointment appointment : appointmentsList) {
-                System.out.println(appointment);
-            }
-        } else {
-            System.out.println("No appointments found.");
-        }*/
-
-        ServicePackageController servicePackageController = new ServicePackageController();
-        Optional<List<ServicePackage>> servicePackages = servicePackageController.retrieveAllServicePackages();
-        if (servicePackages.isPresent()) {
-            List<ServicePackage> servicePackagesList = servicePackages.get();
-            for (ServicePackage servicePackage : servicePackagesList) {
-                System.out.println(servicePackage);
-            }
-        }
     }
 }
 
@@ -331,10 +306,58 @@ public class MainClass {
         }*/
 
 
+/*        AppointmentController appointmentController = new AppointmentController();
+        Optional<List<Appointment>> appointments = appointmentController.retrieveAllAppointments();
+        if (appointments.isPresent()) {
+            List<Appointment> appointmentsList = appointments.get();
+            for (Appointment appointment : appointmentsList) {
+                System.out.println(appointment);
+            }
+        } else {
+            System.out.println("No appointments found.");
+        }*/
 
+/*        ServicePackageController servicePackageController = new ServicePackageController();
+        Optional<List<ServicePackage>> servicePackages = servicePackageController.retrieveAllServicePackages();
+        if (servicePackages.isPresent()) {
+            List<ServicePackage> servicePackagesList = servicePackages.get();
+            for (ServicePackage servicePackage : servicePackagesList) {
+                System.out.println(servicePackage);
+            }
+        }*/
 
+/*        InvoiceDTO invoiceDTO = new InvoiceDTO(
+                "9e016d45-28c3-429d-845a-20e23dbfca04", "e8af637f-273b-494c-b860-7a0d017687c0",
+                20.00, "Hello World");
+        InvoiceController invoiceController = new InvoiceController();
+        OperationResult result = invoiceController.createInvoice(invoiceDTO);
+        if (result.isValid()) {
+            System.out.println(result.generalMessage());
+        } else {
+            System.out.println(result.generalMessage() + "\n" + result.fieldErrors());
+        }*/
 
+/*        PaymentRecordDTO paymentRecordDTO = new PaymentRecordDTO("897460f4-c066-4e59-8981-d7932f4d6831",
+                "c26b455e-178a-46f4-932e-af9c8061e730", 42.00, PaymentMethod.E_WALLET,
+                "Hello world");
+        PaymentRecordController paymentRecordController = new PaymentRecordController();
+        OperationResult paymentResult = paymentRecordController.createPaymentRecord(paymentRecordDTO);
+        if (paymentResult.isValid()) {
+            System.out.println(paymentResult.generalMessage());
+        } else {
+            System.out.println(paymentResult.generalMessage() + "\n" + paymentResult.fieldErrors());
+        }*/
 
+/*        ReceiptDTO receiptDTO = new ReceiptDTO("9e016d45-28c3-429d-845a-20e23dbfca04",
+                "897460f4-c066-4e59-8981-d7932f4d6831", "d3fbce89-c172-4cca-b4bf-a55e52b21557",
+                "Hello world");
+        ReceiptController receiptController = new ReceiptController();
+        OperationResult receiptResult = receiptController.createReceipt(receiptDTO);
+        if (receiptResult.isValid()) {
+            System.out.println(receiptResult.generalMessage());
+        } else {
+            System.out.println(receiptResult.generalMessage() + "\n" + receiptResult.fieldErrors());
+        }*/
 
 
 

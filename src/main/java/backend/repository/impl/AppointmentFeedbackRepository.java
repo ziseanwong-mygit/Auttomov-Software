@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class AppointmentFeedbackRepository extends AbstractRepository<AppointmentFeedback> {
 
     private static AppointmentFeedbackRepository instance;
-    private final String filePath = TextFilePath.APPOINTMENT_COMMENTS_FILE_PATH.getTextFilePath();
+    private final String filePath = TextFilePath.APPOINTMENT_FEEDBACK_FILE_PATH.getTextFilePath();
 
     private final Map<String, AppointmentFeedback> appointmentFeedbackById = new HashMap<>();
 

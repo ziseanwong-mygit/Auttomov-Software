@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class ReceiptRepository extends AbstractRepository<Receipt> {
 
     private static ReceiptRepository instance;
-    private final String filePath = TextFilePath.INVOICE_RECORDS_FILE_PATH.getTextFilePath();
+    private final String filePath = TextFilePath.RECEIPT_RECORDS_FILE_PATH.getTextFilePath();
 
     // Map key: field value, map value: Receipt object
     private final Map<String, Receipt> receiptById = new HashMap<>();

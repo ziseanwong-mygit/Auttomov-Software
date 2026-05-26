@@ -41,7 +41,7 @@ public class AppointmentFeedbackController {
 
         // Validate appointment ID
         String appointmentId = appointmentFeedbackDTO.getAppointmentID();
-        OperationResult appointmentIdVerification = validateAuthorId(appointmentId);
+        OperationResult appointmentIdVerification = validateAppointmentId(appointmentId);
         if (!appointmentIdVerification.isValid()) {
             return appointmentIdVerification;
         }

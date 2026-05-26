@@ -6,7 +6,7 @@ public class ReceiptDTO {
     private String staffAccountID;
     private String invoiceID;
     private String paymentRecordID;
-    private String receiptNote;
+    private final String receiptNote;
 
     /**
      * For creating a new receipt

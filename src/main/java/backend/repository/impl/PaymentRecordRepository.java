@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class PaymentRecordRepository extends AbstractRepository<PaymentRecord> {
 
     private static PaymentRecordRepository instance;
-    private final String filePath = TextFilePath.INVOICE_RECORDS_FILE_PATH.getTextFilePath();
+    private final String filePath = TextFilePath.PAYMENT_RECORDS_FILE_PATH.getTextFilePath();
 
     // Map key: field value, map value: PaymentRecord object
     private final Map<String, PaymentRecord> paymentRecordById = new HashMap<>();
