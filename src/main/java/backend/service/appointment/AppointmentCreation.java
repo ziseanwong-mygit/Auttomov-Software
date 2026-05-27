@@ -13,6 +13,7 @@ import main.java.records.OperationResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 public class AppointmentCreation implements RecordWriter {
@@ -59,10 +60,11 @@ public class AppointmentCreation implements RecordWriter {
         int serviceDuration = existingPackage.getServiceDuration();
         LocalTime serviceEndTime = serviceStartTime.plusHours(serviceDuration);
 
-        // When creating a new appointment, the technician is not assigned yet, so it is set to null
+        // When creating a new appointment, the technician is not assigned yet,
+        // so it is set to an empty list to prevent NullPointerException
         // Also set the appointment status to PENDING by default
         return new Appointment(appointmentId, appointmentOrderNo, currentDateTime, currentDateTime,
                 appointmentTitle, appointmentDescription, existingCustomer, existingPackage, serviceDate,
-                serviceStartTime, serviceEndTime, null, AppointmentStatus.PENDING);
+                serviceStartTime, serviceEndTime, List.of(), AppointmentStatus.PENDING);
     }
 }

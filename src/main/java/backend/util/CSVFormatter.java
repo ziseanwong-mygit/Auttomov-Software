@@ -117,7 +117,7 @@ public class CSVFormatter {
         // If the technician list is not null,
         // get all the technician account IDs and concatenate them into a comma-separated value string
         String technicianListLine = "";
-        if (technicianList != null) {
+        if (!technicianList.isEmpty()) {
             technicianListLine = technicianList.stream()
                     .map(StaffAccount::getAccountID)
                     .collect(Collectors.joining(", "));

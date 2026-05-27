@@ -63,10 +63,10 @@ public class AppointmentFeedbackController {
         return createAppointmentFeedback.execute();
     }
 
-    public OperationResult updateAppointmentComment(AppointmentFeedbackDTO appointmentFeedbackDTO) {
+    public OperationResult updateAppointmentFeedback(AppointmentFeedbackDTO appointmentFeedbackDTO) {
 
         // Check if there are any null or empty values in the list
-        OperationResult nullValidation = validateNullValues(appointmentFeedbackDTO, OperationType.CREATE);
+        OperationResult nullValidation = validateNullValues(appointmentFeedbackDTO, OperationType.UPDATE);
         if (!nullValidation.isValid()) {
             return OperationResult.failed("All required fields must be filled in. Please try again.");
         }

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Added auto-update feature on service package when updating service activity and vehicle part price">
+    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo.">
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageCustomerUI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageStaffUI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/UpdateAccStatusUI.java" afterDir="false" />
@@ -37,40 +37,22 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/SessionManager.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/ViewProfilePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/MainClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/MainClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AccountController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AccountController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AccountController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AppointmentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AppointmentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/PaymentRecordController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/PaymentRecordController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/service/paymentrecord/PaymentRecordCreation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/service/paymentrecord/PaymentRecordCreation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-feedback.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-feedback.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/customer-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/customer-accounts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-activities.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-activities.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-packages.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-packages.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/vehicle-parts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/vehicle-parts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/controller/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/controller/AppointmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/controller/PaymentRecordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/controller/PaymentRecordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/service/paymentrecord/PaymentRecordCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/service/paymentrecord/PaymentRecordCreation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/backend/controller/AppointmentFeedbackController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/controller/AppointmentFeedbackController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/backend/service/appointment/AppointmentCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/service/appointment/AppointmentCreation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/backend/util/CSVFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/util/CSVFormatter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frontend/universalui/mainMenuUI.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-feedback.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-feedback.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/customer-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/customer-accounts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/service-activities.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/service-activities.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/service-packages.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/service-packages.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/vehicle-parts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/vehicle-parts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/records-reports.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/records-reports.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/sales-reports.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/sales-reports.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,61 +102,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0346818308321855" />
-      <entry key="MS500" value="1.7140584615189198" />
-      <entry key="S2" value="4.087162214884945" />
-      <entry key="S5" value="5.922248505013848" />
-      <entry key="S10" value="6.84557572366619" />
-      <entry key="S30" value="7.585790536165732" />
-      <entry key="S60" value="7.79311877169219" />
-      <entry key="M2" value="8.099631715413647" />
-      <entry key="M5" value="10.410273523830309" />
-      <entry key="M10" value="15.044658054490554" />
-      <entry key="M15" value="21.22273435633766" />
-      <entry key="M30" value="44.62579743752482" />
-      <entry key="H1" value="83.74488647299661" />
-      <entry key="H2" value="129.5290720964218" />
-      <entry key="H4" value="201.19151436250843" />
-      <entry key="D1" value="542.1246951967131" />
-      <entry key="W1" value="707.7798382813767" />
+      <entry key="MS100" value="1.0015645896046672" />
+      <entry key="MS500" value="1.2747135543942198" />
+      <entry key="S2" value="1.7239690952129294" />
+      <entry key="S5" value="1.8797056578955358" />
+      <entry key="S10" value="1.9800340201004722" />
+      <entry key="S30" value="2.532948924016135" />
+      <entry key="S60" value="3.0536529329856767" />
+      <entry key="M2" value="3.598057063739602" />
+      <entry key="M5" value="4.471133306394316" />
+      <entry key="M10" value="5.073287731421445" />
+      <entry key="M15" value="5.449309898735885" />
+      <entry key="M30" value="9.934625376105235" />
+      <entry key="H1" value="36.78393244285714" />
+      <entry key="H2" value="98.80124726775621" />
+      <entry key="H4" value="195.79708365918137" />
+      <entry key="D1" value="596.2041488668692" />
+      <entry key="W1" value="798.4259611999547" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="2.284965448453539E-88" />
-      <entry key="S5" value="8.781159285498074E-36" />
-      <entry key="S10" value="2.963371326997763E-18" />
-      <entry key="S30" value="1.4999939036833583E-6" />
-      <entry key="S60" value="0.0015541563513891193" />
-      <entry key="M2" value="0.061269556494338684" />
-      <entry key="M5" value="0.6194960879009224" />
-      <entry key="M10" value="1.6111019046918955" />
-      <entry key="M15" value="2.9984441981269137" />
-      <entry key="M30" value="9.26622210072447" />
-      <entry key="H1" value="21.327446955583792" />
-      <entry key="H2" value="36.02843331256169" />
-      <entry key="H4" value="55.79427040522771" />
-      <entry key="D1" value="135.6727633590965" />
-      <entry key="W1" value="173.26145418352993" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="1.6151784915124457E-294" />
+      <entry key="S30" value="1.225277081116711E-98" />
+      <entry key="S60" value="1.4046467401910784E-49" />
+      <entry key="M2" value="5.824798962447394E-25" />
+      <entry key="M5" value="3.830478682857522E-10" />
+      <entry key="M10" value="4.00617809412856E-5" />
+      <entry key="M15" value="0.002554469949827774" />
+      <entry key="M30" value="0.2704612924958292" />
+      <entry key="H1" value="3.643678728734777" />
+      <entry key="H2" value="14.891758366501973" />
+      <entry key="H4" value="35.870704359583144" />
+      <entry key="D1" value="126.0427067473627" />
+      <entry key="W1" value="171.44866395798684" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9925331216644339" />
-      <entry key="MS500" value="1.6992036986945875" />
-      <entry key="S2" value="4.076184627668913" />
-      <entry key="S5" value="5.91549852766592" />
-      <entry key="S10" value="6.841605725218355" />
-      <entry key="S30" value="7.584309645218474" />
-      <entry key="S60" value="7.793839355268781" />
-      <entry key="M2" value="8.159002038202463" />
-      <entry key="M5" value="11.023027960799045" />
-      <entry key="M10" value="16.64711312990686" />
-      <entry key="M15" value="24.210680725368263" />
-      <entry key="M30" value="53.8757527867419" />
-      <entry key="H1" value="105.05342990316524" />
-      <entry key="H2" value="165.5416091812495" />
-      <entry key="H4" value="256.9736430022028" />
-      <entry key="D1" value="677.7925772232669" />
-      <entry key="W1" value="881.0404006893893" />
+      <entry key="MS100" value="0.19210953271128464" />
+      <entry key="MS500" value="0.7612447736437996" />
+      <entry key="S2" value="1.3742708700292527" />
+      <entry key="S5" value="1.6972239861403633" />
+      <entry key="S10" value="1.879107018565145" />
+      <entry key="S30" value="2.4936787315162854" />
+      <entry key="S60" value="3.0319226238487613" />
+      <entry key="M2" value="3.5858491025493815" />
+      <entry key="M5" value="4.465090610259441" />
+      <entry key="M10" value="5.069865129382515" />
+      <entry key="M15" value="5.449410929287181" />
+      <entry key="M30" value="10.203269201413747" />
+      <entry key="H1" value="40.42359073132055" />
+      <entry key="H2" value="113.68595392146018" />
+      <entry key="H4" value="231.65970278952472" />
+      <entry key="D1" value="722.2422664382775" />
+      <entry key="W1" value="969.873734720129" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -319,7 +301,7 @@
       <workItem from="1779755228135" duration="1359000" />
       <workItem from="1779758232324" duration="21422000" />
       <workItem from="1779812905986" duration="5229000" />
-      <workItem from="1779850944833" duration="6254000" />
+      <workItem from="1779850944833" duration="10160000" />
     </task>
     <task id="LOCAL-00001" summary="Intialize commit">
       <option name="closed" value="true" />
@@ -641,7 +623,23 @@
       <option name="project" value="LOCAL" />
       <updated>1779808312339</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Changed code on displaying messages in controller classes. Added function where invoice is auto-updated to paid after payment record created. No effects to frontend.">
+      <option name="closed" value="true" />
+      <created>1779859566792</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1779859566792</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo.">
+      <option name="closed" value="true" />
+      <created>1779860004655</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1779860004655</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -686,8 +684,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Renamed AccountStatusUpdate to StaffAccountStatusUpdate. Changed some code in StaffAccountStatusUpdate.java so only update on staff account." />
-    <MESSAGE value="Updated CrudRepository with getRecordsWithIds(). Updated all repositories with getRecordsWithIds(). Updated read methods in all controller classes to return Optional&lt;&gt;.&#10;&#10;Examples of reading records included in MainClass.java. Scroll to the end." />
     <MESSAGE value="Service package model, controller, DTO, etc. are added, with latest features with previous commit." />
     <MESSAGE value="Updated ServicePackage model class with List&lt;String&gt; to List&lt;ServiceActivity&gt; and List&lt;VehiclePart&gt; to get and set the objects.&#10;&#10;This way is to let frontend easily list out all the activities and parts without needing to call the controller class to get records again." />
     <MESSAGE value="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes." />
@@ -711,6 +707,8 @@
     <MESSAGE value="Out production commit (ignore)" />
     <MESSAGE value="ignore commit" />
     <MESSAGE value="Added auto-update feature on service package when updating service activity and vehicle part price" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added auto-update feature on service package when updating service activity and vehicle part price" />
+    <MESSAGE value="Changed code on displaying messages in controller classes. Added function where invoice is auto-updated to paid after payment record created. No effects to frontend." />
+    <MESSAGE value="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo." />
   </component>
 </project>
