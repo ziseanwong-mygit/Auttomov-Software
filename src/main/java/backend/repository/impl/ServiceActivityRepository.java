@@ -139,7 +139,7 @@ public class ServiceActivityRepository extends AbstractRepository<ServiceActivit
      */
     @Override
     protected ServiceActivity parseRecord(String line) {
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new ServiceActivity(
                 columns[0],

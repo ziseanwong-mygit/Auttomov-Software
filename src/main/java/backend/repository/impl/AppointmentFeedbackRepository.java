@@ -213,7 +213,7 @@ public class AppointmentFeedbackRepository extends AbstractRepository<Appointmen
         AppointmentRepository appointmentRepository = AppointmentRepository.getInstance();
         StaffAccountRepository staffAccountRepository = StaffAccountRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new AppointmentFeedback(
                 columns[0],

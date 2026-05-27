@@ -280,10 +280,10 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         ID, OrderNo, CreationTime, ..., ServiceEndTime, [A0001, A0002], Status ->
         ID, OrderNo, CreationTime, ..., ServiceEndTime, Status
         */
-        String strippedLine = line.replaceAll(",\\s*\\[.*?]", "");
+        String strippedLine = line.replaceAll("\\|\\s*\\[.*?]", "");
 
         // Without the bracket lists, split the line into an array of columns
-        String[] columns = strippedLine.split(",\\s*");
+        String[] columns = strippedLine.split("\\|\\s*");
 
         return new Appointment(
                 columns[0],

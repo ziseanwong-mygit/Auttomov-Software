@@ -46,7 +46,7 @@ public class DataReportRepository extends ReportRepository<DataReport> {
         // Get the staff account repository instance to fetch the respective objects
         StaffAccountRepository staffAccountRepository = StaffAccountRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new DataReport(
                 columns[0],

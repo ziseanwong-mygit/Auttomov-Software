@@ -70,6 +70,6 @@ public class DataStructureOrganizer {
         // If the bracket list is empty, return an empty list, otherwise split the items into an array
         return listItems.isBlank()
                 ? new ArrayList<>()
-                : new ArrayList<>(Arrays.asList(listItems.split(",\\s*")));
+                : new ArrayList<>(Arrays.asList(listItems.split("\\|\\s*")));
     }
 }

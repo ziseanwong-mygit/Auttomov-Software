@@ -40,7 +40,7 @@ public class CustomerAccountRepository extends AccountRepository<UserAccount> {
      */
     @Override
     protected UserAccount parseRecord(String line) {
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new UserAccount(
                 columns[0],

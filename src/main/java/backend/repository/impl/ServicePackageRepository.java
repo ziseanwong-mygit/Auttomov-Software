@@ -214,10 +214,10 @@ public class ServicePackageRepository extends AbstractRepository<ServicePackage>
         Example: ID, Name, Desc, Type, [A0001, A0002], [B0001, B0002], 20.00, 1 ->
         ID, Name, Desc, Type, 20.00, 1
         */
-        String strippedLine = line.replaceAll(",\\s*\\[.*?]", "");
+        String strippedLine = line.replaceAll("\\|\\s*\\[.*?]", "");
 
         // Without the bracket lists, split the line into an array of columns
-        String[] columns = strippedLine.split(",\\s*");
+        String[] columns = strippedLine.split("\\|\\s*");
 
         return new ServicePackage(
                 columns[0],

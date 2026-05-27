@@ -185,7 +185,7 @@ public class PaymentRecordRepository extends AbstractRepository<PaymentRecord> {
         CustomerAccountRepository customerAccountRepository = CustomerAccountRepository.getInstance();
         InvoiceRepository invoiceRepository = InvoiceRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new PaymentRecord(
                 columns[0],

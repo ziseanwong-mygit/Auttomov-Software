@@ -186,7 +186,7 @@ public class ReceiptRepository extends AbstractRepository<Receipt> {
         InvoiceRepository invoiceRepository = InvoiceRepository.getInstance();
         PaymentRecordRepository paymentRecordRepository = PaymentRecordRepository.getInstance();
 
-        String[] columns = line.split(",\\s*", -1);
+        String[] columns = line.split("\\|\\s*", -1);
 
         return new Receipt(
                 columns[0],

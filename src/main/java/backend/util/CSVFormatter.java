@@ -28,7 +28,7 @@ public class CSVFormatter {
 
         // If the staff is a technician, the specialization field will be added into the record
         if (jobPosition == JobPosition.TECHNICIAN) {
-            return String.join(", ",
+            return String.join("| ",
                     basicDetails,
                     jobPosition.getJobPosition(),
                     staffAccount.getEmploymentDate().toString(),
@@ -36,7 +36,7 @@ public class CSVFormatter {
                     staffAccount.getSpecialization()
             );
         } else {
-            return String.join(", ",
+            return String.join("| ",
                     basicDetails,
                     jobPosition.getJobPosition(),
                     staffAccount.getEmploymentDate().toString(),
@@ -49,7 +49,7 @@ public class CSVFormatter {
 
         String serviceActivityDescription = serviceActivity.getServiceActivityDescription();
 
-        return String.join(", ",
+        return String.join("| ",
                 serviceActivity.getServiceActivityID(),
                 serviceActivity.getServiceActivityName(),
                 serviceActivityDescription != null ? serviceActivityDescription : "",
@@ -61,7 +61,7 @@ public class CSVFormatter {
 
         String vehiclePartDescription = vehiclePart.getVehiclePartDescription();
 
-        return String.join(", ",
+        return String.join("| ",
                 vehiclePart.getVehiclePartID(),
                 vehiclePart.getVehiclePartName(),
                 vehiclePartDescription != null ? vehiclePartDescription : "",
@@ -82,7 +82,7 @@ public class CSVFormatter {
         // Get the service activity IDs and concatenate them into a comma-separated value string
         String serviceActListLine = serviceActivityList.stream()
                 .map(ServiceActivity::getServiceActivityID)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining("| "));
 
         // If there are vehicle parts in the package,
         // get the vehicle part IDs and concatenate them into a comma-separated value string
@@ -90,10 +90,10 @@ public class CSVFormatter {
         if (servicePackage.getVehiclePartList() != null && !servicePackage.getVehiclePartList().isEmpty()) {
             vehiclePartListLine = vehiclePartList.stream()
                     .map(VehiclePart::getVehiclePartID)
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.joining("| "));
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 servicePackage.getServicePackageID(),
                 servicePackage.getServicePackageName(),
                 servicePackageDescription != null ? servicePackageDescription : "",
@@ -120,7 +120,7 @@ public class CSVFormatter {
         if (!technicianList.isEmpty()) {
             technicianListLine = technicianList.stream()
                     .map(StaffAccount::getAccountID)
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.joining("| "));
         }
 
         // If the service package still exists (not deleted), get the service package ID
@@ -135,7 +135,7 @@ public class CSVFormatter {
             customerAccountID = appointment.getCustomerAccount().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 appointment.getAppointmentID(),
                 appointment.getAppointmentOrderNo(),
                 creationTime,
@@ -165,7 +165,7 @@ public class CSVFormatter {
             authorAccountID = appointmentComment.getCommentAuthor().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 appointmentComment.getCommentID(),
                 creationTime,
                 updateTime,
@@ -187,7 +187,7 @@ public class CSVFormatter {
             authorAccountID = appointmentFeedback.getFeedbackAuthor().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 appointmentFeedback.getFeedbackID(),
                 creationTime,
                 updateTime,
@@ -211,7 +211,7 @@ public class CSVFormatter {
             issuerAccountID = invoice.getInvoiceIssuer().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 invoice.getInvoiceID(),
                 invoice.getInvoiceDocNo(),
                 invoice.getInvoiceCreationDate().toString(),
@@ -234,7 +234,7 @@ public class CSVFormatter {
             payerAccountID = paymentRecord.getPayerAccount().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 paymentRecord.getPaymentRecordID(),
                 paymentRecord.getPaymentRecordNo(),
                 paymentRecord.getPaymentDate().toString(),
@@ -255,7 +255,7 @@ public class CSVFormatter {
             issuerAccountID = receipt.getReceiptIssuer().getAccountID();
         }
 
-        return String.join(", ",
+        return String.join("| ",
                 receipt.getReceiptID(),
                 receipt.getReceiptDocNo(),
                 receipt.getReceiptCreationDate().toString(),
@@ -274,7 +274,7 @@ public class CSVFormatter {
             managerAccountID = dataReport.getManagerAccount().getAccountID();
         }
 
-        return String.join(",",
+        return String.join("| ",
                 dataReport.getReportID(),
                 dataReport.getReportDocNo(),
                 dataReport.getReportCreationDate().toString(),
@@ -303,7 +303,7 @@ public class CSVFormatter {
             managerAccountID = salesReport.getManagerAccount().getAccountID();
         }
 
-        return String.join(",",
+        return String.join("| ",
                 salesReport.getReportID(),
                 salesReport.getReportDocNo(),
                 salesReport.getReportCreationDate().toString(),
@@ -330,7 +330,7 @@ public class CSVFormatter {
      */
     private static String buildUserAccountCsv(UserAccount userAccount) {
 
-        return String.join(", ",
+        return String.join("| ",
                 userAccount.getAccountID(),
                 userAccount.getAccountCreationDate().toString(),
                 userAccount.getUserID(),

@@ -139,7 +139,7 @@ public class VehiclePartRepository extends AbstractRepository<VehiclePart> {
      */
     @Override
     protected VehiclePart parseRecord(String line) {
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new VehiclePart(
                 columns[0],

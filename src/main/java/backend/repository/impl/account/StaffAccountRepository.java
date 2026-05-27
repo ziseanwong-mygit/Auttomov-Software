@@ -45,7 +45,7 @@ public class StaffAccountRepository extends AccountRepository<StaffAccount> {
      */
     @Override
     protected StaffAccount parseRecord(String line) {
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         // If the account record is a technician, the specialization field will be included
         String specialization = null;

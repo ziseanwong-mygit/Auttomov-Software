@@ -213,7 +213,7 @@ public class AppointmentCommentRepository extends AbstractRepository<Appointment
         AppointmentRepository appointmentRepository = AppointmentRepository.getInstance();
         CustomerAccountRepository customerAccountRepository = CustomerAccountRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new AppointmentComment(
                 columns[0],

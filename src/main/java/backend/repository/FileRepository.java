@@ -25,7 +25,7 @@ public interface FileRepository {
             String line;
 
             while ((line = bufferRead.readLine()) != null) {
-                String[] column = line.split(",\\s*");
+                String[] column = line.split("\\|\\s*");
                 String targetID = column[0];
 
                 // If the ID matches, add it into a set and start the functional interface

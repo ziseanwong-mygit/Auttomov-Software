@@ -215,7 +215,7 @@ public class InvoiceRepository extends AbstractRepository<Invoice> {
         StaffAccountRepository staffAccountRepository = StaffAccountRepository.getInstance();
         AppointmentRepository appointmentRepository = AppointmentRepository.getInstance();
 
-        String[] columns = line.split(",\\s*");
+        String[] columns = line.split("\\|\\s*");
 
         return new Invoice(
                 columns[0],
