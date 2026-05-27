@@ -1,3 +1,6 @@
-bacf62f3-7c31-46ea-a7b5-86a91c5597b9, Test Service 1, , Normal, [A0001, A0002, A0003, A0004], [], 20.00, 1
-8f036a65-847e-41b5-9154-1ad639cf052f, Test Service 1.1, This is a major service., Major, [a9f320f7-1a1e-4ef0-b793-b41d5a3cd862], [], 90.00, 3
-14a564e4-d21c-4b21-a456-732e27c6a839, Test Service 1.2, This is a normal service here., Normal, [a9f320f7-1a1e-4ef0-b793-b41d5a3cd862], [18e5ee0a-3fd1-44f5-b673-6cde7bc131ca], 5140.00, 1
+bacf62f3-7c31-46ea-a7b5-86a91c5597b9, Battery + Spark Plug Replacement Package, Package to replace battery and spark plug if needed, Major, [daa71344-8239-4229-98dc-9889974fc586, 96747961-0d7c-458c-9007-0c6df5b1ab6b], [486835d9-2f05-47a4-82fd-49bc1499253a, 7dfe145f-bc67-41e4-bf74-9465a15580a1], 981.30, 3
+8f036a65-847e-41b5-9154-1ad639cf052f, Tyre Pressurization Package, Just checking tyre pressure and filling up, Normal, [cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1], [], 60.00, 1
+14a564e4-d21c-4b21-a456-732e27c6a839, Engine Checking and Repairing Service, Professionals to check and repair engine for you, Major, [0a98fc56-8776-40d6-93fa-7976df487e7e], [18e5ee0a-3fd1-44f5-b673-6cde7bc131ca], 4070.20, 3
+c9967679-10e8-4d66-bb2e-01c2f2ad2cca, Tyre Service and Maintenance Package, This is for repairing and servicing tyres package, Major, [cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1, a9f320f7-1a1e-4ef0-b793-b41d5a3cd862, db043779-402f-491c-ac1d-efec2c272dca], [7bb17911-a1a2-4884-9d77-03c2754a7a66], 1175.00, 3
+18fa90e1-9610-4dc8-acb6-c057ecc4d1e8, Perodua Car Cabin Filter Change Package, For Perodua car owners that need cabin filter change, Normal, [1dadb6a7-df2c-4a24-b258-8ddef438e669], [83ac6c1f-eb98-4e54-967d-bc85771aede4], 52.00, 1
+b92fa673-30bd-4967-a584-c68ca3c19a43, Coolant Flushing and Refillment Package, Drain old coolant and refill with new one, Normal, [c9fd1cf3-9d9d-4b8a-bd4e-f608e0b8d1ab], [2356f3a7-97c5-49fd-b0e6-ad87470c18d0], 160.55, 1

@@ -162,8 +162,7 @@ public class AppointmentController {
             return OperationResult.success("The appointment status for ID: " + appointmentID +
                     " has been updated successfully. Please check the new status to ensure it has been changed.");
         } else {
-            return OperationResult.failed("Oops! The appointment status for ID: " + appointmentID +
-                    " has failed to be updated. Please try again.");
+            return updateStatusResult;
         }
     }
 

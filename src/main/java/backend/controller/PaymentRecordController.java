@@ -62,7 +62,7 @@ public class PaymentRecordController {
 
         // Begin creating payment record procedure in service class
         RecordWriter createPaymentRecord = new PaymentRecordCreation(
-                paymentRecordRepo, paymentRecordDTO, invoice, customerAcc);
+                paymentRecordRepo, invoiceRepo, paymentRecordDTO, invoice, customerAcc);
         return createPaymentRecord.execute();
     }
 

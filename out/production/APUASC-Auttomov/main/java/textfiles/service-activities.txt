@@ -1,2 +1,11 @@
 a9f320f7-1a1e-4ef0-b793-b41d5a3cd862, Tyre Balancing, Tyre balancing ensures even weight distribution across each wheel-and-tire assembly., 60.00
 cd9756dd-ba56-4f3a-b690-8fa6af5ba9b1, Tyre Pressure, Tyre pressure is measured by the pressure applied to the tyre., 60.00
+db043779-402f-491c-ac1d-efec2c272dca, Tyre Alignment, Tyre alignment is the mechanical adjustment of a vehicle's suspension system to manufacturer specifications rather than adjusting the tires themselves, 55.00
+96747961-0d7c-458c-9007-0c6df5b1ab6b, Spark Plug Replacement, Inspecting and replacing worn spark plugs to maintain engine ignition and efficiency, 15.00
+76e569cc-3e57-46b9-82b6-7d10336242dc, Engine Oil and Filter Change, Draining old engine oil - replacing filter and refilling with fresh motor oil, 130.40
+07eec764-f116-44d5-9000-81b0da872e83, Fluid Checks and Flushes, Inspecting and topping off or flushing transmission fluid - coolant - brake fluid and power steering fluid, 190.95
+1dadb6a7-df2c-4a24-b258-8ddef438e669, Cabin Filter Replacement, Changing cabin air filters (for A/C quality), 37.20
+daa71344-8239-4229-98dc-9889974fc586, Battery Replacement, Car battery replacement done by professionals, 270.00
+0a98fc56-8776-40d6-93fa-7976df487e7e, Engine Checking, Check the components and status of the engine here., 70.20
+b1ac3707-8b09-445c-9df9-f37c970f1d7a, Brake Fluid Change and Inspection, Drain brake fluid and change with new one - then inspect the fluid see if ok or not, 66.80
+c9fd1cf3-9d9d-4b8a-bd4e-f608e0b8d1ab, Coolant Flushing and Refill, Flush the coolant to clean off any debris or dust - then refill with the new coolant - recommend to do this every 5 years, 80.35

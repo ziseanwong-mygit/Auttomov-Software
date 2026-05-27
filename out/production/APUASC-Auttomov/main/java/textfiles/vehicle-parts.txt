@@ -1,2 +1,10 @@
-18e5ee0a-3fd1-44f5-b673-6cde7bc131ca, Suzuki Engine 1500cc, This is a good engine., Engine, Suzuki, 1500cc, 5000.00, 3
+18e5ee0a-3fd1-44f5-b673-6cde7bc131ca, Suzuki Engine 1500cc, This is a good engine., Engine, Suzuki, 1500cc, 4000.00, 3
 7bb17911-a1a2-4884-9d77-03c2754a7a66, Michelin Tyre 195/65 R16, This is a good tyre., Tyre, Michelin, 195/65 R16, 1000.00, 7
+486835d9-2f05-47a4-82fd-49bc1499253a, Spark Plug Bosch, Essential electrical component in gasoline engines that ignites the compressed air-fuel mixture within the cylinder, Spark plug, Bosch, Good quality, 36.00, 16
+f4676b74-3ba6-4680-92a1-6a2b2eaa5703, Mazda Oil Filter CX-5 Skyactiv-G 2.5L Dynamic, Oil filter product for Mazda, Oil filter, Mazda, Skyactiv-G 2.5L, 50.10, 20
+7dfe145f-bc67-41e4-bf74-9465a15580a1, Uplus Group 48 / H6 AGM Car Battery 12V 760CCA, Heavy car battery for car., Car battery, Uplus, 12V 760CCA, 660.30, 2
+2356f3a7-97c5-49fd-b0e6-ad87470c18d0, Prestone Af850 Dexcool 5050 Antifreeze 1 Gallon, Coolant used for refilling with new one during flushing and refillment, Coolant, Prestone, 1 Gallon antifreeze coolant, 80.20, 9
+e328fdf2-f5d4-480f-a3ca-b090efd867e9, Mazda Cabin Air Filter, For Mazda cars only, Cabin filter, Mazda, Very clean and new filter, 22.00, 27
+83ac6c1f-eb98-4e54-967d-bc85771aede4, Daihatsu Cabin Air Filter, For Perodua Myvi - Axia - Bezza - Alza and other Perodua cars, Cabin filter, Daihatsu, Clean and new filter for Perodua, 14.80, 45
+76bce0f4-5207-4809-965c-bce427a43a78, Power Up Muscle Tech Fully Synthetic 5W-30 SN CJ4, Strong and good engine oil for all cars, Engine oil, Power Up, Full synthetic oil SN CJ4 4L, 250.20, 5
+ea48a4f6-27f6-46ca-938f-f980a57415a0, Brake Fluid DOT 4 LIQUI MOLY, Brake fluid for all cards, Brake fluid, Liqui Moly, DOT 4, 41.60, 17

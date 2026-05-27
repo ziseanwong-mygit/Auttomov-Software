@@ -143,8 +143,7 @@ public class AccountController {
             return OperationResult.success("The account status for ID: " + accountID +
                     " has been updated successfully. Please check the new status to ensure it has been changed.");
         } else {
-            return OperationResult.failed("Oops! The account status for ID: " + accountID +
-            " has failed to be updated. Please try again.");
+            return updateStatusResult;
         }
     }
 

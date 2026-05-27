@@ -3,6 +3,7 @@ package main.java.backend.service.paymentrecord;
 import main.java.backend.model.Invoice;
 import main.java.backend.model.PaymentRecord;
 import main.java.backend.model.UserAccount;
+import main.java.backend.repository.impl.InvoiceRepository;
 import main.java.backend.repository.impl.PaymentRecordRepository;
 import main.java.backend.service.RecordWriter;
 import main.java.backend.util.RecordNoGenerator;
@@ -18,13 +19,16 @@ import java.util.UUID;
 public class PaymentRecordCreation implements RecordWriter {
 
     private final PaymentRecordRepository paymentRecordRepository;
+    private final InvoiceRepository invoiceRepository;
     private final PaymentRecordDTO paymentRecordDTO;
     private final Invoice existingInvoice;
     private final UserAccount existingCustomer;
 
-    public PaymentRecordCreation(PaymentRecordRepository paymentRecordRepository, PaymentRecordDTO paymentRecordDTO,
-                                Invoice existingInvoice, UserAccount existingCustomer) {
+    public PaymentRecordCreation(PaymentRecordRepository paymentRecordRepository, InvoiceRepository invoiceRepository,
+                                 PaymentRecordDTO paymentRecordDTO,
+                                 Invoice existingInvoice, UserAccount existingCustomer) {
         this.paymentRecordRepository = paymentRecordRepository;
+        this.invoiceRepository = invoiceRepository;
         this.paymentRecordDTO = paymentRecordDTO;
         this.existingInvoice = existingInvoice;
         this.existingCustomer = existingCustomer;
@@ -43,7 +47,14 @@ public class PaymentRecordCreation implements RecordWriter {
         PaymentRecord newPaymentRecord = populatePaymentRecordDetails();
 
         // Save the payment record into the file
-        return paymentRecordRepository.createRecord(newPaymentRecord);
+        OperationResult creationResult =  paymentRecordRepository.createRecord(newPaymentRecord);
+        if (!creationResult.isValid()) { // If failed, return the error message
+            return creationResult;
+        }
+
+        // If the payment record is successfully created, update the invoice status to PAID
+        existingInvoice.setInvoiceStatus(InvoiceStatus.PAID);
+        return invoiceRepository.updateRecord(existingInvoice);
     }
 
     private PaymentRecord populatePaymentRecordDetails() {

@@ -1,12 +1,15 @@
 package main.java;
 
+import main.java.frontend.menu.mainMenuUI;
+
+import javax.swing.*;
+
 public class MainClass {
 
     public static void main(String[] args) {
-
-/*        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> {
             new mainMenuUI().setVisible(true);
-        });*/
+        });
     }
 }
 
