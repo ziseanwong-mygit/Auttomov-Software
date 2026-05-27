@@ -58,7 +58,7 @@ public class ReceiptCreation implements RecordWriter {
 
         // Generate new receipt ID and document number for the new record
         String receiptId = UUID.randomUUID().toString();
-        String receiptDocNo = "RPT" + RecordNoGenerator.generateRecordNo();
+        String receiptDocNo = "RCT" + RecordNoGenerator.generateRecordNo();
 
         // Extract the receipt details from the DTO
         String receiptNote = receiptDTO.getReceiptNote();
