@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Updated the parsing with symbol from , to |. All text files now use | to separate values.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageCustomerUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageStaffUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/UpdateAccStatusUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/UpdateAccountUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/UpdatePasswordUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/appointment/AssignTechnicianUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/appointment/CreateAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/appointment/ManageAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/appointment/UpdateApptStatusUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/appointment/ViewAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/comment/ManageCommentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/comment/ViewCommentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/dashboard/CustomerDashboardUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/dashboard/StaffDashboardUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/feedback/ManageFeedbackUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/forum/AppointmentForumUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/history/CustomerFeedbackUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/history/CustomerHistoryUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/history/CustomerPaymentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/logo/Auttomov_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/menu/mainMenuUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/payment/ManageInvoiceUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/payment/ManagePaymentReceiptUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/report/AnalyzedReportsUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/service/SetServicePriceUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/BaseDashboardUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/DocumentViewerUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/EditProfilePanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/Refreshable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/SessionManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/ViewProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frontend/universalui/mainMenuUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="194" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="jayvee" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Swong-Gitzbos44&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Swong-Gitzbos44/OODJ-GroupAT.git&quot;,
+    &quot;accountId&quot;: &quot;6c1e2298-5185-4ea3-97b6-17e014b1d40b&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000000000522937" />
+      <entry key="S60" value="1.0000366950272495" />
+      <entry key="M2" value="1.0308532814469082" />
+      <entry key="M5" value="2.8266396263972196" />
+      <entry key="M10" value="9.680601973874522" />
+      <entry key="M15" value="17.418727653297328" />
+      <entry key="M30" value="36.4879088259179" />
+      <entry key="H1" value="69.09337978894429" />
+      <entry key="H2" value="132.75254265174425" />
+      <entry key="H4" value="234.5823048104766" />
+      <entry key="D1" value="654.3566892568161" />
+      <entry key="W1" value="870.2315845027131" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="1.99941247890192E-170" />
+      <entry key="S10" value="1.4140058270395915E-85" />
+      <entry key="S30" value="5.209752195924566E-29" />
+      <entry key="S60" value="7.217861314769473E-15" />
+      <entry key="M2" value="8.495799735616104E-8" />
+      <entry key="M5" value="0.0014848470028690159" />
+      <entry key="M10" value="0.038534609291222564" />
+      <entry key="M15" value="0.11428754507424502" />
+      <entry key="M30" value="0.4139869343202663" />
+      <entry key="H1" value="2.5155013228518293" />
+      <entry key="H2" value="11.612625364468773" />
+      <entry key="H4" value="31.49186657899357" />
+      <entry key="D1" value="123.73822868122248" />
+      <entry key="W1" value="171.8004216633052" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9265880618903709" />
+      <entry key="MS500" value="0.9848664428955506" />
+      <entry key="S2" value="0.9961949481330542" />
+      <entry key="S5" value="0.9984762383082793" />
+      <entry key="S10" value="0.9992378287015956" />
+      <entry key="S30" value="0.9997458783804513" />
+      <entry key="S60" value="0.9999096179394129" />
+      <entry key="M2" value="1.030786165361121" />
+      <entry key="M5" value="2.8279880427151767" />
+      <entry key="M10" value="9.718597115355465" />
+      <entry key="M15" value="17.532079201523118" />
+      <entry key="M30" value="36.900414590615824" />
+      <entry key="H1" value="71.60594588491932" />
+      <entry key="H2" value="144.3595130848115" />
+      <entry key="H4" value="266.0669759804314" />
+      <entry key="D1" value="778.0903937034443" />
+      <entry key="W1" value="1042.0311111385854" />
+    </decayedShown>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3Bcczu8CFsL3AxSgPhQ503nYrMn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainClass.executor": "Debug",
+    "Application.SignUpFunc.executor": "Run",
+    "Application.SignUpLogic.executor": "Run",
+    "Application.mainMenuUI.executor": "Run",
+    "Application.testSignUpLogic.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "seanwzs",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/DELL/Documents/OODJ Project/APUASC-Auttomov/src/main/java/dto",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.import",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Documents\OODJ Project\APUASC-Auttomov\src\main\java\dto" />
+      <recent name="C:\Users\DELL\Documents\APU ASC Group AT\src\main\java\frontend" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Documents\OODJ Project\APUASC-Auttomov\src\main\java\frontend\logo" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="main.java.backend.controller" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="" />
+      <created>1774792068523</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774792068523</updated>
+      <workItem from="1774792069830" duration="11000" />
+      <workItem from="1774841131412" duration="3042000" />
+      <workItem from="1774925584514" duration="2623000" />
+      <workItem from="1775531711567" duration="1506000" />
+      <workItem from="1775541093536" duration="2584000" />
+      <workItem from="1775706913242" duration="2381000" />
+      <workItem from="1775726419887" duration="4110000" />
+      <workItem from="1775802798019" duration="4290000" />
+      <workItem from="1775837069101" duration="3278000" />
+      <workItem from="1775881647603" duration="19256000" />
+      <workItem from="1775966985678" duration="1823000" />
+      <workItem from="1775969437333" duration="9806000" />
+      <workItem from="1775998316475" duration="12628000" />
+      <workItem from="1776057105593" duration="851000" />
+      <workItem from="1776092225364" duration="637000" />
+      <workItem from="1776126549927" duration="3687000" />
+      <workItem from="1776133324464" duration="396000" />
+      <workItem from="1776133839500" duration="875000" />
+      <workItem from="1776144837226" duration="18502000" />
+      <workItem from="1776227657891" duration="29772000" />
+      <workItem from="1776269074910" duration="58000" />
+      <workItem from="1776269159368" duration="553000" />
+      <workItem from="1776269731267" duration="4372000" />
+      <workItem from="1776307122041" duration="6031000" />
+      <workItem from="1776408757527" duration="71000" />
+      <workItem from="1776412983846" duration="2478000" />
+      <workItem from="1777012705663" duration="389000" />
+      <workItem from="1777013201121" duration="13936000" />
+      <workItem from="1777033322380" duration="14934000" />
+      <workItem from="1777104816358" duration="7539000" />
+      <workItem from="1777132851605" duration="2405000" />
+      <workItem from="1777196294016" duration="6585000" />
+      <workItem from="1777211558336" duration="6431000" />
+      <workItem from="1777253985515" duration="2031000" />
+      <workItem from="1777273574000" duration="15011000" />
+      <workItem from="1777335753188" duration="945000" />
+      <workItem from="1777337423645" duration="4569000" />
+      <workItem from="1777355101334" duration="27926000" />
+      <workItem from="1777620456505" duration="641000" />
+      <workItem from="1777786451357" duration="13040000" />
+      <workItem from="1777813943344" duration="15238000" />
+      <workItem from="1777829543008" duration="925000" />
+      <workItem from="1777865243861" duration="1306000" />
+      <workItem from="1777875264594" duration="31493000" />
+      <workItem from="1777940721528" duration="1346000" />
+      <workItem from="1777943545177" duration="2898000" />
+      <workItem from="1777959565002" duration="25216000" />
+      <workItem from="1778085186512" duration="1194000" />
+      <workItem from="1778086434572" duration="1646000" />
+      <workItem from="1778127147823" duration="18680000" />
+      <workItem from="1778149684847" duration="22711000" />
+      <workItem from="1778201170191" duration="4531000" />
+      <workItem from="1778219613028" duration="3000" />
+      <workItem from="1778225803715" duration="18250000" />
+      <workItem from="1778430404721" duration="3283000" />
+      <workItem from="1778469849804" duration="684000" />
+      <workItem from="1778471249063" duration="10098000" />
+      <workItem from="1778667077014" duration="119000" />
+      <workItem from="1778672497921" duration="5000" />
+      <workItem from="1778721689407" duration="13695000" />
+      <workItem from="1779197326488" duration="12277000" />
+      <workItem from="1779235960041" duration="47266000" />
+      <workItem from="1779327603868" duration="41806000" />
+      <workItem from="1779414295002" duration="6367000" />
+      <workItem from="1779444063986" duration="26543000" />
+      <workItem from="1779513396081" duration="47201000" />
+      <workItem from="1779590240135" duration="821000" />
+      <workItem from="1779591216438" duration="10000" />
+      <workItem from="1779678898982" duration="23542000" />
+      <workItem from="1779719469361" duration="4566000" />
+      <workItem from="1779755228135" duration="1359000" />
+      <workItem from="1779758232324" duration="21422000" />
+      <workItem from="1779812905986" duration="5229000" />
+      <workItem from="1779850944833" duration="13727000" />
+    </task>
+    <task id="LOCAL-00001" summary="Intialize commit">
+      <option name="closed" value="true" />
+      <created>1776127644257</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1776127644257</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Initialize project structure and core components">
+      <option name="closed" value="true" />
+      <created>1776134111411</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776134111411</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Initialize project structure and core components">
+      <option name="closed" value="true" />
+      <created>1776134673937</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776134673937</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Account Sign Up logic v1">
+      <option name="closed" value="true" />
+      <created>1776268790232</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776268790232</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Delete files">
+      <option name="closed" value="true" />
+      <created>1776270092586</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776270092586</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Account login function v1&#10;&#10;If acc status is pending, denied or suspended, login is denied.">
+      <option name="closed" value="true" />
+      <created>1777023107016</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1777023107017</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Appointment &amp; Service POJOs, enum and text files&#10;&#10;Structure may change over time.">
+      <option name="closed" value="true" />
+      <created>1777284561734</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777284561734</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Account Update and Delete v1. Made changes on account login, enums and create account.&#10;&#10;Supports updating and deleting multiple records">
+      <option name="closed" value="true" />
+      <created>1777284653646</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1777284653646</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Updated service class and added service item and car component class. Fixed bug for account login.">
+      <option name="closed" value="true" />
+      <created>1777358002045</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1777358002045</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Updated CRUD operations for Account. Added new models &quot;VehicleService&quot;, &quot;VehicleComponent&quot; and &quot;ServiceItem&quot;. Updated project structure.">
+      <option name="closed" value="true" />
+      <created>1777620586837</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1777620586837</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Account CRUD operations and repositories update v2. Added interfaces for services and repositories.&#10;&#10;Interface is used to encapsulate implementations of classes, so each class can have unique implementation under same method">
+      <option name="closed" value="true" />
+      <created>1777819966930</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1777819966931</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Huge update for account management. Added controller classes, added repository interfaces and abstract classes. Changes in all account service classes. Added DTO classes.&#10;&#10;Please refer to MainClass for usage. Flow: DTO -&gt; Controller -&gt; OperationResult from controller.">
+      <option name="closed" value="true" />
+      <created>1778247817377</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1778247817378</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Huge update for account management 2. Added AbstractRepository abstract class, RecordReader and RecordWriter interfaces for writing and reading files. Added data structure organizer and data type converter.">
+      <option name="closed" value="true" />
+      <created>1779252809637</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252809638</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Service activities CRUD operations added. Added ListFieldComparison to compare lists changes.">
+      <option name="closed" value="true" />
+      <created>1779252878285</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252878285</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Vehicle Part CRUD operations added.">
+      <option name="closed" value="true" />
+      <created>1779252914390</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1779252914390</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Updated account retrieval to use RecordReader interface. Account and vehicle part controller classes are also updated.">
+      <option name="closed" value="true" />
+      <created>1779253636681</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1779253636681</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Renamed AccountStatusUpdate to StaffAccountStatusUpdate. Changed some code in StaffAccountStatusUpdate.java so only update on staff account.">
+      <option name="closed" value="true" />
+      <created>1779262019854</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1779262019854</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Updated CrudRepository with getRecordsWithIds(). Updated all repositories with getRecordsWithIds(). Updated read methods in all controller classes to return Optional&lt;&gt;.&#10;&#10;Examples of reading records included in MainClass.java. Scroll to the end.">
+      <option name="closed" value="true" />
+      <created>1779293239169</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1779293239169</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Service package model, controller, DTO, etc. are added, with latest features with previous commit.">
+      <option name="closed" value="true" />
+      <created>1779293301331</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1779293301331</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Updated ServicePackage model class with List&lt;String&gt; to List&lt;ServiceActivity&gt; and List&lt;VehiclePart&gt; to get and set the objects.&#10;&#10;This way is to let frontend easily list out all the activities and parts without needing to call the controller class to get records again.">
+      <option name="closed" value="true" />
+      <created>1779298463200</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1779298463200</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes.">
+      <option name="closed" value="true" />
+      <created>1779337099740</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1779337099741</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Moved classes to new packages. AccountDTO now does not accept UserRole, instead backend logic will handle the user role. Added RecordNoGenerator class.&#10;&#10;Only deleting and retrieving account records need user role as input for process">
+      <option name="closed" value="true" />
+      <created>1779352153649</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1779352153649</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Big update for controller classes - added validation for UUID values and repository instance and fetching existing records.&#10;&#10;Frontend flow:&#10;1. DTO&#10;2. Controller&#10;3. OperationResult/Optional&#10;&#10;Remark: need to have logic to check if OptionalResult has fieldNames or not">
+      <option name="closed" value="true" />
+      <created>1779377807320</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377807320</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Mini update on AccountPasswordUpdate.java">
+      <option name="closed" value="true" />
+      <created>1779377944570</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377944570</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added Appointment components, ready for program. Added RecordNoGenerator to generate random ID.">
+      <option name="closed" value="true" />
+      <created>1779377982758</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1779377982758</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added checking feature for assigning technicians to appointments, and getting list of available and unavailable technicians. Changes in Appointment model class, added end time. Also added new text files.">
+      <option name="closed" value="true" />
+      <created>1779473726431</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473726433</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Huge change to appointment controller class, and minor change to appointment creation service class (missed commit).">
+      <option name="closed" value="true" />
+      <created>1779473832959</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473832959</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Added AppointmentComment components.">
+      <option name="closed" value="true" />
+      <created>1779473870391</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1779473870391</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added new column to Appointment, CustomerAccount. Fixed parsing on repositories involving empty descriptions. Added record deletion handling to update/delete on other involved records.">
+      <option name="closed" value="true" />
+      <created>1779530774523</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1779530774523</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Added AppointmentFeedback components">
+      <option name="closed" value="true" />
+      <created>1779530796967</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1779530796967</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Changes on the existing components, such as logic for handling record deletion.">
+      <option name="closed" value="true" />
+      <created>1779590481720</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1779590481720</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added invoice, payment record, receipt and report components.">
+      <option name="closed" value="true" />
+      <created>1779590532578</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1779590532578</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added report components. RecordsReport changed to DataReport. DataReport and SalesReport are now subclasses of Report class.">
+      <option name="closed" value="true" />
+      <created>1779685126476</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1779685126476</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Removed ReportCalculation.java class file. Added update logic verification within appointment and invoice status updates.">
+      <option name="closed" value="true" />
+      <created>1779701520199</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1779701520199</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Renamed InvoiceCancellation.java to InvoiceStatusUpdate.java. InvoiceStatusUpdate now accepts DTO with InvoiceID and InvoiceStatus to either cancel the invoice or mark it as paid.">
+      <option name="closed" value="true" />
+      <created>1779702812917</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1779702812917</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Fixed incorrect file path in PaymentRecordRepository.java and ReceiptRepository.java. Fixed bug on validating appointmentID in AppointmentFeedbackController.java">
+      <option name="closed" value="true" />
+      <created>1779761784101</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1779761784102</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be.">
+      <option name="closed" value="true" />
+      <created>1779772181603</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1779772181603</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Out production commit (ignore)">
+      <option name="closed" value="true" />
+      <created>1779796672636</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1779796672636</updated>
+    </task>
+    <task id="LOCAL-00039" summary="ignore commit">
+      <option name="closed" value="true" />
+      <created>1779808182741</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1779808182741</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Added auto-update feature on service package when updating service activity and vehicle part price">
+      <option name="closed" value="true" />
+      <created>1779808312339</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1779808312339</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Changed code on displaying messages in controller classes. Added function where invoice is auto-updated to paid after payment record created. No effects to frontend.">
+      <option name="closed" value="true" />
+      <created>1779859566792</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1779859566792</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo.">
+      <option name="closed" value="true" />
+      <created>1779860004655</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1779860004655</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Fixed bug on the NullPointerException in AppointmentById list in repository after creating new appointment. Changed OperationType.CREATE to UPDATE in the AppointmentFeedbackController.java updateAppointmentFeedback()">
+      <option name="closed" value="true" />
+      <created>1779869091315</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1779869091315</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Updated the parsing with symbol from , to |. All text files now use | to separate values.">
+      <option name="closed" value="true" />
+      <created>1779870742179</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1779870742179</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="jayvee" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="jayvee" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes." />
+    <MESSAGE value="Moved classes to new packages. AccountDTO now does not accept UserRole, instead backend logic will handle the user role. Added RecordNoGenerator class.&#10;&#10;Only deleting and retrieving account records need user role as input for process" />
+    <MESSAGE value="Big update for controller classes - added validation for UUID values and repository instance and fetching existing records.&#10;&#10;Frontend flow:&#10;1. DTO&#10;2. Controller&#10;3. OperationResult/Optional&#10;&#10;Remark: need to have logic to check if OptionalResult has fieldNames or not" />
+    <MESSAGE value="Mini update on AccountPasswordUpdate.java" />
+    <MESSAGE value="Added Appointment components, ready for program. Added RecordNoGenerator to generate random ID." />
+    <MESSAGE value="Added checking feature for assigning technicians to appointments, and getting list of available and unavailable technicians. Changes in Appointment model class, added end time. Also added new text files." />
+    <MESSAGE value="Huge change to appointment controller class, and minor change to appointment creation service class (missed commit)." />
+    <MESSAGE value="Added AppointmentComment components." />
+    <MESSAGE value="Added new column to Appointment, CustomerAccount. Fixed parsing on repositories involving empty descriptions. Added record deletion handling to update/delete on other involved records." />
+    <MESSAGE value="Added AppointmentFeedback components" />
+    <MESSAGE value="Changes on the existing components, such as logic for handling record deletion." />
+    <MESSAGE value="Added invoice, payment record, receipt and report components." />
+    <MESSAGE value="Added report components. RecordsReport changed to DataReport. DataReport and SalesReport are now subclasses of Report class." />
+    <MESSAGE value="Removed ReportCalculation.java class file. Added update logic verification within appointment and invoice status updates." />
+    <MESSAGE value="Renamed InvoiceCancellation.java to InvoiceStatusUpdate.java. InvoiceStatusUpdate now accepts DTO with InvoiceID and InvoiceStatus to either cancel the invoice or mark it as paid." />
+    <MESSAGE value="Fixed incorrect file path in PaymentRecordRepository.java and ReceiptRepository.java. Fixed bug on validating appointmentID in AppointmentFeedbackController.java" />
+    <MESSAGE value="Added logic for checking cancellation status in appointment and invoice for InvoiceCreation and PaymentRecordCreation. Fixed bug on validating receipt note, where it shouldn't be." />
+    <MESSAGE value="temphere" />
+    <MESSAGE value="Out production commit (ignore)" />
+    <MESSAGE value="ignore commit" />
+    <MESSAGE value="Added auto-update feature on service package when updating service activity and vehicle part price" />
+    <MESSAGE value="Changed code on displaying messages in controller classes. Added function where invoice is auto-updated to paid after payment record created. No effects to frontend." />
+    <MESSAGE value="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo." />
+    <MESSAGE value="Fixed bug on the NullPointerException in AppointmentById list in repository after creating new appointment. Changed OperationType.CREATE to UPDATE in the AppointmentFeedbackController.java updateAppointmentFeedback()" />
+    <MESSAGE value="Updated the parsing with symbol from , to |. All text files now use | to separate values." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the parsing with symbol from , to |. All text files now use | to separate values." />
+  </component>
+</project>

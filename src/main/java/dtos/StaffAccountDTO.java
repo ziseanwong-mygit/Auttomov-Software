@@ -1,0 +1,62 @@
+package main.java.dtos;
+
+import main.java.enums.data.AccountStatus;
+import main.java.enums.data.EmploymentStatus;
+import main.java.enums.data.JobPosition;
+import main.java.enums.data.Role;
+
+import java.time.LocalDate;
+
+public class StaffAccountDTO extends UserAccountDTO {
+
+    private JobPosition jobPosition;
+    private LocalDate employmentDate;
+    private EmploymentStatus employmentStatus;
+    private String specialization;
+
+    /**
+     * For creating a new account
+     */
+    public StaffAccountDTO(String userID, Role userRole, String firstName, String lastName, String emailAddress,
+                           String phoneNumber, String password, String confirmPassword, JobPosition jobPosition,
+                           EmploymentStatus employmentStatus, String specialization) {
+        super(userID, userRole, firstName, lastName, emailAddress, phoneNumber, password, confirmPassword);
+        this.jobPosition = jobPosition;
+        this.employmentStatus = employmentStatus;
+        this.specialization = specialization;
+    }
+
+    /**
+     * For updating an existing account
+     */
+    public StaffAccountDTO(String accountID, Role userRole, String userID, String firstName, String lastName,
+                           String emailAddress, String phoneNumber, AccountStatus accountStatus,
+                           JobPosition jobPosition, LocalDate employmentDate, EmploymentStatus employmentStatus,
+                           String specialization) {
+        super(accountID, userRole, userID, firstName, lastName, emailAddress, phoneNumber, accountStatus);
+        this.jobPosition = jobPosition;
+        this.employmentDate = employmentDate;
+        this.employmentStatus = employmentStatus;
+        this.specialization = specialization;
+    }
+
+    public StaffAccountDTO(String accountID, AccountStatus accountStatus) {
+        super(accountID, accountStatus);
+    }
+
+    public JobPosition getJobPosition() {
+        return jobPosition;
+    }
+
+    public LocalDate getEmploymentDate() {
+        return employmentDate;
+    }
+
+    public EmploymentStatus getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+}

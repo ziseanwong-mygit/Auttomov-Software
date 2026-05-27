@@ -1,0 +1,30 @@
+package main.java.enums.data;
+
+public enum AccountStatus {
+    ACTIVE("Active"),
+    INACTIVE("Inactive"),
+    PENDING("Pending"),
+    DENIED("Denied"),
+    SUSPENDED("Suspended");
+
+    private final String accStatus;
+
+    AccountStatus(String accStatus) {
+        this.accStatus = accStatus;
+    }
+
+    public String getAccStatus() {
+        return accStatus;
+    }
+
+    public static AccountStatus getAccStatusByValue(String value) {
+        for (AccountStatus as : AccountStatus.values()) {
+            if (as.accStatus.equalsIgnoreCase(value)) {
+                return as;
+            }
+        }
+
+        // If not found, throw an exception
+        throw new IllegalArgumentException("Invalid account status: " + value);
+    }
+}
