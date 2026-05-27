@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Fixed bug on the NullPointerException in AppointmentById list in repository after creating new appointment. Changed OperationType.CREATE to UPDATE in the AppointmentFeedbackController.java updateAppointmentFeedback()">
+    <list default="true" id="ae09668c-534a-46a5-9bfe-33fdb096f7d6" name="Changes" comment="Updated the parsing with symbol from , to |. All text files now use | to separate values.">
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageCustomerUI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/ManageStaffUI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/account/UpdateAccStatusUI.java" afterDir="false" />
@@ -37,50 +37,20 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/SessionManager.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/frontend/shared/ViewProfilePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AppointmentFeedbackController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/controller/AppointmentFeedbackController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/repository/impl/AppointmentCommentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/repository/impl/AppointmentCommentRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/util/CSVFormatter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/backend/util/CSVFormatter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-comments.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-feedback.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-feedback.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/appointment-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/customer-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/customer-accounts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/invoice-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/payment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/receipt-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-activities.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-activities.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-packages.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/service-packages.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/staff-accounts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/vehicle-parts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/APUASC-Auttomov/main/java/textfiles/vehicle-parts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/FileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/FileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentCommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentCommentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentFeedbackRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentFeedbackRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/AppointmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/InvoiceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/InvoiceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/PaymentRecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/PaymentRecordRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ReceiptRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ReceiptRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ServiceActivityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ServiceActivityRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ServicePackageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/ServicePackageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/VehiclePartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/VehiclePartRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/account/CustomerAccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/account/CustomerAccountRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/account/StaffAccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/account/StaffAccountRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/report/DataReportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/report/DataReportRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/repository/impl/report/SalesReportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/repository/impl/report/SalesReportRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/util/CSVFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/util/CSVFormatter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/backend/util/DataStructureOrganizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backend/util/DataStructureOrganizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frontend/universalui/mainMenuUI.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-comments.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-feedback.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-feedback.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/appointment-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/customer-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/customer-accounts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/invoice-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/payment-records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/receipt-records.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/records-reports.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/records-reports.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/sales-reports.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/sales-reports.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/service-activities.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/service-activities.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/service-packages.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/service-packages.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/staff-accounts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/textfiles/vehicle-parts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/textfiles/vehicle-parts.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,61 +100,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0006905361355705" />
-      <entry key="MS500" value="1.2541805398899966" />
-      <entry key="S2" value="2.3509899749905303" />
-      <entry key="S5" value="4.835156118895411" />
-      <entry key="S10" value="10.610102240788736" />
-      <entry key="S30" value="26.359608943457765" />
-      <entry key="S60" value="35.146018137612145" />
-      <entry key="M2" value="41.1656534935515" />
-      <entry key="M5" value="46.48409135546932" />
-      <entry key="M10" value="49.389450131293245" />
-      <entry key="M15" value="50.74254254401471" />
-      <entry key="M30" value="55.74409653420852" />
-      <entry key="H1" value="81.28118887271692" />
-      <entry key="H2" value="142.2142910195969" />
-      <entry key="H4" value="239.2645778439279" />
-      <entry key="D1" value="641.9041118878916" />
-      <entry key="W1" value="845.9857382459456" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000000000522937" />
+      <entry key="S60" value="1.0000366950272495" />
+      <entry key="M2" value="1.0308532814469082" />
+      <entry key="M5" value="2.8266396263972196" />
+      <entry key="M10" value="9.680601973874522" />
+      <entry key="M15" value="17.418727653297328" />
+      <entry key="M30" value="36.4879088259179" />
+      <entry key="H1" value="69.09337978894429" />
+      <entry key="H2" value="132.75254265174425" />
+      <entry key="H4" value="234.5823048104766" />
+      <entry key="D1" value="654.3566892568161" />
+      <entry key="W1" value="870.2315845027131" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="7.59955399515952E-29" />
-      <entry key="MS500" value="2.3777030835630376E-6" />
-      <entry key="S2" value="0.039268056323964164" />
-      <entry key="S5" value="0.27391496630241463" />
-      <entry key="S10" value="0.5233688625648403" />
-      <entry key="S30" value="0.8058779883762014" />
-      <entry key="S60" value="0.8977070727003335" />
-      <entry key="M2" value="0.9474740485629844" />
-      <entry key="M5" value="0.9786489386065247" />
-      <entry key="M10" value="0.9892898910860055" />
-      <entry key="M15" value="0.9945973817631875" />
-      <entry key="M30" value="1.2212676085100227" />
-      <entry key="H1" value="4.320526288228536" />
-      <entry key="H2" value="15.21901224323716" />
-      <entry key="H4" value="36.0517564317775" />
-      <entry key="D1" value="126.5586690771373" />
-      <entry key="W1" value="172.3544543066447" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="1.99941247890192E-170" />
+      <entry key="S10" value="1.4140058270395915E-85" />
+      <entry key="S30" value="5.209752195924566E-29" />
+      <entry key="S60" value="7.217861314769473E-15" />
+      <entry key="M2" value="8.495799735616104E-8" />
+      <entry key="M5" value="0.0014848470028690159" />
+      <entry key="M10" value="0.038534609291222564" />
+      <entry key="M15" value="0.11428754507424502" />
+      <entry key="M30" value="0.4139869343202663" />
+      <entry key="H1" value="2.5155013228518293" />
+      <entry key="H2" value="11.612625364468773" />
+      <entry key="H4" value="31.49186657899357" />
+      <entry key="D1" value="123.73822868122248" />
+      <entry key="W1" value="171.8004216633052" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.946710931668328" />
-      <entry key="MS500" value="1.2272520384832837" />
-      <entry key="S2" value="2.2624431502427185" />
-      <entry key="S5" value="4.937851148423763" />
-      <entry key="S10" value="10.970743975544613" />
-      <entry key="S30" value="27.066015846002667" />
-      <entry key="S60" value="35.98367241094592" />
-      <entry key="M2" value="42.07922540606435" />
-      <entry key="M5" value="47.44663977301923" />
-      <entry key="M10" value="50.36954732514266" />
-      <entry key="M15" value="51.7306081184652" />
-      <entry key="M30" value="56.96141792265824" />
-      <entry key="H1" value="85.59682736925541" />
-      <entry key="H2" value="157.42595763495913" />
-      <entry key="H4" value="275.3081272350006" />
-      <entry key="D1" value="768.4581583220536" />
-      <entry key="W1" value="1018.3392953048034" />
+      <entry key="MS100" value="0.9265880618903709" />
+      <entry key="MS500" value="0.9848664428955506" />
+      <entry key="S2" value="0.9961949481330542" />
+      <entry key="S5" value="0.9984762383082793" />
+      <entry key="S10" value="0.9992378287015956" />
+      <entry key="S30" value="0.9997458783804513" />
+      <entry key="S60" value="0.9999096179394129" />
+      <entry key="M2" value="1.030786165361121" />
+      <entry key="M5" value="2.8279880427151767" />
+      <entry key="M10" value="9.718597115355465" />
+      <entry key="M15" value="17.532079201523118" />
+      <entry key="M30" value="36.900414590615824" />
+      <entry key="H1" value="71.60594588491932" />
+      <entry key="H2" value="144.3595130848115" />
+      <entry key="H4" value="266.0669759804314" />
+      <entry key="D1" value="778.0903937034443" />
+      <entry key="W1" value="1042.0311111385854" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -329,7 +299,7 @@
       <workItem from="1779755228135" duration="1359000" />
       <workItem from="1779758232324" duration="21422000" />
       <workItem from="1779812905986" duration="5229000" />
-      <workItem from="1779850944833" duration="11669000" />
+      <workItem from="1779850944833" duration="13727000" />
     </task>
     <task id="LOCAL-00001" summary="Intialize commit">
       <option name="closed" value="true" />
@@ -675,7 +645,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779869091315</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Updated the parsing with symbol from , to |. All text files now use | to separate values.">
+      <option name="closed" value="true" />
+      <created>1779870742179</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1779870742179</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -720,7 +698,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated ServicePackage model class with List&lt;String&gt; to List&lt;ServiceActivity&gt; and List&lt;VehiclePart&gt; to get and set the objects.&#10;&#10;This way is to let frontend easily list out all the activities and parts without needing to call the controller class to get records again." />
     <MESSAGE value="Moved the toTextFile() method from model class to utility class. Changed method name to toCsvFormat(). Changed DataFormatter to CSVFormatter. No effect to frontend for these changes." />
     <MESSAGE value="Moved classes to new packages. AccountDTO now does not accept UserRole, instead backend logic will handle the user role. Added RecordNoGenerator class.&#10;&#10;Only deleting and retrieving account records need user role as input for process" />
     <MESSAGE value="Big update for controller classes - added validation for UUID values and repository instance and fetching existing records.&#10;&#10;Frontend flow:&#10;1. DTO&#10;2. Controller&#10;3. OperationResult/Optional&#10;&#10;Remark: need to have logic to check if OptionalResult has fieldNames or not" />
@@ -745,6 +722,7 @@
     <MESSAGE value="Changed code on displaying messages in controller classes. Added function where invoice is auto-updated to paid after payment record created. No effects to frontend." />
     <MESSAGE value="Changed the letters of receiptDocNo generation from &quot;RPT&quot; to &quot;RCT&quot;, due to similarities with reportDocNo." />
     <MESSAGE value="Fixed bug on the NullPointerException in AppointmentById list in repository after creating new appointment. Changed OperationType.CREATE to UPDATE in the AppointmentFeedbackController.java updateAppointmentFeedback()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug on the NullPointerException in AppointmentById list in repository after creating new appointment. Changed OperationType.CREATE to UPDATE in the AppointmentFeedbackController.java updateAppointmentFeedback()" />
+    <MESSAGE value="Updated the parsing with symbol from , to |. All text files now use | to separate values." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the parsing with symbol from , to |. All text files now use | to separate values." />
   </component>
 </project>
